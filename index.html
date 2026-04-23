@@ -7,5 +7,45 @@
     <script src="./js/script.js" defer></script>
     <title>El Pollo Loco</title>
   </head>
-  <body></body>
+  <body>
+    <main id="game-layout">
+      <h1 id="game-title">El Pollo Loco</h1>
+      <div id="game-toolbar">
+        <!--
+        help-button
+        mute-button
+        fullscreen-button
+        -->
+      </div>
+      <div id="game-stage">
+        <canvas id="game-canvas" height="480" width="720">
+          <!-- render :
+            character
+            background
+            enemy
+            bottles
+            status bars
+          -->
+        </canvas>
+        <div id="game-overlays">
+          <!-- future overlays placeholder:
+            start-screen
+            win-screen
+            lose-screen
+          -->
+        </div>
+      </div>
+      <div id="mobile-controls">
+        <!--
+        mobile-left-button
+        mobile-right-button
+        mobile-jump-button
+        mobile-throw-button
+        -->
+      </div>
+    </main>
+    <footer id="page-footer">
+      <a id="impressum-link" href="./impressum.html">Impressum</a>
+    </footer>
+  </body>
 </html>
