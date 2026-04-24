@@ -2,8 +2,10 @@ let canvas;
 let ctx;
 let img = new Image();
 
+let keyboard = new Keyboard();
 let x = 50;
 let y = 50;
+
 
 function init() {
   canvas = document.getElementById("game-canvas");
@@ -17,10 +19,29 @@ function draw() {
   ctx.drawImage(img, x, y, 100, 200);
 }
 
-function loop() {
-  x += 1;
-  draw();
+window.addEventListener("keydown", (e) => {
+  if (e.key === "ArrowRight") keyboard.RIGHT = true;
+  if (e.key === "ArrowLeft") keyboard.LEFT = true;
+  if (e.key === " ") keyboard.SPACE = true;
+});
 
+window.addEventListener("keyup", (e) => {
+  if (e.key === "ArrowRight") keyboard.RIGHT = false;
+  if (e.key === "ArrowLeft") keyboard.LEFT = false;
+  if (e.key === " ") keyboard.SPACE = false;
+});
+
+
+function loop() {
+  if (keyboard.RIGHT) {
+    x += 2;
+  }
+
+  if (keyboard.LEFT) {
+    x -= 2;
+  }
+
+  draw();
   requestAnimationFrame(loop);
 }
 
