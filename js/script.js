@@ -1,15 +1,14 @@
 function init() {
   const canvas = document.getElementById("game-canvas");
   const ctx = canvas.getContext("2d");
-  draw(ctx);
+
+  const img = new Image();
+  img.src = "assets/img/character/1_idle/idle/I-1.png";
+
+  img.onload = function () {
+
+    ctx.drawImage(img, 50, 50, 100, 200);
+  };
 }
+
 init();
-
-
-function draw(ctx) {
-  ctx.fillStyle = "rgb(200 0 0)";
-  ctx.fillRect(10, 10, 50, 50);
-
-  ctx.fillStyle = "rgb(0 0 200 / 50%)";
-  ctx.fillRect(30, 30, 50, 50);
-}
