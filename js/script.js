@@ -24,7 +24,6 @@ function init() {
   ctx = canvas.getContext("2d");
 
   character = new Character();
-  character.speedY = 5;
 
   character.img.onload = function () {
     loop();
@@ -65,6 +64,10 @@ function loop() {
 
   if (keyboardState.LEFT) {
     character.moveLeft();
+  }
+
+  if (keyboardState.SPACE && !character.isAboveGround()) {
+    character.jump();
   }
 
   draw();

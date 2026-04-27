@@ -20,7 +20,7 @@ class Character extends MovableObject {
   constructor() {
     super();
     this.x = 50;
-    this.y = 50;
+    this.y = 250;
     this.width = 150;
     this.height = 200;
     this.speed = 2;

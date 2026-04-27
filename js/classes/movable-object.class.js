@@ -57,6 +57,18 @@ class MovableObject extends DrawableObject {
     return this.y < 250;
   }
   /**
+   * Makes the object jump.
+   * Sets a positive vertical speed (speedY),
+   * which moves the object upward.
+   * Note:
+   * This method only gives the initial jump force.
+   * Gravity (applyGravity) will then reduce speedY over time
+   * and bring the object back down.
+   */
+  jump() {
+    this.speedY = 15;
+  }
+  /**
     * Applies simple gravity to the object.
     *
     * This function runs many times per second.
