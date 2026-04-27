@@ -26,6 +26,7 @@ class Character extends MovableObject {
     this.y = 250;
     this.width = 150;
     this.height = 200;
+    this.isWalking = false;
 
     // Movement speed
     this.speed = 2;
@@ -38,7 +39,6 @@ class Character extends MovableObject {
 
     // Start systems
     this.applyGravity();
-    this.animate();
   }
   /**
    * Plays the walking animation once.
@@ -49,23 +49,26 @@ class Character extends MovableObject {
   }
 
   /**
- * Starts the animation loop.
- *
- * Every 100ms:
- * - if the character is moving → play walking animation
- * - otherwise → show idle image
- *
- * Note:
- * This is a simple state check based on keyboard input.
- * Later, this should use a proper state system (idle, walk, jump).
- */
-  animate() {
-    setInterval(() => {
-      if (keyboardState.RIGHT || keyboardState.LEFT) {
-        this.playAnimation(characterWalking);
-      } else {
-        this.loadImage("assets/img/character/1_idle/idle/I-1.png");
-      }
-    }, 100);
+  * Starts the animation loop.
+  *
+  * Every 100ms:
+  * - if the character is moving → play walking animation
+  * - otherwise → show idle image
+  *
+  * Note:
+  * This is a simple state check based on keyboard input.
+  * Later, this should use a proper state system (idle, walk, jump).
+  */
+  //   animate() {
+  //     setInterval(() => {
+  //       if (keyboardState.RIGHT || keyboardState.LEFT) {
+  //         this.playAnimation(characterWalking);
+  //       } else {
+  //         this.loadImage("assets/img/character/1_idle/idle/I-1.png");
+  //       }
+  //     }, 100);
+  //   }
+  playWalkingAnimation() {
+    this.playAnimation(characterWalking);
   }
 }

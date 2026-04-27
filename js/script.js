@@ -52,10 +52,12 @@ window.addEventListener("keyup", (e) => {
 function loop() {
   if (keyboardState.RIGHT) {
     character.moveRight();
+    character.playWalkingAnimation();
   }
 
   if (keyboardState.LEFT) {
     character.moveLeft();
+    character.playWalkingAnimation();
   }
 
   if (keyboardState.SPACE && !character.isAboveGround()) {
