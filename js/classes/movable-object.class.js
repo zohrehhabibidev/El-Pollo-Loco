@@ -15,9 +15,10 @@
  * moveLeft()  → decreases x (moves left)
  */
 class MovableObject extends DrawableObject {
-  // Movement speed of the object.
-  speed = 5;
-
+  constructor() {
+    super();
+    this.speed = 5;
+  }
   moveRight() {
     this.x += this.speed;
   }
