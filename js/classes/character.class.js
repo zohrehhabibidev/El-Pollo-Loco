@@ -19,14 +19,11 @@
 class Character extends MovableObject {
   constructor() {
     super();
+    this.x = 50;
+    this.y = 50;
+    this.width = 200;
+    this.height = 220;
+    this.speed = 2;
     this.loadImage("assets/img/character/1_idle/idle/I-1.png");
-  }
-
-  moveRight() {
-    this.x += 2;
-  }
-
-  moveLeft() {
-    this.x -= 2;
   }
 }
