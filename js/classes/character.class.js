@@ -21,9 +21,10 @@ class Character extends MovableObject {
     super();
     this.x = 50;
     this.y = 50;
-    this.width = 200;
-    this.height = 220;
+    this.width = 150;
+    this.height = 200;
     this.speed = 2;
     this.loadImage("assets/img/character/1_idle/idle/I-1.png");
+    this.applyGravity();
   }
 }

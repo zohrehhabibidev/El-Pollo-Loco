@@ -24,6 +24,7 @@ function init() {
   ctx = canvas.getContext("2d");
 
   character = new Character();
+  character.speedY = 5;
 
   character.img.onload = function () {
     loop();
