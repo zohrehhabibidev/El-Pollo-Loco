@@ -13,7 +13,11 @@ const characterWalking = [
 
 /**
  * Represents the main player character.
- * Handles character setup, movement, gravity, and animation.
+ *
+ * Handles:
+ * - position and size
+ * - movement (left / right / jump)
+ * - switching between idle and walking images
  *
  * @extends MovableObject
  */
@@ -41,34 +45,15 @@ class Character extends MovableObject {
     this.applyGravity();
   }
   /**
-   * Plays the walking animation once.
-   * Used when the character is moving.
+   * Plays one step of the walking animation.
    */
   playWalkingAnimation() {
     this.playAnimation(characterWalking);
   }
-
   /**
-  * Starts the animation loop.
-  *
-  * Every 100ms:
-  * - if the character is moving → play walking animation
-  * - otherwise → show idle image
-  *
-  * Note:
-  * This is a simple state check based on keyboard input.
-  * Later, this should use a proper state system (idle, walk, jump).
-  */
-  //   animate() {
-  //     setInterval(() => {
-  //       if (keyboardState.RIGHT || keyboardState.LEFT) {
-  //         this.playAnimation(characterWalking);
-  //       } else {
-  //         this.loadImage("assets/img/character/1_idle/idle/I-1.png");
-  //       }
-  //     }, 100);
-  //   }
-  playWalkingAnimation() {
-    this.playAnimation(characterWalking);
+     * Shows the idle image when the character is not moving.
+     */
+  showIdleImage() {
+    this.loadImage("assets/img/character/1_idle/idle/I-1.png");
   }
 }

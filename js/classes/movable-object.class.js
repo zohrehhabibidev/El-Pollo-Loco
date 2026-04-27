@@ -11,8 +11,7 @@ class MovableObject extends DrawableObject {
     super();
 
     // Horizontal movement speed
-    this.speed = 5;
-
+    this.speed = 2;
     // Vertical speed (up/down movement)
     this.speedY = 0;
 

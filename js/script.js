@@ -46,18 +46,21 @@ window.addEventListener("keyup", (e) => {
 /**
  * Main game loop.
  *
- * Handles movement, jumping,
- * drawing, and repeats itself.
+ * Every frame:
+ * - handles player input (movement and jump)
+ * - updates character animation (walk / idle)
+ * - draws the current frame
+ * - schedules the next frame
  */
 function loop() {
   if (keyboardState.RIGHT) {
     character.moveRight();
     character.playWalkingAnimation();
-  }
-
-  if (keyboardState.LEFT) {
+  } else if (keyboardState.LEFT) {
     character.moveLeft();
     character.playWalkingAnimation();
+  } else {
+    character.showIdleImage();
   }
 
   if (keyboardState.SPACE && !character.isAboveGround()) {
