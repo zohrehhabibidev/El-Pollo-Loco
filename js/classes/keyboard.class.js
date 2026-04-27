@@ -1,23 +1,21 @@
 /**
- * Stores the current state of keyboard keys.
+ * Stores the current state of keyboard input.
  *
- * Each key is:
- * true  → pressed
- * false → released
+ * Each property represents a key:
+ * true  → key is pressed
+ * false → key is released
  *
- * We use a class to group all key states in one place
- * and easily create a keyboard object for the game.
- *
- * Example:
- * RIGHT = true  → right key is pressed
- * RIGHT = false → right key is released
+ * Used to track input in the game loop.
  */
 class Keyboard {
   constructor() {
+    // Arrow keys
     this.LEFT = false;
     this.RIGHT = false;
     this.UP = false;
     this.DOWN = false;
+
+    // Action keys
     this.SPACE = false;
     this.D = false;
   }
