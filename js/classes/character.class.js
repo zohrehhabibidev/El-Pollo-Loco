@@ -1,23 +1,22 @@
 /**
  * Represents the player character in the game.
  *
- * This class extends DrawableObject,
+ * This class extends MovableObject,
  * so it already has:
  * - image (img)
  * - position (x, y)
  * - size (width, height)
  * - draw() method
+ * - movement (speed, moveRight, moveLeft)
  *
- * We use this class to add character-specific behavior,
- * like movement.
+ * We use this class to define the player character
+ * and load its specific image.
  *
- * Behavior:
- * moveRight() → moves the character to the right
- * moveLeft()  → moves the character to the left
+ * Note:
+ * Movement is handled by MovableObject (using speed),
+ * so we do not need to redefine moveRight or moveLeft here.
  */
-
-// extends = reuse code from another class
-class Character extends DrawableObject {
+class Character extends MovableObject {
   constructor() {
     super();
     this.loadImage("assets/img/character/1_idle/idle/I-1.png");
