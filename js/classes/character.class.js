@@ -2,7 +2,7 @@
  * Paths for the walking animation images of the character.
  * @type {string[]}
  */
-const IMAGES_WALKING = [
+const characterWalking = [
   "assets/img/character/2_walk/W-21.png",
   "assets/img/character/2_walk/W-22.png",
   "assets/img/character/2_walk/W-23.png",
@@ -34,24 +34,38 @@ class Character extends MovableObject {
     this.loadImage("assets/img/character/1_idle/idle/I-1.png");
 
     // Load walking animation images
-    this.loadImages(IMAGES_WALKING);
+    this.loadImages(characterWalking);
 
     // Start systems
     this.applyGravity();
     this.animate();
   }
+  /**
+   * Plays the walking animation once.
+   * Used when the character is moving.
+   */
+  playWalkingAnimation() {
+    this.playAnimation(characterWalking);
+  }
 
   /**
-   * Starts the walking animation loop.
-   * Switches images at a fixed interval.
-   *
-   * Note:
-   * Currently runs all the time (test mode).
-   * Later it should depend on movement state.
-   */
+ * Starts the animation loop.
+ *
+ * Every 100ms:
+ * - if the character is moving → play walking animation
+ * - otherwise → show idle image
+ *
+ * Note:
+ * This is a simple state check based on keyboard input.
+ * Later, this should use a proper state system (idle, walk, jump).
+ */
   animate() {
     setInterval(() => {
-      this.playAnimation(IMAGES_WALKING);
+      if (keyboardState.RIGHT || keyboardState.LEFT) {
+        this.playAnimation(characterWalking);
+      } else {
+        this.loadImage("assets/img/character/1_idle/idle/I-1.png");
+      }
     }, 100);
   }
 }
