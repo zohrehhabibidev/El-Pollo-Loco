@@ -1,17 +1,19 @@
 /**
  * Main game script.
  *
- * Connects:
- * - canvas rendering
- * - keyboard input
- * - game objects (character, background)
- * - main game loop
+ * Responsibilities:
+ * - initialize canvas and rendering context
+ * - handle keyboard input
+ * - control main game loop
+ * - update and draw game objects (character, background)
+ * - enforce world boundaries
  */
 
 let canvas;
 let ctx;
 let keyboardState = new Keyboard();
 let character;
+const worldEnd = 1440;
 
 /**
  * Background layers used to build the game world.
@@ -101,7 +103,7 @@ window.addEventListener("keyup", (e) => {
  * - schedules the next frame
  */
 function loop() {
-  if (keyboardState.RIGHT) {
+  if (keyboardState.RIGHT && character.x < worldEnd) {
     character.moveRight();
 
     // Character faces right
