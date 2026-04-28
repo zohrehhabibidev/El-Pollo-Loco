@@ -1,8 +1,8 @@
 /**
  * Paths for the walking animation images of the character.
  *
- * These images are used in sequence to create
- * a walking animation effect.
+ * These images are played in sequence to create
+ * the walking animation.
  *
  * @type {string[]}
  */
@@ -16,12 +16,32 @@ const characterWalking = [
 ];
 
 /**
+ * Paths for the idle animation images of the character.
+ *
+ * These images are used when the character is not moving.
+ *
+ * @type {string[]}
+ */
+const idleImages = [
+  "assets/img/character/1_idle/idle/I-1.png",
+  "assets/img/character/1_idle/idle/I-2.png",
+  "assets/img/character/1_idle/idle/I-3.png",
+  "assets/img/character/1_idle/idle/I-4.png",
+  "assets/img/character/1_idle/idle/I-5.png",
+  "assets/img/character/1_idle/idle/I-6.png",
+  "assets/img/character/1_idle/idle/I-7.png",
+  "assets/img/character/1_idle/idle/I-8.png",
+  "assets/img/character/1_idle/idle/I-9.png",
+  "assets/img/character/1_idle/idle/I-10.png",
+];
+
+/**
  * Represents the main player character.
  *
- * Handles:
+ * Responsibilities:
  * - position and size
  * - movement (left / right / jump)
- * - switching between idle and walking images
+ * - switching between idle and walking animations
  *
  * @extends MovableObject
  */
@@ -29,47 +49,40 @@ class Character extends MovableObject {
   constructor() {
     super();
 
-    // Initial position of the character on the canvas
+    // Initial position on the canvas
     this.x = 50;
     this.y = 250;
 
-    // Size of the character
+    // Character size
     this.width = 150;
     this.height = 200;
 
-    // Movement speed (used for left/right movement)
+    // Movement speed (horizontal)
     this.speed = 2;
 
-    // this.isWalking = false; // (not used yet)
-
-    // Movement speed (duplicate assignment - same value)
-    this.speed = 2;
-
-    // Load default image (idle state)
-    this.loadImage("assets/img/character/1_idle/idle/I-1.png");
-
-    // Preload walking animation images into cache
+    // Preload animation images into cache
+    this.loadImages(idleImages);
     this.loadImages(characterWalking);
+
+    // Set initial image (first idle frame)
+    this.img = this.imageCache[idleImages[0]];
   }
 
   /**
-   * Plays one frame of the walking animation.
+   * Plays the walking animation.
    *
-   * Each call switches to the next image
-   * in the walking animation sequence.
+   * Called while the character is moving left or right.
    */
   playWalkingAnimation() {
     this.playAnimation(characterWalking);
   }
 
   /**
-   * Shows the idle image when the character is not moving.
+   * Plays the idle animation.
    *
-   * Note:
-   * Currently the image loading is commented out,
-   * so the idle state will not be displayed.
+   * Called when no movement input is active.
    */
   showIdleImage() {
-    this.loadImage("assets/img/character/1_idle/idle/I-1.png");
+    this.playAnimation(idleImages);
   }
 }
