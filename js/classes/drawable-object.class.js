@@ -1,21 +1,21 @@
 /**
- * Base class for all drawable objects in the game.
+ * Base class for all drawable objects.
  *
  * Handles:
- * - image loading
+ * - loading images
+ * - storing animation frames
  * - position and size
- * - drawing on canvas
- * - basic animation support (image switching)
+ * - drawing on the canvas
  */
 class DrawableObject {
   constructor() {
     // Stores preloaded images for animations
     this.imageCache = {};
 
-    // Index of the current animation frame
+    // Current animation frame index
     this.currentImage = 0;
 
-    // Current image to draw
+    // Current image to render
     this.img = new Image();
 
     // Position and size
@@ -34,8 +34,8 @@ class DrawableObject {
   }
 
   /**
-   * Loads multiple images and stores them in the cache.
-   * Used for animations (e.g. walking, jumping).
+   * Loads multiple images and stores them in imageCache.
+   * Used for animations.
    */
   loadImages(paths) {
     paths.forEach((path) => {
@@ -46,15 +46,18 @@ class DrawableObject {
   }
 
   /**
-   * Switches the current image to the next frame
+   * Updates the current image using the next frame
    * from the given animation array.
    */
   playAnimation(images) {
     const index = this.currentImage % images.length;
     const path = images[index];
+    const image = this.imageCache[path];
 
-    this.img = this.imageCache[path];
-    this.currentImage++;
+    if (image) {
+      this.img = image;
+      this.currentImage++;
+    }
   }
 
   /**

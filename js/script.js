@@ -1,8 +1,11 @@
 /**
  * Main game script.
  *
- * Connects the canvas, keyboard input,
- * character, and game loop.
+ * Connects:
+ * - canvas rendering
+ * - keyboard input
+ * - game objects (character, background)
+ * - main game loop
  */
 
 let canvas;
@@ -11,8 +14,25 @@ let keyboardState = new Keyboard();
 let character;
 
 /**
+ * List of background layers.
+ *
+ * These images are drawn in order to create
+ * a layered background (sky, clouds, ground, etc.).
+ */
+let backgroundObjects = [
+  new BackgroundObject("assets/img/background/layers/air.png", 0, 0),
+  new BackgroundObject("assets/img/background/layers/3_third_layer/full.png", 0, 0),
+  new BackgroundObject("assets/img/background/layers/2_second_layer/full.png", 0, 0),
+  new BackgroundObject("assets/img/background/layers/1_first_layer/full.png", 0, 0),
+  new BackgroundObject("assets/img/background/layers/4_clouds/full.png", 0, 0),
+];
+
+/**
  * Initializes the game.
- * Creates the canvas context and the character.
+ *
+ * - gets the canvas and context
+ * - creates the character
+ * - starts the game loop
  */
 function init() {
   canvas = document.getElementById("game-canvas");
@@ -20,10 +40,8 @@ function init() {
 
   character = new Character();
 
-  character.img.onload = function () {
-    loop();
-  };
-}
+  loop();
+};
 
 /**
  * Updates keyboard state when a key is pressed.
@@ -46,13 +64,14 @@ window.addEventListener("keyup", (e) => {
 /**
  * Main game loop.
  *
- * Runs every frame and controls the game:
- * - reads keyboard input
- * - moves the character (left / right / jump)
- * - updates character animation (walk / idle)
- * - applies gravity every frame (jump → fall)
- * - draws the current frame
- * - schedules the next frame
+ * Runs every frame:
+ * - reads input (keyboard)
+ * - moves the character (left / right)
+ * - updates animation (walking / idle)
+ * - handles jumping
+ * - applies gravity
+ * - draws everything
+ * - repeats the loop
  */
 function loop() {
   if (keyboardState.RIGHT) {
@@ -60,15 +79,17 @@ function loop() {
     character.playWalkingAnimation();
   } else if (keyboardState.LEFT) {
     character.moveLeft();
-    character.playWalkingAnimation();
+    // character.playWalkingAnimation();
   } else {
     character.showIdleImage();
   }
 
+  // Jump only if the character is on the ground
   if (keyboardState.SPACE && !character.isAboveGround()) {
     character.jump();
   }
 
+  // Update vertical movement (gravity)
   character.updateGravity();
 
   draw();
@@ -76,10 +97,21 @@ function loop() {
 }
 
 /**
- * Clears the canvas and draws the current game state.
+ * Draws the current game state.
+ *
+ * - clears the canvas
+ * - draws background layers
+ * - draws the character
  */
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Draw all background layers
+  backgroundObjects.forEach((bg) => {
+    bg.draw(ctx);
+  });
+
+  // Draw the character on top
   character.draw(ctx);
 }
 
