@@ -2,8 +2,8 @@
  * Base class for all drawable objects.
  *
  * Handles:
- * - loading images
- * - storing animation frames
+ * - image loading
+ * - animation frame caching
  * - position and size
  * - drawing on the canvas
  */
@@ -15,7 +15,7 @@ class DrawableObject {
     // Current animation frame index
     this.currentImage = 0;
 
-    // Current image to render
+    // Current image to draw
     this.img = new Image();
 
     // Position and size
@@ -34,7 +34,7 @@ class DrawableObject {
   }
 
   /**
-   * Loads multiple images and stores them in imageCache.
+   * Loads multiple images into the image cache.
    * Used for animations.
    */
   loadImages(paths) {
@@ -46,8 +46,7 @@ class DrawableObject {
   }
 
   /**
-   * Updates the current image using the next frame
-   * from the given animation array.
+   * Switches to the next frame of an animation.
    */
   playAnimation(images) {
     const index = this.currentImage % images.length;
@@ -61,9 +60,19 @@ class DrawableObject {
   }
 
   /**
-   * Draws the current image on the canvas.
+   * Draws the object on the canvas.
+   *
+   * If otherDirection is true, the image is flipped horizontally.
    */
   draw(ctx) {
-    ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+    if (this.otherDirection) {
+      ctx.save();
+      ctx.translate(this.x + this.width, this.y);
+      ctx.scale(-1, 1);
+      ctx.drawImage(this.img, 0, 0, this.width, this.height);
+      ctx.restore();
+    } else {
+      ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+    }
   }
 }

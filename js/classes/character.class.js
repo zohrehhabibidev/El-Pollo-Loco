@@ -1,8 +1,8 @@
 /**
- * Paths for the walking animation images of the character.
+ * Paths for the walking animation frames.
  *
- * These images are played in sequence to create
- * the walking animation.
+ * These images are displayed in sequence
+ * to create the walking animation.
  *
  * @type {string[]}
  */
@@ -16,9 +16,10 @@ const characterWalking = [
 ];
 
 /**
- * Paths for the idle animation images of the character.
+ * Paths for the idle animation frames.
  *
- * These images are used when the character is not moving.
+ * These images are used when the character
+ * is not moving.
  *
  * @type {string[]}
  */
@@ -57,21 +58,24 @@ class Character extends MovableObject {
     this.width = 150;
     this.height = 200;
 
-    // Movement speed (horizontal)
+    // Horizontal movement speed
     this.speed = 2;
 
-    // Preload animation images into cache
+    // Preload animation frames into cache
     this.loadImages(idleImages);
     this.loadImages(characterWalking);
 
     // Set initial image (first idle frame)
     this.img = this.imageCache[idleImages[0]];
+
+    // Direction flag (false = right, true = left)
+    this.otherDirection = false;
   }
 
   /**
    * Plays the walking animation.
    *
-   * Called while the character is moving left or right.
+   * Called while the character is moving.
    */
   playWalkingAnimation() {
     this.playAnimation(characterWalking);
@@ -80,7 +84,7 @@ class Character extends MovableObject {
   /**
    * Plays the idle animation.
    *
-   * Called when no movement input is active.
+   * Called when the character is not moving.
    */
   showIdleImage() {
     this.playAnimation(idleImages);
