@@ -40,9 +40,6 @@ class Character extends MovableObject {
 
     // Load walking animation images
     this.loadImages(characterWalking);
-
-    // Start systems
-    this.applyGravity();
   }
   /**
    * Plays one step of the walking animation.

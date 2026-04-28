@@ -55,24 +55,34 @@ class MovableObject extends DrawableObject {
   }
 
   /**
-   * Applies gravity to the object.
-   *
-   * Runs continuously and updates:
-   * - position (y)
-   * - vertical speed (speedY)
-   *
-   * Result:
-   * jump → slow down → fall
-   *
-   * Note:
-   * This is a simple test implementation.
-   */
-  applyGravity() {
-    setInterval(() => {
-      if (this.isAboveGround() || this.speedY > 0) {
-        this.y -= this.speedY;
-        this.speedY -= this.acceleration;
-      }
-    }, 1000 / 60);
+ * Updates gravity for the object.
+ *
+ * This method is called every frame from the game loop.
+ *
+ * Behavior:
+ * - if the object is in the air → apply gravity
+ * - move the object using speedY
+ * - reduce speedY over time (gravity effect)
+ *
+ * Result:
+ * jump → slow down → fall
+ *
+ * Ground handling:
+ * - prevents the object from going below the ground (y = 250)
+ * - resets vertical speed when landing
+ *
+ * Note:
+ * Uses a temporary ground value (250).
+ * Later, this should be replaced with real collision detection.
+ */
+  updateGravity() {
+    if (this.isAboveGround() || this.speedY > 0) {
+      this.y -= this.speedY;
+      this.speedY -= this.acceleration;
+    }
+    if (this.y > 250) {
+      this.y = 250;
+      this.speedY = 0;
+    }
   }
 }

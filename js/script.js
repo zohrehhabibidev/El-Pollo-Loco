@@ -46,9 +46,11 @@ window.addEventListener("keyup", (e) => {
 /**
  * Main game loop.
  *
- * Every frame:
- * - handles player input (movement and jump)
+ * Runs every frame and controls the game:
+ * - reads keyboard input
+ * - moves the character (left / right / jump)
  * - updates character animation (walk / idle)
+ * - applies gravity every frame (jump → fall)
  * - draws the current frame
  * - schedules the next frame
  */
@@ -66,6 +68,8 @@ function loop() {
   if (keyboardState.SPACE && !character.isAboveGround()) {
     character.jump();
   }
+
+  character.updateGravity();
 
   draw();
   requestAnimationFrame(loop);
