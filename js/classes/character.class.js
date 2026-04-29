@@ -61,6 +61,10 @@ class Character extends MovableObject {
     // Horizontal movement speed
     this.speed = 2;
 
+    // Health and damage state
+    this.health = 100;
+    this.isHurt = false;
+
     // Preload animation frames into cache
     this.loadImages(idleImages);
     this.loadImages(characterWalking);
@@ -82,11 +86,34 @@ class Character extends MovableObject {
   }
 
   /**
-   * Plays the idle animation.
-   *
-   * Called when the character is not moving.
-   */
+ * Plays the idle animation.
+ *
+ * Called when the character is not moving.
+ */
   showIdleImage() {
     this.playAnimation(idleImages);
+  }
+
+  /**
+ * Reduces the character health when hit by an enemy.
+ *
+ * The character can only take damage if it is not already hurt.
+ * This prevents losing health every frame while touching an enemy.
+ */
+  takeDamage() {
+    if (!this.isHurt) {
+      this.health -= 20;
+      this.isHurt = true;
+
+      if (this.health < 0) {
+        this.health = 0;
+      }
+
+      console.log("health:", this.health);
+
+      setTimeout(() => {
+        this.isHurt = false;
+      }, 1000);
+    }
   }
 }

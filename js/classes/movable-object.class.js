@@ -82,4 +82,19 @@ class MovableObject extends DrawableObject {
       this.speedY = 0;
     }
   }
+
+/**
+ * Checks whether this object is colliding with another object.
+ *
+ * This uses simple rectangle collision detection.
+ * Each object is treated like an invisible box.
+ *
+ * @param {MovableObject} obj - The other object to check collision with.
+ * @returns {boolean} True if both objects overlap.
+ */  isColliding(obj) {
+    return this.x + this.width > obj.x &&
+      this.x < obj.x + obj.width &&
+      this.y + this.height > obj.y &&
+      this.y < obj.y + obj.height;
+  }
 }

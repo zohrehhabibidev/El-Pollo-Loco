@@ -153,6 +153,12 @@ function loop() {
     chicken.update();
   });
 
+  chickens.forEach((chicken) => {
+    if (character.isColliding(chicken)) {
+      character.takeDamage();
+    }
+  });
+
   draw();
   requestAnimationFrame(loop);
 }
