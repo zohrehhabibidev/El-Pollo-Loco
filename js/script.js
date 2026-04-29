@@ -16,6 +16,9 @@ let keyboardState = new Keyboard();
 let character;
 const worldEnd = 2160; // Right boundary of the playable world.
 let statusBar;
+let gameOver = false; // Prevents the game over screen from being drawn multiple times.
+const gameOverImg = new Image();
+gameOverImg.src = "assets/img/screens/lose/game-over-pepe-pic.png";
 
 /**
  * Background layers used to build the game world.
@@ -118,6 +121,16 @@ window.addEventListener("keyup", (e) => {
  * - rendering
  */
 function loop() {
+  // Stop the game loop when the character is dead.
+  // The game over screen is shown only once.
+  if (character.isDead()) {
+    if (!gameOver) {
+      gameOver = true;
+      character.visible = false;
+      showGameOver();
+    }
+    return;
+  }
 
   // Priority 1: hurt state (overrides all other animations)
   if (character.isHurt) {
@@ -155,12 +168,6 @@ function loop() {
     chicken.update();
   });
 
-  /**
-   * Collision detection:
-   * If the character collides with a chicken:
-   * - apply damage
-   * - update the health bar (status bar)
-   */
   chickens.forEach((chicken) => {
     if (character.isColliding(chicken)) {
       character.takeDamage();
@@ -203,8 +210,10 @@ function draw() {
     chicken.draw(ctx);
   });
 
-  // Draw the character on top of the background
-  character.draw(ctx);
+  // Draw the character only while it is visible.
+  if (character.visible) {
+    character.draw(ctx);
+  }
 
   // Restore the original canvas state (reset camera)
   ctx.restore();
@@ -212,5 +221,26 @@ function draw() {
   // Draw fixed UI after restoring the canvas state.
   statusBar.draw(ctx);
 }
+/**
+ * Shows the game over screen.
+ *
+ * Adds a dark overlay and draws the game over image
+ * over the full canvas. If the image is not loaded yet,
+ * it waits until loading is complete before drawing.
+ */
+function showGameOver() {
+  if (gameOverImg.complete) {
+    ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(gameOverImg, 0, 0, canvas.width, canvas.height);
+  } else {
+    gameOverImg.onload = () => {
+      ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(gameOverImg, 0, 0, canvas.width, canvas.height);
+    };
+  }
+}
+
 
 init();

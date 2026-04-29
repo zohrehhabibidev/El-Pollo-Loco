@@ -18,7 +18,7 @@ const characterWalking = [
 /**
  * Paths for the idle animation frames.
  *
- * These frames are played when the character is standing still.
+ * These frames are played when the character is not moving.
  *
  * @type {string[]}
  */
@@ -33,6 +33,23 @@ const idleImages = [
   "assets/img/character/1_idle/idle/I-8.png",
   "assets/img/character/1_idle/idle/I-9.png",
   "assets/img/character/1_idle/idle/I-10.png",
+];
+
+/**
+ * Paths for the dead animation frames.
+ *
+ * These frames are played when the character dies.
+ *
+ * @type {string[]}
+ */
+const deadImages = [
+  "assets/img/character/5_dead/D-51.png",
+  "assets/img/character/5_dead/D-52.png",
+  "assets/img/character/5_dead/D-53.png",
+  "assets/img/character/5_dead/D-54.png",
+  "assets/img/character/5_dead/D-55.png",
+  "assets/img/character/5_dead/D-56.png",
+  "assets/img/character/5_dead/D-57.png",
 ];
 
 /**
@@ -53,7 +70,7 @@ const hurtImages = [
  *
  * Responsibilities:
  * - manage position, size, and movement
- * - handle animation states (idle, walking, hurt)
+ * - handle animation states (idle, walking, hurt, dead)
  * - manage health and damage behavior
  *
  * @extends MovableObject
@@ -62,11 +79,11 @@ class Character extends MovableObject {
   constructor() {
     super();
 
-    // Initial position
+    // Initial position in the world
     this.x = 50;
     this.y = 250;
 
-    // Size of the character
+    // Character dimensions
     this.width = 150;
     this.height = 200;
 
@@ -77,12 +94,16 @@ class Character extends MovableObject {
     this.health = 100;
     this.isHurt = false;
 
-    // Preload animation frames into cache
+    // Visibility flag (used after death)
+    this.visible = true;
+
+    // Preload all animation frames into cache
     this.loadImages(idleImages);
     this.loadImages(characterWalking);
     this.loadImages(hurtImages);
+    this.loadImages(deadImages);
 
-    // Set initial image (idle)
+    // Set initial image (idle state)
     this.img = this.imageCache[idleImages[0]];
 
     // Direction flag (false = right, true = left)
@@ -92,7 +113,7 @@ class Character extends MovableObject {
   /**
    * Plays the walking animation.
    *
-   * Called while the character is moving left or right.
+   * Called while the character is moving.
    */
   playWalkingAnimation() {
     this.playAnimation(characterWalking);
@@ -110,10 +131,19 @@ class Character extends MovableObject {
   /**
    * Plays the hurt animation.
    *
-   * Called while the character is in the "hurt" state.
+   * Called while the character is in the hurt state.
    */
   playHurtAnimation() {
     this.playAnimation(hurtImages);
+  }
+
+  /**
+   * Plays the death animation.
+   *
+   * Called when the character has no health left.
+   */
+  playDeadAnimation() {
+    this.playAnimation(deadImages);
   }
 
   /**
@@ -135,5 +165,14 @@ class Character extends MovableObject {
         this.isHurt = false;
       }, 1000);
     }
+  }
+
+  /**
+   * Checks whether the character is dead.
+   *
+   * @returns {boolean} True if health is zero or below
+   */
+  isDead() {
+    return this.health <= 0;
   }
 }
