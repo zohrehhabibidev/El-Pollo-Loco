@@ -13,7 +13,7 @@ let canvas;
 let ctx;
 let keyboardState = new Keyboard();
 let character;
-const worldEnd = 1440;
+const worldEnd = 2160; // End of the world (x = 2160)
 
 /**
  * Background layers used to build the game world.
@@ -53,7 +53,16 @@ let backgroundObjects = [
   new BackgroundObject("assets/img/background/layers/2_second_layer/full.png", 1440, 0),
   new BackgroundObject("assets/img/background/layers/1_first_layer/full.png", 1440, 0),
   new BackgroundObject("assets/img/background/layers/4_clouds/full.png", 1440, 0),
+
+  // Fifth screen (x = 2160)
+  new BackgroundObject("assets/img/background/layers/air.png", 2160, 0),
+  new BackgroundObject("assets/img/background/layers/3_third_layer/full.png", 2160, 0),
+  new BackgroundObject("assets/img/background/layers/2_second_layer/full.png", 2160, 0),
+  new BackgroundObject("assets/img/background/layers/1_first_layer/full.png", 2160, 0),
+  new BackgroundObject("assets/img/background/layers/4_clouds/full.png", 2160, 0),
 ];
+
+let chickens = [];
 
 /**
  * Initializes the game.
@@ -67,6 +76,11 @@ function init() {
   ctx = canvas.getContext("2d");
 
   character = new Character();
+  chickens = [
+    new Chicken(500, "normal"),
+    new Chicken(800, "small"),
+    new Chicken(1100, "normal"),
+  ];
 
   loop();
 };
@@ -135,6 +149,10 @@ function loop() {
   // Apply gravity (vertical movement)
   character.updateGravity();
 
+  chickens.forEach((chicken) => {
+    chicken.update();
+  });
+
   draw();
   requestAnimationFrame(loop);
 }
@@ -168,6 +186,10 @@ function draw() {
   ctx.translate(-cameraX, 0);
   // Draw all background layers (world)
   backgroundObjects.forEach((bg) => bg.draw(ctx));
+
+  chickens.forEach((chicken) => {
+    chicken.draw(ctx);
+  });
 
   // Draw the character on top of the background
   character.draw(ctx);
