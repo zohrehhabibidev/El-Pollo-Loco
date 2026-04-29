@@ -14,6 +14,7 @@ let ctx;
 let keyboardState = new Keyboard();
 let character;
 const worldEnd = 2160; // End of the world (x = 2160)
+let statusBar;
 
 /**
  * Background layers used to build the game world.
@@ -81,6 +82,7 @@ function init() {
     new Chicken(800, "small"),
     new Chicken(1100, "normal"),
   ];
+  statusBar = new StatusBar();
 
   loop();
 };
@@ -156,6 +158,7 @@ function loop() {
   chickens.forEach((chicken) => {
     if (character.isColliding(chicken)) {
       character.takeDamage();
+      statusBar.setPercentage(character.health);
     }
   });
 
@@ -202,6 +205,9 @@ function draw() {
 
   // Restore the original canvas state (reset camera)
   ctx.restore();
+
+  // Draw the status bar on top of everything (fixed position)
+  statusBar.draw(ctx);
 }
 
 init();
