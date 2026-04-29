@@ -3,17 +3,18 @@
  *
  * Responsibilities:
  * - initialize canvas and rendering context
+ * - create main game objects
  * - handle keyboard input
- * - control main game loop
- * - update and draw game objects (character, background)
- * - enforce world boundaries
+ * - run the main game loop
+ * - update movement, gravity, enemies, and collisions
+ * - draw the world and fixed UI elements
  */
 
 let canvas;
 let ctx;
 let keyboardState = new Keyboard();
 let character;
-const worldEnd = 2160; // End of the world (x = 2160)
+const worldEnd = 2160; // Right boundary of the playable world.
 let statusBar;
 
 /**
@@ -68,9 +69,8 @@ let chickens = [];
 /**
  * Initializes the game.
  *
- * - gets the canvas and context
- * - creates the character
- * - starts the game loop
+ * Creates the canvas context, player character,
+ * enemies, status bar, and starts the game loop.
  */
 function init() {
   canvas = document.getElementById("game-canvas");
@@ -108,15 +108,10 @@ window.addEventListener("keyup", (e) => {
 /**
  * Main game loop.
  *
- * Runs every frame:
- * - reads keyboard input
- * - moves the character (left / right)
- * - updates direction (left / right facing)
- * - updates animation (walking / idle)
- * - handles jumping
- * - applies gravity
- * - draws the scene
- * - schedules the next frame
+ * Runs once per animation frame.
+ * Updates player movement, jumping, gravity,
+ * enemy movement, collision damage, status bar,
+ * and then redraws the scene.
  */
 function loop() {
   if (keyboardState.RIGHT && character.x < worldEnd) {
@@ -155,6 +150,8 @@ function loop() {
     chicken.update();
   });
 
+  // Check collisions between the character and each chicken.
+  // If a collision happens, reduce health and update the status bar.
   chickens.forEach((chicken) => {
     if (character.isColliding(chicken)) {
       character.takeDamage();
@@ -167,14 +164,11 @@ function loop() {
 }
 
 /**
- * Draws the current game scene.
+ * Draws the current game frame.
  *
- * Steps:
- * - clears the canvas
- * - moves the camera (follows the character)
- * - draws background layers
- * - draws the character
- * - restores the original canvas state
+ * The world is drawn inside the camera translation.
+ * UI elements, such as the status bar, are drawn after
+ * ctx.restore() so they stay fixed on the screen.
  */
 function draw() {
   // Clear the entire canvas before drawing a new frame
@@ -193,7 +187,7 @@ function draw() {
    */
   const cameraX = Math.max(0, character.x - 100);
   ctx.translate(-cameraX, 0);
-  // Draw all background layers (world)
+  // Move the world to the left so the camera follows the character.
   backgroundObjects.forEach((bg) => bg.draw(ctx));
 
   chickens.forEach((chicken) => {
@@ -206,7 +200,7 @@ function draw() {
   // Restore the original canvas state (reset camera)
   ctx.restore();
 
-  // Draw the status bar on top of everything (fixed position)
+  // Draw fixed UI after restoring the canvas state.
   statusBar.draw(ctx);
 }
 
