@@ -35,7 +35,7 @@ class Chicken extends MovableObject {
     }
 
     if (type === "small") {
-      this.speed = 1.5;
+      this.speed = 0.8;
       this.IMAGES = smallChickenImages;
       this.width = 50;
       this.height = 50;
@@ -45,9 +45,14 @@ class Chicken extends MovableObject {
     // Set the initial image to the first frame of the animation
     this.img = this.imageCache[this.IMAGES[0]];
   }
+
   // Moves the chicken to the left and updates the animation frame.
   update() {
     this.moveLeft();
     this.playAnimation(this.IMAGES);
+
+    if (this.x < -this.width) {
+      this.x = 2160;
+    }
   }
 }
