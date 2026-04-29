@@ -20,6 +20,7 @@ let gameOver = false; // Prevents the game over screen from being drawn multiple
 const gameOverImg = new Image();
 gameOverImg.src = "assets/img/screens/lose/game-over-pepe-pic.png";
 
+
 /**
  * Background layers used to build the game world.
  *
@@ -242,6 +243,9 @@ function showGameOver() {
   }
 }
 
+/**
+ * Starts the game after the user clicks the start button.
+ */
 function startGame() {
   const startButton = document.getElementById("start-button");
   const startScreen = document.getElementById("start-screen");

@@ -10,3 +10,46 @@ body {
     font-family: Arial, sans-serif;
     background-color: #ffffff;
 }
+
+#game-layout {
+    width: 720px;
+    margin: 0 auto;
+}
+
+#game-title {
+    margin: 12px 0 10px;
+    font-family: "gameFont", Arial, sans-serif;
+    font-size: 40px;
+    font-weight: 400;
+    letter-spacing: 2px;
+    text-align: center;
+    color: #4b2100;
+    text-shadow: 2px 2px 0 #ffb000;
+}
+
+#game-stage {
+    position: relative;
+    width: 720px;
+    height: 480px;
+}
+
+#game-canvas {
+    display: block;
+}
+
+#game-overlays {
+    position: absolute;
+    inset: 0;
+    width: 720px;
+    height: 480px;
+}
+
+#page-footer {
+    width: 720px;
+    margin: 10px auto 0;
+    text-align: center;
+}
+
+.hidden {
+    display: none;
+}
