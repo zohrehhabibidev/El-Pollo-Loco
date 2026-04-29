@@ -19,6 +19,7 @@ let statusBar;
 let gameOver = false; // Prevents the game over screen from being drawn multiple times.
 const gameOverImg = new Image();
 gameOverImg.src = "assets/img/screens/lose/game-over-pepe-pic.png";
+let bottleStatusBar;
 
 
 /**
@@ -104,6 +105,7 @@ function init() {
   bottleCount = 0;
 
   statusBar = new StatusBar();
+  bottleStatusBar = new BottleStatusBar();
 
   loop();
 };
@@ -243,6 +245,7 @@ function draw() {
 
   // Draw fixed UI after restoring the canvas state.
   statusBar.draw(ctx);
+  bottleStatusBar.draw(ctx);
 }
 /**
  * Shows the game over screen.
@@ -271,6 +274,7 @@ function collectBottles() {
   bottles = bottles.filter((bottle) => {
     if (character.isColliding(bottle)) {
       bottleCount++;
+      bottleStatusBar.setPercentage(Math.min(100, bottleCount * 20));
       return false;
     }
 
