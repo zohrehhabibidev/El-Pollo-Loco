@@ -69,6 +69,8 @@ let backgroundObjects = [
 ];
 
 let chickens = [];
+let bottles = [];
+let bottleCount = 0;
 
 /**
  * Initializes the game.
@@ -81,11 +83,26 @@ function init() {
   ctx = canvas.getContext("2d");
 
   character = new Character();
+  // chickens = [
+  //   new Chicken(500, "normal"),
+  //   new Chicken(800, "small"),
+  //   new Chicken(1100, "normal"),
+  // ];
   chickens = [
-    new Chicken(500, "normal"),
-    new Chicken(800, "small"),
-    new Chicken(1100, "normal"),
+    new Chicken(1200, "normal"),
+    new Chicken(1500, "small"),
+    new Chicken(1800, "normal"),
   ];
+
+  bottles = [
+    new Bottle(350),
+    new Bottle(650),
+    new Bottle(950),
+    new Bottle(1250),
+    new Bottle(1550),
+  ];
+  bottleCount = 0;
+
   statusBar = new StatusBar();
 
   loop();
@@ -176,6 +193,7 @@ function loop() {
     }
   });
 
+  collectBottles();
   draw();
   requestAnimationFrame(loop);
 }
@@ -207,6 +225,10 @@ function draw() {
   // Move the world to the left so the camera follows the character.
   backgroundObjects.forEach((bg) => bg.draw(ctx));
 
+  bottles.forEach((bottle) => {
+    bottle.draw(ctx);
+  });
+
   chickens.forEach((chicken) => {
     chicken.draw(ctx);
   });
@@ -237,7 +259,24 @@ function draw() {
 function showGameOver() {
   document.getElementById("lose-screen").classList.remove("hidden");
 }
+/**
+ * Checks if the character collects a bottle.
+ *
+ * Removes collected bottles from the world
+ * and increases the bottle counter.
+ *
+ * @returns {void}
+ */
+function collectBottles() {
+  bottles = bottles.filter((bottle) => {
+    if (character.isColliding(bottle)) {
+      bottleCount++;
+      return false;
+    }
 
+    return true;
+  });
+}
 /**
  * Starts the game after the user clicks the start button.
  */
