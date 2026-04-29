@@ -252,3 +252,40 @@ function startGame() {
 }
 
 document.getElementById("start-button").addEventListener("click", startGame);
+
+
+/**
+ * Restarts the game after losing without reloading the page.
+ *
+ * Resets the game state, hides the lose screen,
+ * and initializes a new game session.
+ *
+ * @returns {void}
+ */
+function restartGame() {
+  gameOver = false;
+  keyboardState = new Keyboard();
+
+  document.getElementById("lose-screen").classList.add("hidden");
+
+  init();
+}
+
+/**
+ * Returns the player to the start screen after losing.
+ *
+ * Resets the lose state, hides the lose screen,
+ * shows the start screen again, and enables the start button.
+ *
+ * @returns {void}
+ */
+function backToMenu() {
+  gameOver = false;
+  keyboardState = new Keyboard();
+
+  document.getElementById("lose-screen").classList.add("hidden");
+  document.getElementById("start-screen").style.display = "block";
+  document.getElementById("start-button").disabled = false;
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
