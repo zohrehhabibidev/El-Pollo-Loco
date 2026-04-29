@@ -109,49 +109,58 @@ window.addEventListener("keyup", (e) => {
  * Main game loop.
  *
  * Runs once per animation frame.
- * Updates player movement, jumping, gravity,
- * enemy movement, collision damage, status bar,
- * and then redraws the scene.
+ *
+ * Handles:
+ * - player movement and animation states
+ * - jumping and gravity
+ * - enemy updates
+ * - collision detection and damage
+ * - rendering
  */
 function loop() {
-  if (keyboardState.RIGHT && character.x < worldEnd) {
+
+  // Priority 1: hurt state (overrides all other animations)
+  if (character.isHurt) {
+    character.playHurtAnimation();
+
+    // Priority 2: movement right
+  } else if (keyboardState.RIGHT && character.x < worldEnd) {
     character.moveRight();
-
-    // Character faces right
     character.otherDirection = false;
-
     character.playWalkingAnimation();
 
+    // Priority 3: movement left
   } else if (keyboardState.LEFT) {
-    // Prevent moving beyond the left edge (x >= 0)
     if (character.x > 0) {
       character.moveLeft();
     }
-
-    // Character faces left
     character.otherDirection = true;
-
     character.playWalkingAnimation();
 
+    // Priority 4: idle
   } else {
-    // No movement → show idle image
     character.showIdleImage();
   }
 
-  // Jump only if the character is on the ground
+  // Jump (only when on ground)
   if (keyboardState.SPACE && !character.isAboveGround()) {
     character.jump();
   }
 
-  // Apply gravity (vertical movement)
+  // Apply gravity
   character.updateGravity();
 
+  // Update enemies
   chickens.forEach((chicken) => {
     chicken.update();
   });
 
-  // Check collisions between the character and each chicken.
-  // If a collision happens, reduce health and update the status bar.
+  /**
+   * Collision detection:
+   * If the character collides with a chicken:
+   * - apply damage
+   * - update the health bar (status bar)
+   */
   chickens.forEach((chicken) => {
     if (character.isColliding(chicken)) {
       character.takeDamage();

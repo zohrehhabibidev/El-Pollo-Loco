@@ -1,8 +1,8 @@
 /**
  * Paths for the walking animation frames.
  *
- * These images are displayed in sequence
- * to create the walking animation.
+ * Each image represents one frame of the walking cycle.
+ * These frames are played in sequence while the character is moving.
  *
  * @type {string[]}
  */
@@ -18,8 +18,7 @@ const characterWalking = [
 /**
  * Paths for the idle animation frames.
  *
- * These images are used when the character
- * is not moving.
+ * These frames are played when the character is standing still.
  *
  * @type {string[]}
  */
@@ -37,12 +36,25 @@ const idleImages = [
 ];
 
 /**
+ * Paths for the hurt animation frames.
+ *
+ * These frames are played when the character takes damage.
+ *
+ * @type {string[]}
+ */
+const hurtImages = [
+  "assets/img/character/4_hurt/H-41.png",
+  "assets/img/character/4_hurt/H-42.png",
+  "assets/img/character/4_hurt/H-43.png",
+];
+
+/**
  * Represents the main player character.
  *
  * Responsibilities:
- * - position and size
- * - movement (left / right / jump)
- * - switching between idle and walking animations
+ * - manage position, size, and movement
+ * - handle animation states (idle, walking, hurt)
+ * - manage health and damage behavior
  *
  * @extends MovableObject
  */
@@ -50,26 +62,27 @@ class Character extends MovableObject {
   constructor() {
     super();
 
-    // Initial position on the canvas
+    // Initial position
     this.x = 50;
     this.y = 250;
 
-    // Character size
+    // Size of the character
     this.width = 150;
     this.height = 200;
 
     // Horizontal movement speed
     this.speed = 2;
 
-    // Health and damage state
+    // Health system
     this.health = 100;
     this.isHurt = false;
 
     // Preload animation frames into cache
     this.loadImages(idleImages);
     this.loadImages(characterWalking);
+    this.loadImages(hurtImages);
 
-    // Set initial image (first idle frame)
+    // Set initial image (idle)
     this.img = this.imageCache[idleImages[0]];
 
     // Direction flag (false = right, true = left)
@@ -79,38 +92,45 @@ class Character extends MovableObject {
   /**
    * Plays the walking animation.
    *
-   * Called while the character is moving.
+   * Called while the character is moving left or right.
    */
   playWalkingAnimation() {
     this.playAnimation(characterWalking);
   }
 
   /**
- * Plays the idle animation.
- *
- * Called when the character is not moving.
- */
+   * Plays the idle animation.
+   *
+   * Called when no movement input is active.
+   */
   showIdleImage() {
     this.playAnimation(idleImages);
   }
 
   /**
- * Reduces the character health when hit by an enemy.
- *
- * The character can only take damage if it is not already hurt.
- * This prevents losing health every frame while touching an enemy.
- */
+   * Plays the hurt animation.
+   *
+   * Called while the character is in the "hurt" state.
+   */
+  playHurtAnimation() {
+    this.playAnimation(hurtImages);
+  }
+
+  /**
+   * Applies damage to the character.
+   *
+   * - Reduces health
+   * - Activates temporary invulnerability (isHurt)
+   * - Prevents continuous damage while touching an enemy
+   */
   takeDamage() {
     if (!this.isHurt) {
       this.health -= 20;
       this.isHurt = true;
 
-      if (this.health < 0) {
-        this.health = 0;
-      }
+      if (this.health < 0) this.health = 0;
 
-      console.log("health:", this.health);
-
+      // Reset hurt state after 1 second
       setTimeout(() => {
         this.isHurt = false;
       }, 1000);
