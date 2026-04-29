@@ -242,5 +242,14 @@ function showGameOver() {
   }
 }
 
+function startGame() {
+  const startButton = document.getElementById("start-button");
+  const startScreen = document.getElementById("start-screen");
 
-init();
+  startButton.disabled = true;
+  startScreen.style.display = "none";
+
+  init();
+}
+
+document.getElementById("start-button").addEventListener("click", startGame);

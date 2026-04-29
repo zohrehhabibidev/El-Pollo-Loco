@@ -1,6 +1,12 @@
-html, body {
-    background-color: #ffffff;
-    font-family: Arial, sans-serif;
+@font-face {
+    font-family: "gameFont";
+    src: url("../assets/fonts/Zabars.ttf") format("truetype");
+}
+
+html,
+body {
     margin: 0;
-    padding: 0px;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    background-color: #ffffff;
 }
