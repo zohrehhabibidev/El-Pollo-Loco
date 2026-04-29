@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./css/style.css" />
-    <link rel="stylesheet" href="./css/start-screen.css" />
+    <link rel="stylesheet" href="./css/game-ui.css" />
     <script src="./js/classes/drawable-object.class.js" defer></script>
     <script src="./js/classes/movable-object.class.js" defer></script>
     <script src="./js/classes/background-object.class.js" defer></script>
@@ -87,6 +87,20 @@
                 <span>🪙</span>
                 <p>Collect coins and bottles</p>
               </div>
+            </div>
+          </div>
+          <div id="lose-screen" class="hidden">
+            <img
+              id="lose-screen-image"
+              src="./assets/img/screens/lose/game-over-pepe-pic.png"
+              alt="Game over screen"
+            />
+
+            <div id="lose-buttons">
+              <button id="try-again-button" class="game-btn start">
+                TRY AGAIN
+              </button>
+              <button id="menu-button" class="game-btn help">MENU</button>
             </div>
           </div>
         </div>

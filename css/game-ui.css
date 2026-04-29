@@ -8,8 +8,8 @@
 #start-screen-image {
   width: 100%;
   height: 100%;
-      margin-left: 1px;
-    margin-top: 1px;
+  margin-left: 1px;
+  margin-top: 1px;
 }
 
 #start-buttons {
@@ -140,4 +140,57 @@
   font-size: 24px;
   font-weight: 900;
   text-align: center;
+}
+
+#lose-screen {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 4;
+}
+
+#lose-screen.hidden {
+  display: none;
+}
+
+#lose-screen-image {
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+}
+
+/* Lose screen overlay */
+#lose-screen {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 4;
+  margin-left: 1px;
+  margin-bottom: 0px;
+  margin-top: 1px;
+  background: rgba(0, 0, 0, 0.60);
+}
+
+#lose-screen.hidden {
+  display: none;
+}
+
+#lose-screen-image {
+  width: 100%;
+  height: 100%;
+  object-fit: scale-down;
+  position: relative;
+  z-index: 1;
+}
+
+#lose-buttons {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 22px;
+  z-index: 2;
 }

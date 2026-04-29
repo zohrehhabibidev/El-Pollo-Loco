@@ -229,18 +229,13 @@ function draw() {
  * over the full canvas. If the image is not loaded yet,
  * it waits until loading is complete before drawing.
  */
+/**
+ * Shows the lose screen overlay after the character dies.
+ *
+ * @returns {void}
+ */
 function showGameOver() {
-  if (gameOverImg.complete) {
-    ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(gameOverImg, 0, 0, canvas.width, canvas.height);
-  } else {
-    gameOverImg.onload = () => {
-      ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.drawImage(gameOverImg, 0, 0, canvas.width, canvas.height);
-    };
-  }
+  document.getElementById("lose-screen").classList.remove("hidden");
 }
 
 /**
