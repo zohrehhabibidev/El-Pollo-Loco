@@ -192,7 +192,7 @@ function loop() {
   });
 
   chickens.forEach((chicken) => {
-    if (character.isColliding(chicken)) {
+    if (!chicken.isDead && character.isColliding(chicken)) {
       character.takeDamage();
       statusBar.setPercentage(character.health);
     }
@@ -200,6 +200,9 @@ function loop() {
 
   collectBottles();
   throwBottle();
+  checkBottleChickenCollision();
+  removeDeadChickens();
+
   draw();
   requestAnimationFrame(loop);
 }
@@ -296,12 +299,42 @@ function collectBottles() {
  */
 function throwBottle() {
   if (keyboardState.D && bottleCount > 0) {
-    const bottle = new ThrowableObject(character.x + 100, character.y + 80);
+    const bottle = new ThrowableObject(character.x + 100, character.y + 120);
     throwableObjects.push(bottle);
     bottleCount--;
     bottleStatusBar.setPercentage(Math.min(100, bottleCount * 20));
     keyboardState.D = false;
   }
+}
+/**
+ * Checks collisions between thrown bottles and chickens.
+ *
+ * Kills the chicken and removes the thrown bottle after a hit.
+ *
+ * @returns {void}
+ */
+function checkBottleChickenCollision() {
+  throwableObjects = throwableObjects.filter((bottle) => {
+    let hasHitChicken = false;
+
+    chickens.forEach((chicken) => {
+      if (!chicken.isDead && bottle.isColliding(chicken)) {
+        chicken.die();
+        hasHitChicken = true;
+      }
+    });
+
+    return !hasHitChicken;
+  });
+}
+
+/**
+ * Removes chickens that finished showing their dead image.
+ *
+ * @returns {void}
+ */
+function removeDeadChickens() {
+  chickens = chickens.filter((chicken) => !chicken.markedForRemoval);
 }
 /**
  * Starts the game after the user clicks the start button.
@@ -315,8 +348,6 @@ function startGame() {
 
   init();
 }
-
-document.getElementById("start-button").addEventListener("click", startGame);
 
 
 /**

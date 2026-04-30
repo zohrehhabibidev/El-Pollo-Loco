@@ -22,7 +22,7 @@ class ThrowableObject extends MovableObject {
     this.height = 70;// Height of the bottle
 
     this.speed = 8; // Forward speed of the bottle
-    this.speedY = 10;// Initial upward speed for the throw
+    this.speedY = 0;// Initial upward speed for the throw
 
     this.applyThrow();
   }
@@ -35,6 +35,6 @@ class ThrowableObject extends MovableObject {
       this.x += this.speed;
     }, 1000 / 60);
 
-    this.updateGravity();
+    // this.updateGravity();
   }
 }

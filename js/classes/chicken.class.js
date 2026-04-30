@@ -9,6 +9,13 @@ const smallChickenImages = [
   "assets/img/enemies/chicken_small/1_walk/2_w.png",
   "assets/img/enemies/chicken_small/1_walk/3_w.png",
 ];
+
+const normalChickenDeadImage =
+  "assets/img/enemies/chicken_normal/2_dead/dead.png";
+
+const smallChickenDeadImage =
+  "assets/img/enemies/chicken_small/2_dead/dead.png";
+
 /**
  * Represents a simple enemy (chicken).
  *
@@ -44,15 +51,46 @@ class Chicken extends MovableObject {
     this.loadImages(this.IMAGES);
     // Set the initial image to the first frame of the animation
     this.img = this.imageCache[this.IMAGES[0]];
+
+    this.isDead = false;
+    this.markedForRemoval = false;
+    this.deadImage = type === "normal"
+      ? normalChickenDeadImage
+      : smallChickenDeadImage;
+
+    this.imageCache[this.deadImage] = new Image();
+    this.imageCache[this.deadImage].src = this.deadImage;
   }
 
   // Moves the chicken to the left and updates the animation frame.
   update() {
-    this.moveLeft();
+    if (this.isDead) {
+      return;
+    }
+
+    this.x -= this.speed;
     this.playAnimation(this.IMAGES);
 
-    if (this.x < -this.width) {
+    if (this.x + this.width < 0) {
       this.x = 2160;
     }
+  }
+
+  /**
+ * Kills the chicken and shows the dead image.
+ *
+ * @returns {void}
+ */
+  die() {
+    if (this.isDead) {
+      return;
+    }
+
+    this.isDead = true;
+    this.img = this.imageCache[this.deadImage];
+
+    setTimeout(() => {
+      this.markedForRemoval = true;
+    }, 600);
   }
 }
