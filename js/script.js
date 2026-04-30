@@ -72,6 +72,7 @@ let backgroundObjects = [
 let chickens = [];
 let bottles = [];
 let bottleCount = 0;
+let throwableObjects = [];
 
 /**
  * Initializes the game.
@@ -117,6 +118,7 @@ window.addEventListener("keydown", (e) => {
   if (e.key === "ArrowRight") keyboardState.RIGHT = true;
   if (e.key === "ArrowLeft") keyboardState.LEFT = true;
   if (e.key === " ") keyboardState.SPACE = true;
+  if (e.key === "d" || e.key === "D") keyboardState.D = true;
 });
 
 /**
@@ -126,6 +128,7 @@ window.addEventListener("keyup", (e) => {
   if (e.key === "ArrowRight") keyboardState.RIGHT = false;
   if (e.key === "ArrowLeft") keyboardState.LEFT = false;
   if (e.key === " ") keyboardState.SPACE = false;
+  if (e.key === "d" || e.key === "D") keyboardState.D = false;
 });
 
 /**
@@ -196,6 +199,7 @@ function loop() {
   });
 
   collectBottles();
+  throwBottle();
   draw();
   requestAnimationFrame(loop);
 }
@@ -228,6 +232,10 @@ function draw() {
   backgroundObjects.forEach((bg) => bg.draw(ctx));
 
   bottles.forEach((bottle) => {
+    bottle.draw(ctx);
+  });
+
+  throwableObjects.forEach((bottle) => {
     bottle.draw(ctx);
   });
 
@@ -280,6 +288,20 @@ function collectBottles() {
 
     return true;
   });
+}
+/**
+ * Throws a bottle when the D key is pressed and bottles are available.
+ *
+ * @returns {void}
+ */
+function throwBottle() {
+  if (keyboardState.D && bottleCount > 0) {
+    const bottle = new ThrowableObject(character.x + 100, character.y + 80);
+    throwableObjects.push(bottle);
+    bottleCount--;
+    bottleStatusBar.setPercentage(Math.min(100, bottleCount * 20));
+    keyboardState.D = false;
+  }
 }
 /**
  * Starts the game after the user clicks the start button.
