@@ -20,7 +20,7 @@ class Endboss extends MovableObject {
     this.loadImages(endbossWalkImages);
     this.img = this.imageCache[endbossWalkImages[0]];
 
-    this.x = 2100;
+    this.x = 2450;
     this.y = 120;
     this.width = 260;
     this.height = 330;
@@ -30,15 +30,17 @@ class Endboss extends MovableObject {
 
   }
   /**
-   * Updates the endboss movement and animation.
-   *
-   * @returns {void}
-   */
+ * Updates the endboss movement and animation.
+ *
+ * @returns {void}
+ */
   update() {
-    this.x -= this.speed;
+    if (this.x > 2050) {
+      this.x -= this.speed;
+    }
+
     this.playAnimation(endbossWalkImages);
   }
-
   /**
  * Reduces the endboss health after a bottle hit.
  *

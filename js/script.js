@@ -20,6 +20,7 @@ let gameOver = false; // Prevents the game over screen from being drawn multiple
 const gameOverImg = new Image();
 gameOverImg.src = "assets/img/screens/lose/game-over-pepe-pic.png";
 let bottleStatusBar;
+const maxBottleCount = 9;
 
 
 /**
@@ -109,8 +110,12 @@ function init() {
     new Bottle(350),
     new Bottle(650),
     new Bottle(950),
-    new Bottle(1250),
+    new Bottle(1150),
+    new Bottle(1350),
     new Bottle(1550),
+    new Bottle(1750),
+    new Bottle(1950),
+    new Bottle(2100),
   ];
   bottleCount = 0;
 
@@ -320,7 +325,7 @@ function showGameOver() {
 function isJumpingOnChicken(chicken) {
   const characterFeet = character.y + character.height;
   const chickenTop = chicken.y;
-  const landingTolerance = 25;
+  const landingTolerance = 40;
 
   return character.isColliding(chicken) &&
     character.speedY < 0 &&
@@ -338,7 +343,7 @@ function collectBottles() {
   bottles = bottles.filter((bottle) => {
     if (character.isColliding(bottle)) {
       bottleCount++;
-      bottleStatusBar.setPercentage(Math.min(100, bottleCount * 20));
+      bottleStatusBar.setPercentage((bottleCount / maxBottleCount) * 100);
       return false;
     }
 
@@ -395,7 +400,7 @@ function throwBottle() {
     const bottle = new ThrowableObject(character.x + 100, character.y + 120);
     throwableObjects.push(bottle);
     bottleCount--;
-    bottleStatusBar.setPercentage(Math.min(100, bottleCount * 20));
+    bottleStatusBar.setPercentage((bottleCount / maxBottleCount) * 100);
     keyboardState.D = false;
   }
 }
