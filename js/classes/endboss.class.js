@@ -5,6 +5,12 @@ const endbossWalkImages = [
   "assets/img/enemies/boss_chicken/1_walk/G4.png",
 ];
 
+const endbossHurtImages = [
+  "assets/img/enemies/boss_chicken/4_hurt/G21.png",
+  "assets/img/enemies/boss_chicken/4_hurt/G22.png",
+  "assets/img/enemies/boss_chicken/4_hurt/G23.png",
+];
+
 /**
  * Represents the endboss enemy at the end of the level.
  *
@@ -18,6 +24,7 @@ class Endboss extends MovableObject {
     super();
 
     this.loadImages(endbossWalkImages);
+    this.loadImages(endbossHurtImages);
     this.img = this.imageCache[endbossWalkImages[0]];
 
     this.x = 2450;
@@ -28,6 +35,8 @@ class Endboss extends MovableObject {
     this.speed = 0.4;
     this.health = 100;
 
+    this.isHurt = false;
+
   }
   /**
  * Updates the endboss movement and animation.
@@ -35,6 +44,11 @@ class Endboss extends MovableObject {
  * @returns {void}
  */
   update() {
+    if (this.isHurt) {
+      this.playAnimation(endbossHurtImages);
+      return;
+    }
+
     if (this.x > 2050) {
       this.x -= this.speed;
     }
@@ -42,16 +56,22 @@ class Endboss extends MovableObject {
     this.playAnimation(endbossWalkImages);
   }
   /**
- * Reduces the endboss health after a bottle hit.
- *
- * @param {number} damage - Amount of damage taken.
- * @returns {void}
- */
+   * Reduces the endboss health after a bottle hit.
+   *
+   * @param {number} damage - Amount of damage taken.
+   * @returns {void}
+   */
   takeDamage(damage = 20) {
     this.health -= damage;
 
     if (this.health < 0) {
       this.health = 0;
     }
+
+    this.isHurt = true;
+
+    setTimeout(() => {
+      this.isHurt = false;
+    }, 1000);
   }
 }
