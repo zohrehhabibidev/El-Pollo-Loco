@@ -112,11 +112,12 @@ function init() {
   bottleCount = 0;
 
   coins = [
-    new Coin(450, 180),
-    new Coin(750, 150),
-    new Coin(1050, 180),
-    new Coin(1350, 150),
-    new Coin(1650, 180),
+    new Coin(430, 190),
+    new Coin(680, 140),
+    new Coin(920, 210),
+    new Coin(1180, 155),
+    new Coin(1460, 185),
+    new Coin(1700, 130),
   ];
 
   coinCount = 0;
