@@ -81,6 +81,7 @@ let coinCount = 0;
 let coinStatusBar;
 
 let endboss;
+let endbossStatusBar;
 
 /**
  * Initializes the game.
@@ -128,6 +129,7 @@ function init() {
   bottleStatusBar = new BottleStatusBar();
   coinStatusBar = new CoinStatusBar();
   endboss = new Endboss();
+  endbossStatusBar = new EndbossStatusBar();
 
   loop();
 };
@@ -288,6 +290,7 @@ function draw() {
   statusBar.draw(ctx);
   bottleStatusBar.draw(ctx);
   coinStatusBar.draw(ctx);
+  endbossStatusBar.draw(ctx);
 }
 /**
  * Shows the game over screen.
