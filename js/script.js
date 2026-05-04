@@ -70,9 +70,15 @@ let backgroundObjects = [
 ];
 
 let chickens = [];
+
 let bottles = [];
 let bottleCount = 0;
+
 let throwableObjects = [];
+
+let coins = [];
+let coinCount = 0;
+let coinStatusBar;
 
 /**
  * Initializes the game.
@@ -105,8 +111,19 @@ function init() {
   ];
   bottleCount = 0;
 
+  coins = [
+    new Coin(450, 250),
+    new Coin(750, 220),
+    new Coin(1050, 250),
+    new Coin(1350, 220),
+    new Coin(1650, 250),
+  ];
+
+  coinCount = 0;
+
   statusBar = new StatusBar();
   bottleStatusBar = new BottleStatusBar();
+  coinStatusBar = new CoinStatusBar();
 
   loop();
 };
@@ -199,6 +216,7 @@ function loop() {
   });
 
   collectBottles();
+  collectCoins();
   throwBottle();
   checkBottleChickenCollision();
   removeDeadChickens();
@@ -242,6 +260,10 @@ function draw() {
     bottle.draw(ctx);
   });
 
+  coins.forEach((coin) => {
+    coin.draw(ctx);
+  });
+
   chickens.forEach((chicken) => {
     chicken.draw(ctx);
   });
@@ -257,6 +279,7 @@ function draw() {
   // Draw fixed UI after restoring the canvas state.
   statusBar.draw(ctx);
   bottleStatusBar.draw(ctx);
+  coinStatusBar.draw(ctx);
 }
 /**
  * Shows the game over screen.
@@ -286,6 +309,25 @@ function collectBottles() {
     if (character.isColliding(bottle)) {
       bottleCount++;
       bottleStatusBar.setPercentage(Math.min(100, bottleCount * 20));
+      return false;
+    }
+
+    return true;
+  });
+}
+/**
+ * Checks if the character collects a coin.
+ *
+ * Removes collected coins from the world
+ * and increases the coin counter.
+ *
+ * @returns {void}
+ */
+function collectCoins() {
+  coins = coins.filter((coin) => {
+    if (character.isColliding(coin)) {
+      coinCount++;
+      coinStatusBar.setPercentage(Math.min(100, coinCount * 20));
       return false;
     }
 
