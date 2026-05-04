@@ -25,4 +25,13 @@ class Endboss extends MovableObject {
     this.width = 260;
     this.height = 330;
   }
+
+  /**
+ * Updates the endboss animation.
+ *
+ * @returns {void}
+ */
+  update() {
+    this.playAnimation(endbossWalkImages);
+  }
 }

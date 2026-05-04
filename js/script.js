@@ -212,6 +212,8 @@ function loop() {
     chicken.update();
   });
 
+  endboss.update();
+
   chickens.forEach((chicken) => {
     if (!chicken.isDead && character.isColliding(chicken)) {
       character.takeDamage();
