@@ -24,6 +24,9 @@ class Endboss extends MovableObject {
     this.y = 120;
     this.width = 260;
     this.height = 330;
+
+    this.speed = 0.4;
+
   }
 
   /**
@@ -32,6 +35,16 @@ class Endboss extends MovableObject {
  * @returns {void}
  */
   update() {
+    this.playAnimation(endbossWalkImages);
+  }
+
+  /**
+   * Updates the endboss movement and animation.
+   *
+   * @returns {void}
+   */
+  update() {
+    this.x -= this.speed;
     this.playAnimation(endbossWalkImages);
   }
 }
