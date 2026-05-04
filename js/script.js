@@ -217,7 +217,10 @@ function loop() {
   endboss.update();
 
   chickens.forEach((chicken) => {
-    if (!chicken.isDead && character.isColliding(chicken)) {
+    if (!chicken.isDead && isJumpingOnChicken(chicken)) {
+      chicken.die();
+      character.speedY = 10;
+    } else if (!chicken.isDead && character.isColliding(chicken)) {
       character.takeDamage();
       statusBar.setPercentage(character.health);
     }
@@ -307,6 +310,21 @@ function draw() {
  */
 function showGameOver() {
   document.getElementById("lose-screen").classList.remove("hidden");
+}
+/**
+ * Checks if the character lands on top of a chicken.
+ *
+ * @param {Chicken} chicken - The chicken to check.
+ * @returns {boolean} True if the character hits the chicken from above while falling.
+ */
+function isJumpingOnChicken(chicken) {
+  const characterFeet = character.y + character.height;
+  const chickenTop = chicken.y;
+  const landingTolerance = 25;
+
+  return character.isColliding(chicken) &&
+    character.speedY < 0 &&
+    characterFeet <= chickenTop + landingTolerance;
 }
 /**
  * Checks if the character collects a bottle.
