@@ -112,11 +112,11 @@ function init() {
   bottleCount = 0;
 
   coins = [
-    new Coin(450, 250),
-    new Coin(750, 220),
-    new Coin(1050, 250),
-    new Coin(1350, 220),
-    new Coin(1650, 250),
+    new Coin(450, 180),
+    new Coin(750, 150),
+    new Coin(1050, 180),
+    new Coin(1350, 150),
+    new Coin(1650, 180),
   ];
 
   coinCount = 0;
@@ -316,6 +316,27 @@ function collectBottles() {
   });
 }
 /**
+ * Checks if the character collects a coin with the upper body while jumping.
+ *
+ * @param {Coin} coin - The coin to check.
+ * @returns {boolean} True when the coin center touches the character's upper body while airborne.
+ */
+function isCollectingCoin(coin) {
+  const characterLeft = character.x + 35;
+  const characterRight = character.x + character.width - 35;
+  const characterTop = character.y + 10;
+  const characterBottom = character.y + 90;
+
+  const coinCenterX = coin.x + coin.width / 2;
+  const coinCenterY = coin.y + coin.height / 2;
+
+  return character.isAboveGround() &&
+    coinCenterX > characterLeft &&
+    coinCenterX < characterRight &&
+    coinCenterY > characterTop &&
+    coinCenterY < characterBottom;
+}
+/**
  * Checks if the character collects a coin.
  *
  * Removes collected coins from the world
@@ -325,7 +346,7 @@ function collectBottles() {
  */
 function collectCoins() {
   coins = coins.filter((coin) => {
-    if (character.isColliding(coin)) {
+    if (isCollectingCoin(coin)) {
       coinCount++;
       coinStatusBar.setPercentage(Math.min(100, coinCount * 20));
       return false;
