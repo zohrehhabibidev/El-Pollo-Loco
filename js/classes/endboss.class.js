@@ -33,27 +33,33 @@ class Endboss extends MovableObject {
     this.height = 330;
 
     this.speed = 0.4;
+    this.activationX = 1700;
+    this.minDistanceToCharacter = 120;
     this.health = 100;
 
     this.isHurt = false;
+    this.hurtTimeoutId = null;
 
   }
   /**
- * Updates the endboss movement and animation.
- *
- * @returns {void}
- */
-  update() {
-    if (this.isHurt) {
-      this.playAnimation(endbossHurtImages);
-      return;
-    }
-
-    if (this.x > 2050) {
+   * Updates the endboss movement and animation.
+   *
+   * @param {number} characterX - Current horizontal position of the character.
+   * @returns {void}
+   */
+  update(characterX) {
+    if (
+      characterX >= this.activationX &&
+      this.x > characterX + this.minDistanceToCharacter
+    ) {
       this.x -= this.speed;
     }
 
-    this.playAnimation(endbossWalkImages);
+    if (this.isHurt) {
+      this.playAnimation(endbossHurtImages);
+    } else {
+      this.playAnimation(endbossWalkImages);
+    }
   }
   /**
    * Reduces the endboss health after a bottle hit.
@@ -70,8 +76,13 @@ class Endboss extends MovableObject {
 
     this.isHurt = true;
 
-    setTimeout(() => {
+    if (this.hurtTimeoutId) {
+      clearTimeout(this.hurtTimeoutId);
+    }
+
+    this.hurtTimeoutId = setTimeout(() => {
       this.isHurt = false;
+      this.hurtTimeoutId = null;
     }, 1000);
   }
 }

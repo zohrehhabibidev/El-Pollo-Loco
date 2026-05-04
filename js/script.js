@@ -219,7 +219,7 @@ function loop() {
     chicken.update();
   });
 
-  endboss.update();
+  endboss.update(character.x);
 
   chickens.forEach((chicken) => {
     if (!chicken.isDead && isJumpingOnChicken(chicken)) {
