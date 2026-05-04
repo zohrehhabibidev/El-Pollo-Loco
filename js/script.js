@@ -80,6 +80,8 @@ let coins = [];
 let coinCount = 0;
 let coinStatusBar;
 
+let endboss;
+
 /**
  * Initializes the game.
  *
@@ -125,6 +127,7 @@ function init() {
   statusBar = new StatusBar();
   bottleStatusBar = new BottleStatusBar();
   coinStatusBar = new CoinStatusBar();
+  endboss = new Endboss();
 
   loop();
 };
@@ -268,6 +271,8 @@ function draw() {
   chickens.forEach((chicken) => {
     chicken.draw(ctx);
   });
+
+  endboss.draw(ctx);
 
   // Draw the character only while it is visible.
   if (character.visible) {
