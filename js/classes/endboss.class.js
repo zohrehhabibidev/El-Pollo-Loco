@@ -26,18 +26,9 @@ class Endboss extends MovableObject {
     this.height = 330;
 
     this.speed = 0.4;
+    this.health = 100;
 
   }
-
-  /**
- * Updates the endboss animation.
- *
- * @returns {void}
- */
-  update() {
-    this.playAnimation(endbossWalkImages);
-  }
-
   /**
    * Updates the endboss movement and animation.
    *
@@ -46,5 +37,19 @@ class Endboss extends MovableObject {
   update() {
     this.x -= this.speed;
     this.playAnimation(endbossWalkImages);
+  }
+
+  /**
+ * Reduces the endboss health after a bottle hit.
+ *
+ * @param {number} damage - Amount of damage taken.
+ * @returns {void}
+ */
+  takeDamage(damage = 20) {
+    this.health -= damage;
+
+    if (this.health < 0) {
+      this.health = 0;
+    }
   }
 }

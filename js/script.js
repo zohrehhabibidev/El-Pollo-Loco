@@ -227,6 +227,7 @@ function loop() {
   collectCoins();
   throwBottle();
   checkBottleChickenCollision();
+  checkBottleEndbossCollision();
   removeDeadChickens();
 
   draw();
@@ -399,6 +400,25 @@ function checkBottleChickenCollision() {
     });
 
     return !hasHitChicken;
+  });
+}
+/**
+ * Checks collisions between thrown bottles and the endboss.
+ *
+ * Reduces endboss health, updates the endboss status bar,
+ * and removes the thrown bottle after a hit.
+ *
+ * @returns {void}
+ */
+function checkBottleEndbossCollision() {
+  throwableObjects = throwableObjects.filter((bottle) => {
+    if (bottle.isColliding(endboss) && endboss.health > 0) {
+      endboss.takeDamage(20);
+      endbossStatusBar.setPercentage(endboss.health);
+      return false;
+    }
+
+    return true;
   });
 }
 
