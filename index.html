@@ -29,14 +29,13 @@
   <body>
     <main id="game-layout">
       <h1 id="game-title">El Pollo Loco</h1>
-      <div id="game-toolbar">
-        <!--
-        help-button
-        mute-button
-        fullscreen-button
-        -->
-      </div>
+
       <div id="game-stage">
+        <div id="game-toolbar">
+          <button id="mute-button" type="button" aria-label="Mute sounds">
+            🔊
+          </button>
+        </div>
         <canvas
           id="game-canvas"
           width="720"
@@ -49,6 +48,7 @@
             enemy
             bottles
             status bars
+            ...
           -->
         </canvas>
         <div id="game-overlays">
@@ -60,17 +60,15 @@
             />
 
             <div id="start-buttons">
-              <button id="start-button" class="game-btn start">▶ START</button>
+              <button id="start-button" class="game-btn start">► START</button>
 
-              <button id="help-button" class="game-btn help">
-                <span class="icon">🎮</span>
-                GUIDE
-              </button>
+              <button id="help-button" class="game-btn help">ⓘ GUIDE</button>
             </div>
           </div>
+
           <div id="guide-popup" class="hidden">
             <div id="guide-card">
-              <button id="close-guide-button" type="button">×</button>
+              <button id="close-guide-button" type="button">✖</button>
 
               <h2>GAME GUIDE</h2>
 
@@ -82,7 +80,7 @@
               </div>
 
               <div class="guide-row">
-                <span>␣</span>
+                <span>⌴</span>
                 <p>Jump</p>
               </div>
 
