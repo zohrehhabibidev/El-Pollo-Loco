@@ -11,6 +11,12 @@ const endbossHurtImages = [
   "assets/img/enemies/boss_chicken/4_hurt/G23.png",
 ];
 
+const endbossDeadImages = [
+  "assets/img/enemies/boss_chicken/5_dead/G24.png",
+  "assets/img/enemies/boss_chicken/5_dead/G25.png",
+  "assets/img/enemies/boss_chicken/5_dead/G26.png",
+];
+
 /**
  * Represents the endboss enemy at the end of the level.
  *
@@ -25,6 +31,7 @@ class Endboss extends MovableObject {
 
     this.loadImages(endbossWalkImages);
     this.loadImages(endbossHurtImages);
+    this.loadImages(endbossDeadImages);
     this.img = this.imageCache[endbossWalkImages[0]];
 
     this.x = 2450;
@@ -36,31 +43,38 @@ class Endboss extends MovableObject {
     this.activationX = 1700;
     this.minDistanceToCharacter = 120;
     this.health = 100;
-
+    this.isDead = false;
     this.isHurt = false;
     this.hurtTimeoutId = null;
 
   }
   /**
-   * Updates the endboss movement and animation.
-   *
-   * @param {number} characterX - Current horizontal position of the character.
-   * @returns {void}
-   */
+ * Updates the endboss movement and animation.
+ *
+ * @param {number} characterX - Current x position of the character.
+ * @returns {void}
+ */
   update(characterX) {
-    if (
-      characterX >= this.activationX &&
-      this.x > characterX + this.minDistanceToCharacter
-    ) {
-      this.x -= this.speed;
+    if (this.isDead) {
+      this.playAnimation(endbossDeadImages);
+      return;
     }
 
     if (this.isHurt) {
       this.playAnimation(endbossHurtImages);
-    } else {
-      this.playAnimation(endbossWalkImages);
+      return;
     }
+
+    if (
+      characterX >= this.activationX &&
+      this.x - characterX > this.minDistanceToCharacter
+    ) {
+      this.x -= this.speed;
+    }
+
+    this.playAnimation(endbossWalkImages);
   }
+
   /**
    * Reduces the endboss health after a bottle hit.
    *
@@ -68,10 +82,26 @@ class Endboss extends MovableObject {
    * @returns {void}
    */
   takeDamage(damage = 20) {
+    if (this.isDead) {
+      return;
+    }
+
     this.health -= damage;
 
     if (this.health < 0) {
       this.health = 0;
+    }
+
+    if (this.health === 0) {
+      this.isDead = true;
+      this.isHurt = false;
+
+      if (this.hurtTimeoutId) {
+        clearTimeout(this.hurtTimeoutId);
+        this.hurtTimeoutId = null;
+      }
+
+      return;
     }
 
     this.isHurt = true;

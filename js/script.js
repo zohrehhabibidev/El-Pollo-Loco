@@ -435,7 +435,7 @@ function checkBottleChickenCollision() {
  */
 function checkBottleEndbossCollision() {
   throwableObjects = throwableObjects.filter((bottle) => {
-    if (bottle.isColliding(endboss) && endboss.health > 0) {
+    if (!endboss.isDead && bottle.isColliding(endboss) && endboss.health > 0) {
       endboss.takeDamage(20);
       endbossStatusBar.setPercentage(endboss.health);
       return false;
