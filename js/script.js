@@ -347,7 +347,14 @@ function showWinScreen() {
   winTimeoutId = null;
   document.getElementById("win-screen").classList.remove("hidden");
 }
-
+/**
+ * Hides the win screen.
+ *
+ * @returns {void}
+ */
+function hideWinScreen() {
+  document.getElementById("win-screen").classList.add("hidden");
+}
 /**
  * Clears the pending win timeout.
  *
