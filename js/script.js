@@ -19,6 +19,8 @@ let statusBar;
 let gameOver = false; // Prevents the game over screen from being drawn multiple times.
 const gameOverImg = new Image();
 gameOverImg.src = "assets/img/screens/lose/game-over-pepe-pic.png";
+let gameWon = false;
+let winTimeoutId = null;
 let bottleStatusBar;
 const maxBottleCount = 9;
 
@@ -172,6 +174,9 @@ window.addEventListener("keyup", (e) => {
  * - rendering
  */
 function loop() {
+  if (gameWon) {
+    return;
+  }
   // Stop the game loop when the character is dead.
   // The game over screen is shown only once.
   if (character.isDead()) {
@@ -236,6 +241,7 @@ function loop() {
   throwBottle();
   checkBottleChickenCollision();
   checkBottleEndbossCollision();
+  checkWinCondition();
   removeDeadChickens();
 
   draw();
@@ -316,6 +322,44 @@ function draw() {
 function showGameOver() {
   document.getElementById("lose-screen").classList.remove("hidden");
 }
+/**
+ * Checks if the player has won after defeating the endboss.
+ *
+ * @returns {void}
+ */
+function checkWinCondition() {
+  if (endboss.isDead && !gameWon && !winTimeoutId) {
+    winTimeoutId = setTimeout(showWinScreen, 1000);
+  }
+}
+
+/**
+ * Shows the win screen after the endboss is defeated.
+ *
+ * @returns {void}
+ */
+function showWinScreen() {
+  if (gameOver) {
+    return;
+  }
+
+  gameWon = true;
+  winTimeoutId = null;
+  document.getElementById("win-screen").classList.remove("hidden");
+}
+
+/**
+ * Clears the pending win timeout.
+ *
+ * @returns {void}
+ */
+function clearWinTimeout() {
+  if (winTimeoutId) {
+    clearTimeout(winTimeoutId);
+    winTimeoutId = null;
+  }
+}
+
 /**
  * Checks if the character lands on top of a chicken.
  *
@@ -477,9 +521,12 @@ function startGame() {
  */
 function restartGame() {
   gameOver = false;
+  gameWon = false;
+  clearWinTimeout();
   keyboardState = new Keyboard();
 
   document.getElementById("lose-screen").classList.add("hidden");
+  hideWinScreen();
 
   init();
 }
@@ -494,9 +541,12 @@ function restartGame() {
  */
 function backToMenu() {
   gameOver = false;
+  gameWon = false;
+  clearWinTimeout();
   keyboardState = new Keyboard();
 
   document.getElementById("lose-screen").classList.add("hidden");
+  hideWinScreen();
   document.getElementById("start-screen").style.display = "block";
   document.getElementById("start-button").disabled = false;
 

@@ -27,6 +27,8 @@ function initStartScreen() {
   document.getElementById("close-guide-button").addEventListener("click", closeGuide);
   document.getElementById("try-again-button").addEventListener("click", restartGame);
   document.getElementById("menu-button").addEventListener("click", backToMenu);
+  document.getElementById("win-try-again-button").addEventListener("click", restartGame);
+  document.getElementById("win-menu-button").addEventListener("click", backToMenu);
 }
 
 initStartScreen();
