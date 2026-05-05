@@ -23,6 +23,7 @@ let gameWon = false;
 let winTimeoutId = null;
 let bottleStatusBar;
 const maxBottleCount = 9;
+let isMuted = localStorage.getItem("isMuted") === "true";
 
 
 /**
@@ -366,7 +367,25 @@ function clearWinTimeout() {
     winTimeoutId = null;
   }
 }
-
+/**
+ * Updates the mute button icon based on the current mute state.
+ *
+ * @returns {void}
+ */
+function updateMuteButton() {
+  const muteButton = document.getElementById("mute-button");
+  muteButton.textContent = isMuted ? "🔇" : "🔊";
+}
+/**
+ * Toggles the mute state and saves it in localStorage.
+ *
+ * @returns {void}
+ */
+function toggleMute() {
+  isMuted = !isMuted;
+  localStorage.setItem("isMuted", isMuted);
+  updateMuteButton();
+}
 /**
  * Checks if the character lands on top of a chicken.
  *

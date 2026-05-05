@@ -29,6 +29,8 @@ function initStartScreen() {
   document.getElementById("menu-button").addEventListener("click", backToMenu);
   document.getElementById("win-try-again-button").addEventListener("click", restartGame);
   document.getElementById("win-menu-button").addEventListener("click", backToMenu);
+  document.getElementById("mute-button").addEventListener("click", toggleMute);
+  updateMuteButton();
 }
 
 initStartScreen();
