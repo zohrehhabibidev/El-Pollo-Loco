@@ -14,6 +14,8 @@ class DrawableObject {
 
     // Current animation frame index
     this.currentImage = 0;
+    this.animationCounter = 0;
+    this.animationDelay = 7;
 
     // Current image to draw
     this.img = new Image();
@@ -46,17 +48,24 @@ class DrawableObject {
   }
 
   /**
-   * Switches to the next frame of an animation.
+   * Plays an animation using the given image paths.
+   *
+   * @param {string[]} images - Image paths used for the animation.
+   * @returns {void}
    */
   playAnimation(images) {
+    this.animationCounter++;
+
+    if (this.animationCounter < this.animationDelay) {
+      return;
+    }
+
+    this.animationCounter = 0;
+
     const index = this.currentImage % images.length;
     const path = images[index];
-    const image = this.imageCache[path];
-
-    if (image) {
-      this.img = image;
-      this.currentImage++;
-    }
+    this.img = this.imageCache[path];
+    this.currentImage++;
   }
 
   /**
