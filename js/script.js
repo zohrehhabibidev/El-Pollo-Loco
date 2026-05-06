@@ -31,6 +31,9 @@ backgroundMusic.loop = true;
 backgroundMusic.volume = 0.25;
 backgroundMusic.muted = isMuted;
 
+const loseSound = new Audio("assets/audio/lose/game-over.mp3");
+const winSound = new Audio("assets/audio/win/win-sound.mp3");
+
 
 
 
@@ -329,6 +332,8 @@ function draw() {
  * @returns {void}
  */
 function showGameOver() {
+  stopBackgroundMusic();
+  playLoseSound();
   document.getElementById("lose-screen").classList.remove("hidden");
 }
 /**
@@ -354,6 +359,8 @@ function showWinScreen() {
 
   gameWon = true;
   winTimeoutId = null;
+  stopBackgroundMusic();
+  playWinSound();
   document.getElementById("win-screen").classList.remove("hidden");
 }
 /**
@@ -391,6 +398,8 @@ function updateMuteButton() {
  */
 function applyMuteState() {
   backgroundMusic.muted = isMuted;
+  winSound.muted = isMuted;
+  loseSound.muted = isMuted;
 }
 /**
  * Toggles the mute state and saves it in localStorage.
@@ -412,6 +421,35 @@ function startBackgroundMusic() {
   backgroundMusic.muted = isMuted;
   applyMuteState();
   backgroundMusic.play();
+}
+/**
+ * Stops and resets the background music.
+ *
+ * @returns {void}
+ */
+function stopBackgroundMusic() {
+  backgroundMusic.pause();
+  backgroundMusic.currentTime = 0;
+}
+/**
+ * Plays the lose sound from the beginning.
+ *
+ * @returns {void}
+ */
+function playLoseSound() {
+  loseSound.currentTime = 0;
+  loseSound.muted = isMuted;
+  loseSound.play();
+}
+/**
+ * Plays the win sound from the beginning.
+ *
+ * @returns {void}
+ */
+function playWinSound() {
+  winSound.currentTime = 0;
+  winSound.muted = isMuted;
+  winSound.play();
 }
 /**
  * Checks if the character lands on top of a chicken.
