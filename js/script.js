@@ -385,6 +385,14 @@ function updateMuteButton() {
   muteButton.textContent = isMuted ? "🔇" : "🔊";
 }
 /**
+ * Applies the current mute state to all sounds.
+ *
+ * @returns {void}
+ */
+function applyMuteState() {
+  backgroundMusic.muted = isMuted;
+}
+/**
  * Toggles the mute state and saves it in localStorage.
  *
  * @returns {void}
@@ -392,6 +400,7 @@ function updateMuteButton() {
 function toggleMute() {
   isMuted = !isMuted;
   localStorage.setItem("isMuted", isMuted);
+  applyMuteState();
   updateMuteButton();
 }
 /**
@@ -401,6 +410,7 @@ function toggleMute() {
  */
 function startBackgroundMusic() {
   backgroundMusic.muted = isMuted;
+  applyMuteState();
   backgroundMusic.play();
 }
 /**
