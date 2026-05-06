@@ -14,7 +14,7 @@ let canvas;
 let ctx;
 let keyboardState = new Keyboard();
 let character;
-const worldEnd = 2160; // Right boundary of the playable world.
+const worldEnd = 2260; // Right boundary of the playable world.
 let statusBar;
 let gameOver = false; // Prevents the game over screen from being drawn multiple times.
 const gameOverImg = new Image();
@@ -262,7 +262,7 @@ function loop() {
       statusBar.setPercentage(character.health);
     }
   });
-
+  checkCharacterEndbossCollision();
   collectBottles();
   collectCoins();
   throwBottle();
@@ -622,7 +622,24 @@ function checkBottleEndbossCollision() {
     return true;
   });
 }
+/**
+ * Checks collision between the character and the endboss.
+ *
+ * @returns {void}
+ */
+function checkCharacterEndbossCollision() {
+  if (!endboss.isDead && character.isColliding(endboss)) {
+    const oldHealth = character.health;
+    character.takeDamage();
 
+    if (character.health < oldHealth) {
+      characterDamageSound.currentTime = 0;
+      characterDamageSound.play();
+    }
+
+    statusBar.setPercentage(character.health);
+  }
+}
 /**
  * Removes chickens that finished showing their dead image.
  *
