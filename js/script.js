@@ -39,10 +39,7 @@ const coinCollectSound = new Audio("assets/audio/collectibles/collectSound.wav")
 const bottleBreakSound = new Audio("assets/audio/throwable/bottleBreak.mp3");
 
 const characterDamageSound = new Audio("assets/audio/character/characterDamage.mp3");
-const characterDeadSound = new Audio("assets/audio/character/characterDead.wav");
 const characterJumpSound = new Audio("assets/audio/character/characterJump.wav");
-const characterRunningSound = new Audio("assets/audio/character/characterRun.mp3");
-const characterSnoringSound = new Audio("assets/audio/character/characterSnoring.mp3");
 
 
 
@@ -203,9 +200,6 @@ function loop() {
   if (character.isDead()) {
     if (!gameOver) {
       gameOver = true;
-      characterDeadSound.currentTime = 0;
-      characterDeadSound.muted = isMuted;
-      characterDeadSound.play();
       character.visible = false;
       showGameOver();
     }
@@ -425,10 +419,7 @@ function applyMuteState() {
   coinCollectSound.muted = isMuted;
   bottleBreakSound.muted = isMuted;
   characterDamageSound.muted = isMuted;
-  characterDeadSound.muted = isMuted;
   characterJumpSound.muted = isMuted;
-  characterRunningSound.muted = isMuted;
-  characterSnoringSound.muted = isMuted;
 }
 /**
  * Toggles the mute state and saves it in localStorage.
@@ -479,6 +470,18 @@ function playWinSound() {
   winSound.currentTime = 0;
   winSound.muted = isMuted;
   winSound.play();
+}
+/**
+ * Stops and resets end screen sounds.
+ *
+ * @returns {void}
+ */
+function stopEndSounds() {
+  loseSound.pause();
+  loseSound.currentTime = 0;
+
+  winSound.pause();
+  winSound.currentTime = 0;
 }
 /**
  * Checks if the character lands on top of a chicken.
@@ -588,12 +591,12 @@ function checkBottleChickenCollision() {
         chicken.die();
         hasHitChicken = true;
       }
-      if (hasHitChicken) {
-        bottleBreakSound.currentTime = 0;
-        bottleBreakSound.play();
-      }
-
     });
+
+    if (hasHitChicken) {
+      bottleBreakSound.currentTime = 0;
+      bottleBreakSound.play();
+    }
 
     return !hasHitChicken;
   });
@@ -655,6 +658,8 @@ function restartGame() {
   gameOver = false;
   gameWon = false;
   clearWinTimeout();
+  stopEndSounds();
+  stopBackgroundMusic();
   keyboardState = new Keyboard();
 
   document.getElementById("lose-screen").classList.add("hidden");
@@ -676,6 +681,8 @@ function backToMenu() {
   gameOver = false;
   gameWon = false;
   clearWinTimeout();
+  stopEndSounds();
+  stopBackgroundMusic();
   keyboardState = new Keyboard();
 
   document.getElementById("lose-screen").classList.add("hidden");
