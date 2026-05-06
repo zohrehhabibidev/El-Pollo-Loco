@@ -15,7 +15,7 @@ class DrawableObject {
     // Current animation frame index
     this.currentImage = 0;
     this.animationCounter = 0;
-    this.animationDelay = 7;
+    this.animationDelay = 8;
 
     // Current image to draw
     this.img = new Image();

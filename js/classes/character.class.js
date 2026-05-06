@@ -49,7 +49,6 @@ const deadImages = [
   "assets/img/character/5_dead/D-54.png",
   "assets/img/character/5_dead/D-55.png",
   "assets/img/character/5_dead/D-56.png",
-  "assets/img/character/5_dead/D-57.png",
 ];
 
 /**
