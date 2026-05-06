@@ -621,6 +621,7 @@ function restartGame() {
   hideWinScreen();
 
   init();
+  startBackgroundMusic();
 }
 
 /**
