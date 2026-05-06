@@ -34,10 +34,15 @@ backgroundMusic.muted = isMuted;
 const loseSound = new Audio("assets/audio/lose/game-over.mp3");
 const winSound = new Audio("assets/audio/win/win-sound.mp3");
 
-const bottleCollectSound = new Audio("assets/audio/collectibles/bottleCollectSound.wav")
-const coinCollectSound = new Audio("assets/audio/collectibles/collectSound.wav")
-const bottleBreakSound = new Audio("assets/audio/throwable/bottleBreak.mp3")
+const bottleCollectSound = new Audio("assets/audio/collectibles/bottleCollectSound.wav");
+const coinCollectSound = new Audio("assets/audio/collectibles/collectSound.wav");
+const bottleBreakSound = new Audio("assets/audio/throwable/bottleBreak.mp3");
 
+const characterDamageSound = new Audio("assets/audio/character/characterDamage.mp3");
+const characterDeadSound = new Audio("assets/audio/character/characterDead.wav");
+const characterJumpSound = new Audio("assets/audio/character/characterJump.wav");
+const characterRunningSound = new Audio("assets/audio/character/characterRun.mp3");
+const characterSnoringSound = new Audio("assets/audio/character/characterSnoring.mp3");
 
 
 
@@ -198,6 +203,9 @@ function loop() {
   if (character.isDead()) {
     if (!gameOver) {
       gameOver = true;
+      characterDeadSound.currentTime = 0;
+      characterDeadSound.muted = isMuted;
+      characterDeadSound.play();
       character.visible = false;
       showGameOver();
     }
@@ -229,6 +237,8 @@ function loop() {
 
   // Jump (only when on ground)
   if (keyboardState.SPACE && !character.isAboveGround()) {
+    characterJumpSound.currentTime = 0;
+    characterJumpSound.play();
     character.jump();
   }
 
@@ -247,7 +257,14 @@ function loop() {
       chicken.die();
       character.speedY = 10;
     } else if (!chicken.isDead && character.isColliding(chicken)) {
+      const oldHealth = character.health;
       character.takeDamage();
+
+      if (character.health < oldHealth) {
+        characterDamageSound.currentTime = 0;
+        characterDamageSound.play();
+      }
+
       statusBar.setPercentage(character.health);
     }
   });
@@ -407,6 +424,11 @@ function applyMuteState() {
   bottleCollectSound.muted = isMuted;
   coinCollectSound.muted = isMuted;
   bottleBreakSound.muted = isMuted;
+  characterDamageSound.muted = isMuted;
+  characterDeadSound.muted = isMuted;
+  characterJumpSound.muted = isMuted;
+  characterRunningSound.muted = isMuted;
+  characterSnoringSound.muted = isMuted;
 }
 /**
  * Toggles the mute state and saves it in localStorage.
@@ -589,7 +611,7 @@ function checkBottleEndbossCollision() {
     if (!endboss.isDead && bottle.isColliding(endboss) && endboss.health > 0) {
       endboss.takeDamage(20);
       endbossStatusBar.setPercentage(endboss.health);
-      ottleBreakSound.currentTime = 0;
+      bottleBreakSound.currentTime = 0;
       bottleBreakSound.play();
       return false;
     }
