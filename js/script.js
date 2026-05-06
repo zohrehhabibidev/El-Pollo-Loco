@@ -28,11 +28,14 @@ let isMuted = localStorage.getItem("isMuted", true) === "true";
 
 const backgroundMusic = new Audio("assets/audio/background/background-game-music.mp3");
 backgroundMusic.loop = true;
-backgroundMusic.volume = 0.25;
+backgroundMusic.volume = 0.06;
 backgroundMusic.muted = isMuted;
 
 const loseSound = new Audio("assets/audio/lose/game-over.mp3");
 const winSound = new Audio("assets/audio/win/win-sound.mp3");
+
+const bottleCollectSound = new Audio("assets/audio/collectibles/bottleCollectSound.wav")
+const coinCollectSound = new Audio("assets/audio/collectibles/collectSound.wav")
 
 
 
@@ -400,6 +403,8 @@ function applyMuteState() {
   backgroundMusic.muted = isMuted;
   winSound.muted = isMuted;
   loseSound.muted = isMuted;
+  bottleCollectSound.muted = isMuted;
+  coinCollectSound.muted = isMuted;
 }
 /**
  * Toggles the mute state and saves it in localStorage.
@@ -479,6 +484,8 @@ function collectBottles() {
     if (character.isColliding(bottle)) {
       bottleCount++;
       bottleStatusBar.setPercentage((bottleCount / maxBottleCount) * 100);
+      bottleCollectSound.currentTime = 0;
+      bottleCollectSound.play();
       return false;
     }
 
@@ -519,6 +526,8 @@ function collectCoins() {
     if (isCollectingCoin(coin)) {
       coinCount++;
       coinStatusBar.setPercentage(Math.min(100, coinCount * 20));
+      coinCollectSound.currentTime = 0;
+      coinCollectSound.play();
       return false;
     }
 
