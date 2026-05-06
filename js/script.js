@@ -36,6 +36,7 @@ const winSound = new Audio("assets/audio/win/win-sound.mp3");
 
 const bottleCollectSound = new Audio("assets/audio/collectibles/bottleCollectSound.wav")
 const coinCollectSound = new Audio("assets/audio/collectibles/collectSound.wav")
+const bottleBreakSound = new Audio("assets/audio/throwable/bottleBreak.mp3")
 
 
 
@@ -405,6 +406,7 @@ function applyMuteState() {
   loseSound.muted = isMuted;
   bottleCollectSound.muted = isMuted;
   coinCollectSound.muted = isMuted;
+  bottleBreakSound.muted = isMuted;
 }
 /**
  * Toggles the mute state and saves it in localStorage.
@@ -564,6 +566,11 @@ function checkBottleChickenCollision() {
         chicken.die();
         hasHitChicken = true;
       }
+      if (hasHitChicken) {
+        bottleBreakSound.currentTime = 0;
+        bottleBreakSound.play();
+      }
+
     });
 
     return !hasHitChicken;
@@ -582,6 +589,8 @@ function checkBottleEndbossCollision() {
     if (!endboss.isDead && bottle.isColliding(endboss) && endboss.health > 0) {
       endboss.takeDamage(20);
       endbossStatusBar.setPercentage(endboss.health);
+      ottleBreakSound.currentTime = 0;
+      bottleBreakSound.play();
       return false;
     }
 
