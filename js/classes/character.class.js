@@ -65,6 +65,18 @@ const hurtImages = [
   "assets/img/character/4_hurt/H-43.png",
 ];
 
+const jumpImages = [
+  "assets/img/character/3_jump/J-31.png",
+  "assets/img/character/3_jump/J-32.png",
+  "assets/img/character/3_jump/J-33.png",
+  "assets/img/character/3_jump/J-34.png",
+  "assets/img/character/3_jump/J-35.png",
+  "assets/img/character/3_jump/J-36.png",
+  "assets/img/character/3_jump/J-37.png",
+  "assets/img/character/3_jump/J-38.png",
+  "assets/img/character/3_jump/J-39.png",
+];
+
 /**
  * Represents the main player character.
  *
@@ -102,6 +114,7 @@ class Character extends MovableObject {
     this.loadImages(characterWalking);
     this.loadImages(hurtImages);
     this.loadImages(deadImages);
+    this.loadImages(jumpImages);
 
     // Set initial image (idle state)
     this.img = this.imageCache[idleImages[0]];
@@ -174,5 +187,20 @@ class Character extends MovableObject {
    */
   isDead() {
     return this.health <= 0;
+  }
+
+  /**
+ * Shows the character jump image based on vertical speed.
+ *
+ * @returns {void}
+ */
+  playJumpAnimation() {
+    if (this.speedY > 1) {
+      this.img = this.imageCache[jumpImages[3]];
+    } else if (this.speedY < -1) {
+      this.img = this.imageCache[jumpImages[6]];
+    } else {
+      this.img = this.imageCache[jumpImages[4]];
+    }
   }
 }

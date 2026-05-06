@@ -210,13 +210,14 @@ function loop() {
   if (character.isHurt) {
     character.playHurtAnimation();
 
-    // Priority 2: movement right
+  } else if (character.isAboveGround()) {
+    character.playJumpAnimation();
+
   } else if (keyboardState.RIGHT && character.x < worldEnd) {
     character.moveRight();
     character.otherDirection = false;
     character.playWalkingAnimation();
 
-    // Priority 3: movement left
   } else if (keyboardState.LEFT) {
     if (character.x > 0) {
       character.moveLeft();
@@ -224,7 +225,6 @@ function loop() {
     character.otherDirection = true;
     character.playWalkingAnimation();
 
-    // Priority 4: idle
   } else {
     character.showIdleImage();
   }
