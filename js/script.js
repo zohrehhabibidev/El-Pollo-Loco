@@ -23,7 +23,15 @@ let gameWon = false;
 let winTimeoutId = null;
 let bottleStatusBar;
 const maxBottleCount = 9;
-let isMuted = localStorage.getItem("isMuted") === "true";
+
+let isMuted = localStorage.getItem("isMuted", true) === "true";
+
+const backgroundMusic = new Audio("assets/audio/background/background-game-music.mp3");
+backgroundMusic.loop = true;
+backgroundMusic.volume = 0.25;
+backgroundMusic.muted = isMuted;
+
+
 
 
 /**
@@ -387,6 +395,15 @@ function toggleMute() {
   updateMuteButton();
 }
 /**
+ * Starts the background music.
+ *
+ * @returns {void}
+ */
+function startBackgroundMusic() {
+  backgroundMusic.muted = isMuted;
+  backgroundMusic.play();
+}
+/**
  * Checks if the character lands on top of a chicken.
  *
  * @param {Chicken} chicken - The chicken to check.
@@ -534,6 +551,7 @@ function startGame() {
   startScreen.style.display = "none";
 
   init();
+  startBackgroundMusic();
 }
 
 
