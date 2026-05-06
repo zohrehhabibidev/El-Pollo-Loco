@@ -151,12 +151,24 @@ class Character extends MovableObject {
   }
 
   /**
-   * Plays the death animation.
-   *
-   * Called when the character has no health left.
-   */
+  * Plays the character dead animation once and stops on the last frame.
+  *
+  * @returns {void}
+  */
   playDeadAnimation() {
-    this.playAnimation(deadImages);
+    if (this.currentImage >= deadImages.length) {
+      this.img = this.imageCache[deadImages[deadImages.length - 1]];
+      return;
+    }
+
+    this.img = this.imageCache[deadImages[this.currentImage]];
+
+    this.animationCounter++;
+
+    if (this.animationCounter >= this.animationDelay) {
+      this.animationCounter = 0;
+      this.currentImage++;
+    }
   }
 
   /**

@@ -21,6 +21,9 @@ const gameOverImg = new Image();
 gameOverImg.src = "assets/img/screens/lose/game-over-pepe-pic.png";
 let gameWon = false;
 let winTimeoutId = null;
+let deathAnimationStarted = false;
+let gameOverTimeoutId = null;
+
 let bottleStatusBar;
 const maxBottleCount = 9;
 
@@ -103,6 +106,8 @@ let coinStatusBar;
 
 let endboss;
 let endbossStatusBar;
+
+
 
 /**
  * Initializes the game.
@@ -198,11 +203,20 @@ function loop() {
   // Stop the game loop when the character is dead.
   // The game over screen is shown only once.
   if (character.isDead()) {
-    if (!gameOver) {
-      gameOver = true;
-      character.visible = false;
-      showGameOver();
+    if (!deathAnimationStarted) {
+      deathAnimationStarted = true;
+      character.currentImage = 0;
+      character.animationCounter = 0;
+
+      gameOverTimeoutId = setTimeout(() => {
+        gameOver = true;
+        showGameOver();
+      }, 900);
     }
+
+    character.playDeadAnimation();
+    draw();
+    requestAnimationFrame(loop);
     return;
   }
 
@@ -395,6 +409,17 @@ function clearWinTimeout() {
   if (winTimeoutId) {
     clearTimeout(winTimeoutId);
     winTimeoutId = null;
+  }
+}
+/**
+ * Clears the pending game over timeout.
+ *
+ * @returns {void}
+ */
+function clearGameOverTimeout() {
+  if (gameOverTimeoutId) {
+    clearTimeout(gameOverTimeoutId);
+    gameOverTimeoutId = null;
   }
 }
 /**
@@ -674,6 +699,8 @@ function startGame() {
 function restartGame() {
   gameOver = false;
   gameWon = false;
+  deathAnimationStarted = false;
+  clearGameOverTimeout();
   clearWinTimeout();
   stopEndSounds();
   stopBackgroundMusic();
@@ -697,7 +724,9 @@ function restartGame() {
 function backToMenu() {
   gameOver = false;
   gameWon = false;
+  deathAnimationStarted = false;
   clearWinTimeout();
+  clearGameOverTimeout();
   stopEndSounds();
   stopBackgroundMusic();
   keyboardState = new Keyboard();
