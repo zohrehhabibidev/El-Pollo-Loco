@@ -26,10 +26,10 @@ After losing or winning, the player can restart the game or return to the menu w
 
 ## Controls
 
-`Arrow Left` => Run left
-`Arrow Right` => Run right
-`Space` => Jump
-`D` => Throw a bottle
+- `Arrow Left` => Run left
+- `Arrow Right` => Run right
+- `Space` => Jump
+- `D` => Throw a bottle
 
 ## Features
 
@@ -50,12 +50,20 @@ After losing or winning, the player can restart the game or return to the menu w
 - Background music and sound effects
 - Mute button with saved mute state using localStorage
 - Impressum page
+- Mobile touch controls
+- Portrait warning for mobile devices
+- Landscape-only mobile gameplay
+- Bottle throw arc with left and right direction
+- Bottle splash animation after hits
+- Cleanup for missed thrown bottles
 
 ## Mobile Support
 
-Mobile touch controls and portrait/landscape handling are planned checklist tasks and are not fully implemented yet.
+Mobile touch controls are available in landscape mode.
 
-The current version is mainly tested for desktop keyboard controls.
+In portrait mode, a rotate-device warning is shown so the player knows to turn the device before playing.
+
+The mobile landscape layout includes touch buttons for movement, jumping, and throwing bottles.
 
 ## Technologies Used
 
@@ -98,12 +106,3 @@ This project includes an Impressum page:
 ## Status
 
 This project is still in development as part of a frontend learning project.
-
-Remaining checklist tasks include:
-
-- Mobile touch controls
-- Portrait warning / landscape-only mobile layout
-- Bottle throw arc polish
-- Bottle splash animation
-- Final responsive polish
-- Final console and clean-code review
