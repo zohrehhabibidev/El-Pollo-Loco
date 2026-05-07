@@ -8,7 +8,7 @@ class ThrowableObject extends MovableObject {
    * @param {number} x - Start x position
    * @param {number} y - Start y position
    */
-  constructor(x, y) {
+  constructor(x, y, otherDirection) {
     super();
 
     this.loadImage(
@@ -21,21 +21,25 @@ class ThrowableObject extends MovableObject {
     this.width = 60; // Width of the bottle
     this.height = 70; // Height of the bottle
 
-    this.speed = 8; // Forward speed of the bottle
-    this.speedY = 0; // Initial upward speed for the throw
+    this.speed = 6; // Forward speed of the bottle
+    this.speedY = 20; // Initial upward speed for the throw
+    this.acceleration = 1;
+    this.throwDirection = otherDirection ? -1 : 1;
     this.movementIntervalId = null;
 
     this.applyThrow();
   }
 
   /**
-   * Applies forward movement to the bottle.
-   *
-   * @returns {void}
-   */
+ * Applies forward movement and a simple throw arc to the bottle.
+ *
+ * @returns {void}
+ */
   applyThrow() {
     this.movementIntervalId = setInterval(() => {
-      this.x += this.speed;
+      this.x += this.speed * this.throwDirection;
+      this.y -= this.speedY;
+      this.speedY -= this.acceleration;
     }, 1000 / 60);
   }
 

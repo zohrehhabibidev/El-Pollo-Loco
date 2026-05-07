@@ -616,7 +616,8 @@ function collectCoins() {
  */
 function throwBottle() {
   if (keyboardState.D && bottleCount > 0) {
-    const bottle = new ThrowableObject(character.x + 100, character.y + 120);
+    const bottleX = character.otherDirection ? character.x : character.x + 100;
+    const bottle = new ThrowableObject(bottleX, character.y + 120, character.otherDirection);
     throwableObjects.push(bottle);
     bottleCount--;
     bottleStatusBar.setPercentage((bottleCount / maxBottleCount) * 100);
