@@ -241,7 +241,9 @@ function loop() {
     draw();
     return;
   }
-
+  if (isPlayerActive()) {
+    character.resetInactivityTimer();
+  }
   // Priority 1: hurt state (overrides all other animations)
   if (character.isHurt) {
     character.playHurtAnimation();
@@ -260,6 +262,9 @@ function loop() {
     }
     character.otherDirection = true;
     character.playWalkingAnimation();
+
+  } else if (character.isLongIdle()) {
+    character.showLongIdleImage();
 
   } else {
     character.showIdleImage();
@@ -748,6 +753,7 @@ function restartGame() {
 function backToMenu() {
   stopGameLoop();
   clearThrowableObjects();
+
   gameOver = false;
   gameWon = false;
   deathAnimationStarted = false;
@@ -765,4 +771,16 @@ function backToMenu() {
   if (ctx && canvas) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
+}
+
+/**
+ * Checks if the player is pressing an action key.
+ *
+ * @returns {boolean} True if the player is currently active.
+ */
+function isPlayerActive() {
+  return keyboardState.RIGHT ||
+    keyboardState.LEFT ||
+    keyboardState.SPACE ||
+    keyboardState.D;
 }

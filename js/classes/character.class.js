@@ -34,6 +34,18 @@ const idleImages = [
   "assets/img/character/1_idle/idle/I-9.png",
   "assets/img/character/1_idle/idle/I-10.png",
 ];
+const longIdleImages = [
+  "assets/img/character/1_idle/long_idle/I-11.png",
+  "assets/img/character/1_idle/long_idle/I-12.png",
+  "assets/img/character/1_idle/long_idle/I-13.png",
+  "assets/img/character/1_idle/long_idle/I-14.png",
+  "assets/img/character/1_idle/long_idle/I-15.png",
+  "assets/img/character/1_idle/long_idle/I-16.png",
+  "assets/img/character/1_idle/long_idle/I-17.png",
+  "assets/img/character/1_idle/long_idle/I-18.png",
+  "assets/img/character/1_idle/long_idle/I-19.png",
+  "assets/img/character/1_idle/long_idle/I-20.png",
+];
 
 /**
  * Paths for the dead animation frames.
@@ -110,6 +122,10 @@ class Character extends MovableObject {
 
     // Preload all animation frames into cache
     this.loadImages(idleImages);
+    this.loadImages(longIdleImages);
+    this.lastActivityTime = Date.now();
+    this.isSleeping = false;
+
     this.loadImages(characterWalking);
     this.loadImages(hurtImages);
     this.loadImages(deadImages);
@@ -139,7 +155,42 @@ class Character extends MovableObject {
   showIdleImage() {
     this.playAnimation(idleImages);
   }
+  /**
+   * Resets the inactivity timer after player input.
+   *
+   * @returns {void}
+   */
+  resetInactivityTimer() {
+    this.lastActivityTime = Date.now();
 
+    if (this.isSleeping) {
+      this.isSleeping = false;
+      this.currentImage = 0;
+      this.animationCounter = 0;
+    }
+  }
+  /**
+   * Checks if the character has been inactive long enough to sleep.
+   *
+   * @returns {boolean} True if the character should play the sleep animation.
+   */
+  isLongIdle() {
+    return Date.now() - this.lastActivityTime >= 15000;
+  }
+  /**
+ * Plays the long idle / sleep animation.
+ *
+ * @returns {void}
+ */
+  showLongIdleImage() {
+    if (!this.isSleeping) {
+      this.isSleeping = true;
+      this.currentImage = 0;
+      this.animationCounter = 0;
+    }
+
+    this.playAnimation(longIdleImages);
+  }
   /**
    * Plays the hurt animation.
    *
