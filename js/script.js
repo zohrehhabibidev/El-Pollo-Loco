@@ -311,8 +311,8 @@ function loop() {
   throwBottle();
   checkBottleChickenCollision();
   checkBottleEndbossCollision();
+  updateBottleSplashes();
   removeMissedBottles();
-
   checkWinCondition();
   removeDeadChickens();
 
@@ -634,7 +634,19 @@ function throwBottle() {
   }
 }
 /**
- * Removes thrown bottles that left the playable area.
+ * Updates splash animations for thrown bottles.
+ *
+ * @returns {void}
+ */
+function updateBottleSplashes() {
+  throwableObjects.forEach((bottle) => {
+    if (bottle.hasSplashed) {
+      bottle.playSplashAnimation();
+    }
+  });
+}
+/**
+ * Removes thrown bottles that left the playable area or finished splashing.
  *
  * @returns {void}
  */
@@ -642,6 +654,14 @@ function removeMissedBottles() {
   throwableObjects = throwableObjects.filter((bottle) => {
     const isOutsideWorld = bottle.x < -200 || bottle.x > worldEnd + 400;
     const isBelowCanvas = bottle.y > canvas.height + 200;
+
+    if (bottle.markedForRemoval) {
+      return false;
+    }
+
+    if (bottle.hasSplashed) {
+      return true;
+    }
 
     if (isOutsideWorld || isBelowCanvas) {
       bottle.stopMovement();
@@ -654,50 +674,47 @@ function removeMissedBottles() {
 /**
  * Checks collisions between thrown bottles and chickens.
  *
- * Kills the chicken and removes the thrown bottle after a hit.
+ * Kills the chicken and starts the splash animation after a hit.
  *
  * @returns {void}
  */
 function checkBottleChickenCollision() {
-  throwableObjects = throwableObjects.filter((bottle) => {
-    let hasHitChicken = false;
+  throwableObjects.forEach((bottle) => {
+    if (bottle.hasSplashed) {
+      return;
+    }
 
     chickens.forEach((chicken) => {
       if (!chicken.isDead && bottle.isColliding(chicken)) {
         chicken.die();
-        hasHitChicken = true;
+        bottle.startSplash();
+        bottleBreakSound.currentTime = 0;
+        bottleBreakSound.play();
       }
     });
-
-    if (hasHitChicken) {
-      bottle.stopMovement();
-      bottleBreakSound.currentTime = 0;
-      bottleBreakSound.play();
-    }
-
-    return !hasHitChicken;
   });
 }
 /**
  * Checks collisions between thrown bottles and the endboss.
  *
  * Reduces endboss health, updates the endboss status bar,
- * and removes the thrown bottle after a hit.
+ * and starts the splash animation after a hit.
  *
  * @returns {void}
  */
 function checkBottleEndbossCollision() {
-  throwableObjects = throwableObjects.filter((bottle) => {
+  throwableObjects.forEach((bottle) => {
+    if (bottle.hasSplashed) {
+      return;
+    }
+
     if (!endboss.isDead && bottle.isColliding(endboss) && endboss.health > 0) {
-      bottle.stopMovement();
+      bottle.startSplash();
       endboss.takeDamage(20);
       endbossStatusBar.setPercentage(endboss.health);
       bottleBreakSound.currentTime = 0;
       bottleBreakSound.play();
-      return false;
     }
-
-    return true;
   });
 }
 /**
