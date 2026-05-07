@@ -268,3 +268,130 @@
   display: flex;
   gap: 16px;
 }
+/* Mobile touch controls */
+#mobile-controls {
+  display: none;
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 10px;
+  z-index: 35;
+  justify-content: space-between;
+  align-items: flex-end;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.mobile-control-group {
+  display: flex;
+  gap: 10px;
+}
+
+.mobile-control-button {
+  width: 44px;
+  height: 44px;
+  border: 2px solid #5a2d0c;
+  border-radius: 50%;
+  background: rgba(255, 211, 105, 0.82);
+  color: #3b1d08;
+  font-size: 22px;
+  font-weight: bold;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  pointer-events: auto;
+  touch-action: none;
+}
+
+.mobile-control-button:active {
+  transform: scale(0.95);
+}
+
+/* Teacher method: touch device in landscape mode */
+@media (hover: none) and (orientation: landscape) {
+  html,
+  body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    background-color: #000;
+  }
+
+    #game-layout {
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    margin: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+    #start-buttons {
+    bottom: 10px;
+    gap: 10px;
+  }
+  #mobile-controls {
+    display: flex;
+  }
+  #game-title {
+    display: none;
+  }
+
+  #game-stage {
+    width: min(100vw, calc(100dvh * 1.5), 720px);
+    height: min(100dvh, calc(100vw / 1.5), 480px);
+    margin: 0;
+    flex: 0 0 auto;
+  }
+
+  #game-canvas {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+  }
+
+  .game-btn {
+    width: 110px;
+    height: 36px;
+    gap: 5px;
+    font-size: 12px;
+    letter-spacing: 0;
+    border-radius: 9px;
+    box-shadow: 0 3px 0 rgba(0, 0, 0, 0.35);
+  }
+
+  .game-btn .icon {
+    font-size: 16px;
+  }
+
+  #game-toolbar {
+    top: 8px;
+    right: 8px;
+    bottom: auto;
+    left: auto;
+    z-index: 50;
+  }
+
+  #mute-button {
+    width: 34px;
+    height: 34px;
+    font-size: 18px;
+  }
+
+  .mobile-control-group {
+    gap: 8px;
+  }
+
+  .mobile-control-button {
+    width: clamp(40px, 12vh, 46px);
+    height: clamp(40px, 12vh, 46px);
+    font-size: clamp(18px, 5vh, 22px);
+  }
+}

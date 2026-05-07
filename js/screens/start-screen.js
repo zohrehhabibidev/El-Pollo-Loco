@@ -31,6 +31,55 @@ function initStartScreen() {
   document.getElementById("win-menu-button").addEventListener("click", backToMenu);
   document.getElementById("mute-button").addEventListener("click", toggleMute);
   updateMuteButton();
+  initMobileControls();
 }
 
 initStartScreen();
+/**
+ * Adds pointer controls for mobile game buttons.
+ *
+ * @returns {void}
+ */
+function initMobileControls() {
+  bindMobileControl("mobile-left-button", "LEFT");
+  bindMobileControl("mobile-right-button", "RIGHT");
+  bindMobileControl("mobile-jump-button", "SPACE");
+  bindMobileControl("mobile-throw-button", "D");
+}
+
+/**
+ * Binds a mobile button to a keyboard state property.
+ *
+ * @param {string} buttonId - The id of the mobile control button.
+ * @param {string} keyName - The keyboardState property to update.
+ * @returns {void}
+ */
+function bindMobileControl(buttonId, keyName) {
+  const button = document.getElementById(buttonId);
+
+  if (!button) {
+    return;
+  }
+
+  button.addEventListener("pointerdown", (event) => {
+    event.preventDefault();
+    keyboardState[keyName] = true;
+  });
+
+  button.addEventListener("pointerup", (event) => {
+    event.preventDefault();
+    keyboardState[keyName] = false;
+  });
+
+  button.addEventListener("pointercancel", () => {
+    keyboardState[keyName] = false;
+  });
+
+  button.addEventListener("pointerleave", () => {
+    keyboardState[keyName] = false;
+  });
+
+  button.addEventListener("contextmenu", (event) => {
+    event.preventDefault();
+  });
+}
