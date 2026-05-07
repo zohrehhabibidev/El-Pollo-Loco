@@ -235,8 +235,14 @@ function loop() {
 
     character.playDeadAnimation();
     draw();
+
+    if (!gameOver) {
+      animationFrameId = requestAnimationFrame(loop);
+    }
+
     return;
   }
+
   if (isPlayerActive()) {
     character.resetInactivityTimer();
   }
@@ -617,7 +623,8 @@ function collectCoins() {
  * @returns {void}
  */
 function throwBottle() {
-  if (keyboardState.D && bottleCount > 0) {
+  if (keyboardState.D && bottleCount > 0 && !character.isHurt) {
+
     const bottleX = character.otherDirection ? character.x : character.x + 100;
     const bottle = new ThrowableObject(bottleX, character.y + 120, character.otherDirection);
     throwableObjects.push(bottle);
