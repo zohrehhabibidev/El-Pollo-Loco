@@ -464,4 +464,55 @@
     height: clamp(40px, 12vh, 46px);
     font-size: clamp(18px, 5vh, 22px);
   }
+    #guide-popup {
+    z-index: 80;
+    align-items: center;
+  }
+
+  #guide-card {
+    box-sizing: border-box;
+    width: 300px;
+    max-width: calc(100% - 48px);
+    max-height: calc(100% - 28px);
+    padding: 10px 12px;
+    border-width: 3px;
+    border-radius: 12px;
+    overflow-y: auto;
+  }
+
+  #guide-card h2 {
+    margin: 0 0 6px;
+    font-size: 24px;
+    letter-spacing: 1px;
+  }
+
+  #guide-card p {
+    font-size: 12px;
+    line-height: 1.25;
+  }
+
+  .guide-row {
+    gap: 8px;
+    margin-top: 6px;
+    padding: 5px 8px;
+    border-radius: 8px;
+  }
+
+  .guide-row span {
+    width: 32px;
+    font-size: 16px;
+  }
+
+  .guide-row p {
+    font-size: 12px;
+  }
+
+  #close-guide-button {
+    top: 5px;
+    right: 5px;
+    width: 24px;
+    height: 24px;
+    font-size: 15px;
+    line-height: 1;
+  }
 }
