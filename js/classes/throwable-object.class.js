@@ -5,8 +5,9 @@ class ThrowableObject extends MovableObject {
   /**
    * Creates a throwable bottle at a given position.
    *
-   * @param {number} x - Start x position
-   * @param {number} y - Start y position
+   * @param {number} x - Start x position.
+   * @param {number} y - Start y position.
+   * @param {boolean} otherDirection - True if the character is facing left.
    */
   constructor(x, y, otherDirection) {
     super();
@@ -31,10 +32,10 @@ class ThrowableObject extends MovableObject {
   }
 
   /**
- * Applies forward movement and a simple throw arc to the bottle.
- *
- * @returns {void}
- */
+   * Applies forward movement and a simple throw arc to the bottle.
+   *
+   * @returns {void}
+   */
   applyThrow() {
     this.movementIntervalId = setInterval(() => {
       this.x += this.speed * this.throwDirection;

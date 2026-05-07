@@ -305,6 +305,8 @@ function loop() {
   throwBottle();
   checkBottleChickenCollision();
   checkBottleEndbossCollision();
+  removeMissedBottles();
+
   checkWinCondition();
   removeDeadChickens();
 
@@ -623,6 +625,24 @@ function throwBottle() {
     bottleStatusBar.setPercentage((bottleCount / maxBottleCount) * 100);
     keyboardState.D = false;
   }
+}
+/**
+ * Removes thrown bottles that left the playable area.
+ *
+ * @returns {void}
+ */
+function removeMissedBottles() {
+  throwableObjects = throwableObjects.filter((bottle) => {
+    const isOutsideWorld = bottle.x < -200 || bottle.x > worldEnd + 400;
+    const isBelowCanvas = bottle.y > canvas.height + 200;
+
+    if (isOutsideWorld || isBelowCanvas) {
+      bottle.stopMovement();
+      return false;
+    }
+
+    return true;
+  });
 }
 /**
  * Checks collisions between thrown bottles and chickens.
