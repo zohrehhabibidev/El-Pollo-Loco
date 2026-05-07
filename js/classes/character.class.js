@@ -99,7 +99,7 @@ class Character extends MovableObject {
     this.height = 200;
 
     // Horizontal movement speed
-    this.speed = 2;
+    this.speed = 3;
 
     // Health system
     this.health = 100;
