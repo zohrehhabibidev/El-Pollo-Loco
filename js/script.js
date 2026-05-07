@@ -123,11 +123,7 @@ function init() {
   ctx = canvas.getContext("2d");
 
   character = new Character();
-  // chickens = [
-  //   new Chicken(500, "normal"),
-  //   new Chicken(800, "small"),
-  //   new Chicken(1100, "normal"),
-  // ];
+
   chickens = [
     new Chicken(1200, "normal"),
     new Chicken(1500, "small"),
