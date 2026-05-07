@@ -18,23 +18,36 @@ class ThrowableObject extends MovableObject {
     this.x = x;
     this.y = y;
 
-    this.width = 60;// Width of the bottle
-    this.height = 70;// Height of the bottle
+    this.width = 60; // Width of the bottle
+    this.height = 70; // Height of the bottle
 
     this.speed = 8; // Forward speed of the bottle
-    this.speedY = 0;// Initial upward speed for the throw
+    this.speedY = 0; // Initial upward speed for the throw
+    this.movementIntervalId = null;
 
     this.applyThrow();
   }
 
   /**
-   * Applies forward movement and gravity to the bottle.
+   * Applies forward movement to the bottle.
+   *
+   * @returns {void}
    */
   applyThrow() {
-    setInterval(() => {
+    this.movementIntervalId = setInterval(() => {
       this.x += this.speed;
     }, 1000 / 60);
+  }
 
-    // this.updateGravity();
+  /**
+   * Stops the bottle movement interval.
+   *
+   * @returns {void}
+   */
+  stopMovement() {
+    if (this.movementIntervalId !== null) {
+      clearInterval(this.movementIntervalId);
+      this.movementIntervalId = null;
+    }
   }
 }

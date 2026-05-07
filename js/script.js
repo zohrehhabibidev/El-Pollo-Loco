@@ -13,6 +13,7 @@
 let canvas;
 let ctx;
 let keyboardState = new Keyboard();
+let animationFrameId = null;
 let character;
 const worldEnd = 2260; // Right boundary of the playable world.
 let statusBar;
@@ -116,6 +117,8 @@ let endbossStatusBar;
  * enemies, status bar, and starts the game loop.
  */
 function init() {
+  stopGameLoop();
+  clearThrowableObjects();
   canvas = document.getElementById("game-canvas");
   ctx = canvas.getContext("2d");
 
@@ -162,7 +165,7 @@ function init() {
   endbossStatusBar = new EndbossStatusBar();
 
   loop();
-};
+}
 
 /**
  * Updates keyboard state when a key is pressed.
@@ -183,7 +186,27 @@ window.addEventListener("keyup", (e) => {
   if (e.key === " ") keyboardState.SPACE = false;
   if (e.key === "d" || e.key === "D") keyboardState.D = false;
 });
+/**
+ * Stops the currently active game loop.
+ */
+function stopGameLoop() {
+  if (animationFrameId !== null) {
+    cancelAnimationFrame(animationFrameId);
+    animationFrameId = null;
+  }
+}
+/**
+ * Stops and removes all active throwable bottles.
+ */
+function clearThrowableObjects() {
+  throwableObjects.forEach((bottle) => {
+    if (bottle.stopMovement) {
+      bottle.stopMovement();
+    }
+  });
 
+  throwableObjects = [];
+}
 /**
  * Main game loop.
  *
@@ -216,7 +239,6 @@ function loop() {
 
     character.playDeadAnimation();
     draw();
-    requestAnimationFrame(loop);
     return;
   }
 
@@ -286,7 +308,7 @@ function loop() {
   removeDeadChickens();
 
   draw();
-  requestAnimationFrame(loop);
+  animationFrameId = requestAnimationFrame(loop);
 }
 
 /**
@@ -619,6 +641,7 @@ function checkBottleChickenCollision() {
     });
 
     if (hasHitChicken) {
+      bottle.stopMovement();
       bottleBreakSound.currentTime = 0;
       bottleBreakSound.play();
     }
@@ -637,6 +660,7 @@ function checkBottleChickenCollision() {
 function checkBottleEndbossCollision() {
   throwableObjects = throwableObjects.filter((bottle) => {
     if (!endboss.isDead && bottle.isColliding(endboss) && endboss.health > 0) {
+      bottle.stopMovement();
       endboss.takeDamage(20);
       endbossStatusBar.setPercentage(endboss.health);
       bottleBreakSound.currentTime = 0;
@@ -722,6 +746,8 @@ function restartGame() {
  * @returns {void}
  */
 function backToMenu() {
+  stopGameLoop();
+  clearThrowableObjects();
   gameOver = false;
   gameWon = false;
   deathAnimationStarted = false;
@@ -736,5 +762,7 @@ function backToMenu() {
   document.getElementById("start-screen").style.display = "block";
   document.getElementById("start-button").disabled = false;
 
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  if (ctx && canvas) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
 }
