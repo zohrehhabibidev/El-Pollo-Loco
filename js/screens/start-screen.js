@@ -33,8 +33,6 @@ function initStartScreen() {
   updateMuteButton();
   initMobileControls();
 }
-
-initStartScreen();
 /**
  * Adds pointer controls for mobile game buttons.
  *
@@ -46,40 +44,68 @@ function initMobileControls() {
   bindMobileControl("mobile-jump-button", "SPACE");
   bindMobileControl("mobile-throw-button", "D");
 }
-
 /**
- * Binds a mobile button to a keyboard state property.
+ * Gets a mobile control button by id.
  *
- * @param {string} buttonId - The id of the mobile control button.
- * @param {string} keyName - The keyboardState property to update.
+ * @param {string} buttonId - The button id.
+ * @returns {HTMLElement|null} The mobile control button.
+ */
+function getMobileControlButton(buttonId) {
+  return document.getElementById(buttonId);
+}
+/**
+ * Sets a mobile control key state.
+ *
+ * @param {PointerEvent} event - The pointer event.
+ * @param {string} keyName - The keyboard state key.
+ * @param {boolean} isPressed - Whether the key is pressed.
+ * @returns {void}
+ */
+function setMobileControlState(event, keyName, isPressed) {
+  event.preventDefault();
+  keyboardState[keyName] = isPressed;
+}
+/**
+ * Releases a mobile control key.
+ *
+ * @param {string} keyName - The keyboard state key.
+ * @returns {void}
+ */
+function releaseMobileControl(keyName) {
+  keyboardState[keyName] = false;
+}
+/**
+ * Prevents the mobile context menu.
+ *
+ * @param {Event} event - The context menu event.
+ * @returns {void}
+ */
+function preventMobileContextMenu(event) {
+  event.preventDefault();
+}
+/**
+ * Binds a mobile control button to a keyboard state key.
+ *
+ * @param {string} buttonId - The mobile button id.
+ * @param {string} keyName - The keyboard state key.
  * @returns {void}
  */
 function bindMobileControl(buttonId, keyName) {
-  const button = document.getElementById(buttonId);
+  const button = getMobileControlButton(buttonId);
 
   if (!button) {
     return;
   }
 
-  button.addEventListener("pointerdown", (event) => {
-    event.preventDefault();
-    keyboardState[keyName] = true;
-  });
-
-  button.addEventListener("pointerup", (event) => {
-    event.preventDefault();
-    keyboardState[keyName] = false;
-  });
-
-  button.addEventListener("pointercancel", () => {
-    keyboardState[keyName] = false;
-  });
-
-  button.addEventListener("pointerleave", () => {
-    keyboardState[keyName] = false;
-  });
-
-  button.addEventListener("contextmenu", (event) => {
-    event.preventDefault();
-  });
+  button.addEventListener("pointerdown", (event) =>
+    setMobileControlState(event, keyName, true)
+  );
+  button.addEventListener("pointerup", (event) =>
+    setMobileControlState(event, keyName, false)
+  );
+  button.addEventListener("pointercancel", () => releaseMobileControl(keyName));
+  button.addEventListener("pointerleave", () => releaseMobileControl(keyName));
+  button.addEventListener("contextmenu", preventMobileContextMenu);
 }
+
+initStartScreen();
