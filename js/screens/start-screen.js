@@ -28,11 +28,6 @@ function closeGuideOnBackdropClick(event) {
   }
 }
 
-/**
- * Connects start screen buttons with their click actions.
- *
- * @returns {void}
- */
 function initStartScreen() {
   document.getElementById("start-button").addEventListener("click", startGame);
   document.getElementById("help-button").addEventListener("click", openGuide);
@@ -46,3 +41,5 @@ function initStartScreen() {
   updateMuteButton();
   initMobileControls();
 }
+
+initStartScreen();
