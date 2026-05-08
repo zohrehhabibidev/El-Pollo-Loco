@@ -16,6 +16,10 @@ function closeGuide() {
   document.getElementById("guide-popup").classList.add("hidden");
 }
 
+document.getElementById("guide-popup").addEventListener("click", (event) => {
+  if (event.target.id === "guide-popup") closeGuide();
+});
+
 /**
  * Connects start screen buttons with their click actions.
  *
@@ -33,6 +37,7 @@ function initStartScreen() {
   updateMuteButton();
   initMobileControls();
 }
+
 /**
  * Adds pointer controls for mobile game buttons.
  *
@@ -44,6 +49,7 @@ function initMobileControls() {
   bindMobileControl("mobile-jump-button", "SPACE");
   bindMobileControl("mobile-throw-button", "D");
 }
+
 /**
  * Gets a mobile control button by id.
  *
@@ -53,6 +59,7 @@ function initMobileControls() {
 function getMobileControlButton(buttonId) {
   return document.getElementById(buttonId);
 }
+
 /**
  * Sets a mobile control key state.
  *
@@ -65,6 +72,7 @@ function setMobileControlState(event, keyName, isPressed) {
   event.preventDefault();
   keyboardState[keyName] = isPressed;
 }
+
 /**
  * Releases a mobile control key.
  *
@@ -74,6 +82,7 @@ function setMobileControlState(event, keyName, isPressed) {
 function releaseMobileControl(keyName) {
   keyboardState[keyName] = false;
 }
+
 /**
  * Prevents the mobile context menu.
  *
@@ -83,6 +92,7 @@ function releaseMobileControl(keyName) {
 function preventMobileContextMenu(event) {
   event.preventDefault();
 }
+
 /**
  * Binds a mobile control button to a keyboard state key.
  *
