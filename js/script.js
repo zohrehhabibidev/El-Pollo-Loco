@@ -16,6 +16,21 @@ let keyboardState = new Keyboard();
 let animationFrameId = null;
 let character;
 const worldEnd = 2260; // Right boundary of the playable world.
+const GAME_OVER_DELAY_MS = 900;
+const WIN_DELAY_MS = 1000;
+const CAMERA_X_OFFSET = 100;
+const CHICKEN_STOMP_TOLERANCE = 40;
+const ENDBOSS_BOTTLE_DAMAGE = 20;
+const THROWN_BOTTLE_X_OFFSET = 100;
+const THROWN_BOTTLE_Y_OFFSET = 120;
+const BACKGROUND_MUSIC_VOLUME = 0.06;
+const BOTTLE_OUT_OF_BOUNDS_LEFT = -200;
+const BOTTLE_OUT_OF_BOUNDS_RIGHT_MARGIN = 400;
+const BOTTLE_OUT_OF_BOUNDS_BOTTOM_MARGIN = 200;
+const COIN_HITBOX_HORIZONTAL_INSET = 35;
+const COIN_HITBOX_TOP_OFFSET = 10;
+const COIN_HITBOX_BOTTOM_OFFSET = 90;
+const COIN_STATUS_PERCENT_PER_COIN = 20;
 let statusBar;
 let gameOver = false; // Prevents the game over screen from being drawn multiple times.
 const gameOverImg = new Image();
@@ -29,7 +44,7 @@ const maxBottleCount = 9;
 let isMuted = localStorage.getItem("isMuted") === "true";
 const backgroundMusic = new Audio("assets/audio/background/background-game-music.mp3");
 backgroundMusic.loop = true;
-backgroundMusic.volume = 0.06;
+backgroundMusic.volume = BACKGROUND_MUSIC_VOLUME;
 backgroundMusic.muted = isMuted;
 const loseSound = new Audio("assets/audio/lose/game-over.mp3");
 const winSound = new Audio("assets/audio/win/win-sound.mp3");
@@ -253,7 +268,7 @@ function handleDeathState() {
     gameOverTimeoutId = setTimeout(() => {
       gameOver = true;
       showGameOver();
-    }, 900);
+    }, GAME_OVER_DELAY_MS);
   }
   character.playDeadAnimation();
   draw();
@@ -476,7 +491,7 @@ function clearCanvas() {
  * @returns {number} The camera x position.
  */
 function getCameraX() {
-  return Math.max(0, character.x - 100);
+  return Math.max(0, character.x - CAMERA_X_OFFSET);
 }
 /**
  * Applies the camera translation to the canvas context.
@@ -586,7 +601,7 @@ function showGameOver() {
  */
 function checkWinCondition() {
   if (endboss.isDead && !gameWon && !winTimeoutId) {
-    winTimeoutId = setTimeout(showWinScreen, 1000);
+    winTimeoutId = setTimeout(showWinScreen, WIN_DELAY_MS);
   }
 }
 /**
@@ -728,10 +743,9 @@ function stopEndSounds() {
 function isJumpingOnChicken(chicken) {
   const characterFeet = character.y + character.height;
   const chickenTop = chicken.y;
-  const landingTolerance = 40;
   return character.isColliding(chicken) &&
     character.speedY < 0 &&
-    characterFeet <= chickenTop + landingTolerance;
+    characterFeet <= chickenTop + CHICKEN_STOMP_TOLERANCE;
 }
 /**
  * Handles collecting a bottle.
@@ -766,10 +780,10 @@ function collectBottles() {
  */
 function getCharacterCoinBounds() {
   return {
-    left: character.x + 35,
-    right: character.x + character.width - 35,
-    top: character.y + 10,
-    bottom: character.y + 90,
+    left: character.x + COIN_HITBOX_HORIZONTAL_INSET,
+    right: character.x + character.width - COIN_HITBOX_HORIZONTAL_INSET,
+    top: character.y + COIN_HITBOX_TOP_OFFSET,
+    bottom: character.y + COIN_HITBOX_BOTTOM_OFFSET,
   };
 }
 /**
@@ -807,7 +821,7 @@ function isCollectingCoin(coin) {
  */
 function handleCoinCollect() {
   coinCount++;
-  coinStatusBar.setPercentage(Math.min(100, coinCount * 20));
+  coinStatusBar.setPercentage(Math.min(100, coinCount * COIN_STATUS_PERCENT_PER_COIN));
   coinCollectSound.currentTime = 0;
   coinCollectSound.play();
 }
@@ -833,8 +847,8 @@ function collectCoins() {
  */
 function throwBottle() {
   if (keyboardState.D && bottleCount > 0 && !character.isHurt) {
-    const bottleX = character.otherDirection ? character.x : character.x + 100;
-    const bottle = new ThrowableObject(bottleX, character.y + 120, character.otherDirection);
+    const bottleX = character.otherDirection ? character.x : character.x + THROWN_BOTTLE_X_OFFSET;
+    const bottle = new ThrowableObject(bottleX, character.y + THROWN_BOTTLE_Y_OFFSET, character.otherDirection);
     throwableObjects.push(bottle);
     bottleCount--;
     bottleStatusBar.setPercentage((bottleCount / maxBottleCount) * 100);
@@ -860,8 +874,9 @@ function updateBottleSplashes() {
  * @returns {boolean} True if the bottle is outside the playable area.
  */
 function isBottleOutOfBounds(bottle) {
-  const isOutsideWorld = bottle.x < -200 || bottle.x > worldEnd + 400;
-  const isBelowCanvas = bottle.y > canvas.height + 200;
+  const isOutsideWorld = bottle.x < BOTTLE_OUT_OF_BOUNDS_LEFT ||
+    bottle.x > worldEnd + BOTTLE_OUT_OF_BOUNDS_RIGHT_MARGIN;
+  const isBelowCanvas = bottle.y > canvas.height + BOTTLE_OUT_OF_BOUNDS_BOTTOM_MARGIN;
   return isOutsideWorld || isBelowCanvas;
 }
 /**
@@ -944,7 +959,7 @@ function canBottleHitEndboss(bottle) {
  */
 function hitEndbossWithBottle(bottle) {
   bottle.startSplash();
-  endboss.takeDamage(20);
+  endboss.takeDamage(ENDBOSS_BOTTLE_DAMAGE);
   endbossStatusBar.setPercentage(endboss.health);
   playBottleBreakSound();
 }
