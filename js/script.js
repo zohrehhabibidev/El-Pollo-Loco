@@ -459,19 +459,37 @@ function updateGameProgress() {
  * - collision detection and damage
  * - rendering
  */
-function loop() {
-  if (gameWon) {
-    return;
-  }
-  if (handleDeathState()) {
-    return;
-  }
+/**
+ * Updates all game state for one frame.
+ *
+ * @returns {void}
+ */
+function updateFrame() {
   updateCharacterActivity();
   updateCharacter();
   updateEnemies();
   handleCollisions();
   updateGameObjects();
   updateGameProgress();
+}
+
+/**
+ * Main game loop.
+ *
+ * Runs once per animation frame.
+ *
+ * @returns {void}
+ */
+function loop() {
+  if (gameWon) {
+    return;
+  }
+
+  if (handleDeathState()) {
+    return;
+  }
+
+  updateFrame();
   draw();
   animationFrameId = requestAnimationFrame(loop);
 }
