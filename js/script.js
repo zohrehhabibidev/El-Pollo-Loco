@@ -24,8 +24,6 @@ const COIN_HITBOX_BOTTOM_OFFSET = 90;
 const COIN_STATUS_PERCENT_PER_COIN = 20;
 let statusBar;
 let gameOver = false;
-const gameOverImg = new Image();
-gameOverImg.src = "assets/img/screens/lose/game-over-pepe-pic.png";
 let gameWon = false;
 let winTimeoutId = null;
 let deathAnimationStarted = false;
