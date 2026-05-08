@@ -28,7 +28,7 @@ let gameOverTimeoutId = null;
 let bottleStatusBar;
 const maxBottleCount = 9;
 
-let isMuted = localStorage.getItem("isMuted", true) === "true";
+let isMuted = localStorage.getItem("isMuted") === "true";
 
 const backgroundMusic = new Audio("assets/audio/background/background-game-music.mp3");
 backgroundMusic.loop = true;
@@ -234,30 +234,21 @@ function handleDeathState() {
   return true;
 }
 /**
- * Main game loop.
+ * Updates the character inactivity timer.
  *
- * Runs once per animation frame.
- *
- * Handles:
- * - player movement and animation states
- * - jumping and gravity
- * - enemy updates
- * - collision detection and damage
- * - rendering
+ * @returns {void}
  */
-function loop() {
-  if (gameWon) {
-    return;
-  }
-
-  if (handleDeathState()) {
-    return;
-  }
-
+function updateCharacterActivity() {
   if (isPlayerActive()) {
     character.resetInactivityTimer();
   }
-  // Priority 1: hurt state (overrides all other animations)
+}
+/**
+ * Updates character movement, animation, jumping, and gravity.
+ *
+ * @returns {void}
+ */
+function updateCharacter() {
   if (character.isHurt) {
     character.playHurtAnimation();
 
@@ -283,23 +274,33 @@ function loop() {
     character.showIdleImage();
   }
 
-  // Jump (only when on ground)
   if (keyboardState.SPACE && !character.isAboveGround()) {
     characterJumpSound.currentTime = 0;
     characterJumpSound.play();
     character.jump();
   }
 
-  // Apply gravity
   character.updateGravity();
-
-  // Update enemies
+}
+/**
+ * Updates all enemies.
+ *
+ * @returns {void}
+ */
+function updateEnemies() {
   chickens.forEach((chicken) => {
     chicken.update();
   });
 
   endboss.update(character.x);
+}
 
+/**
+ * Checks collisions between the character and chickens.
+ *
+ * @returns {void}
+ */
+function checkChickenCollisions() {
   chickens.forEach((chicken) => {
     if (!chicken.isDead && isJumpingOnChicken(chicken)) {
       chicken.die();
@@ -316,7 +317,23 @@ function loop() {
       statusBar.setPercentage(character.health);
     }
   });
+}
+
+/**
+ * Checks all character and enemy collisions.
+ *
+ * @returns {void}
+ */
+function handleCollisions() {
+  checkChickenCollisions();
   checkCharacterEndbossCollision();
+}
+/**
+ * Updates collectibles, thrown bottles, and bottle collisions.
+ *
+ * @returns {void}
+ */
+function updateGameObjects() {
   collectBottles();
   collectCoins();
   throwBottle();
@@ -324,8 +341,43 @@ function loop() {
   checkBottleEndbossCollision();
   updateBottleSplashes();
   removeMissedBottles();
+}
+/**
+ * Updates win condition and removes inactive enemies.
+ *
+ * @returns {void}
+ */
+function updateGameProgress() {
   checkWinCondition();
   removeDeadChickens();
+}
+/**
+ * Main game loop.
+ *
+ * Runs once per animation frame.
+ *
+ * Handles:
+ * - player movement and animation states
+ * - jumping and gravity
+ * - enemy updates
+ * - collision detection and damage
+ * - rendering
+ */
+function loop() {
+  if (gameWon) {
+    return;
+  }
+
+  if (handleDeathState()) {
+    return;
+  }
+
+  updateCharacterActivity();
+  updateCharacter();
+  updateEnemies();
+  handleCollisions();
+  updateGameObjects();
+  updateGameProgress();
 
   draw();
   animationFrameId = requestAnimationFrame(loop);
