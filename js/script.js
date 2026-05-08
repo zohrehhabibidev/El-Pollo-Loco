@@ -691,24 +691,55 @@ function isJumpingOnChicken(chicken) {
     characterFeet <= chickenTop + landingTolerance;
 }
 /**
- * Checks if the character collects a bottle.
+ * Handles collecting a bottle.
  *
- * Removes collected bottles from the world
- * and increases the bottle counter.
+ * @returns {void}
+ */
+function handleBottleCollect() {
+  bottleCount++;
+  bottleStatusBar.setPercentage((bottleCount / maxBottleCount) * 100);
+  bottleCollectSound.currentTime = 0;
+  bottleCollectSound.play();
+}
+/**
+ * Checks if the character collects a bottle.
  *
  * @returns {void}
  */
 function collectBottles() {
   bottles = bottles.filter((bottle) => {
     if (character.isColliding(bottle)) {
-      bottleCount++;
-      bottleStatusBar.setPercentage((bottleCount / maxBottleCount) * 100);
-      bottleCollectSound.currentTime = 0;
-      bottleCollectSound.play();
+      handleBottleCollect();
       return false;
     }
+
     return true;
   });
+}
+/**
+ * Gets the character bounds for coin collection.
+ *
+ * @returns {{left: number, right: number, top: number, bottom: number}} The character collection bounds.
+ */
+function getCharacterCoinBounds() {
+  return {
+    left: character.x + 35,
+    right: character.x + character.width - 35,
+    top: character.y + 10,
+    bottom: character.y + 90,
+  };
+}
+/**
+ * Gets the center position of a coin.
+ *
+ * @param {Coin} coin - The coin to check.
+ * @returns {{x: number, y: number}} The coin center position.
+ */
+function getCoinCenter(coin) {
+  return {
+    x: coin.x + coin.width / 2,
+    y: coin.y + coin.height / 2,
+  };
 }
 /**
  * Checks if the character collects a coin with the upper body while jumping.
@@ -717,35 +748,38 @@ function collectBottles() {
  * @returns {boolean} True when the coin center touches the character's upper body while airborne.
  */
 function isCollectingCoin(coin) {
-  const characterLeft = character.x + 35;
-  const characterRight = character.x + character.width - 35;
-  const characterTop = character.y + 10;
-  const characterBottom = character.y + 90;
-  const coinCenterX = coin.x + coin.width / 2;
-  const coinCenterY = coin.y + coin.height / 2;
+  const characterBounds = getCharacterCoinBounds();
+  const coinCenter = getCoinCenter(coin);
+
   return character.isAboveGround() &&
-    coinCenterX > characterLeft &&
-    coinCenterX < characterRight &&
-    coinCenterY > characterTop &&
-    coinCenterY < characterBottom;
+    coinCenter.x > characterBounds.left &&
+    coinCenter.x < characterBounds.right &&
+    coinCenter.y > characterBounds.top &&
+    coinCenter.y < characterBounds.bottom;
+}
+/**
+ * Handles collecting a coin.
+ *
+ * @returns {void}
+ */
+function handleCoinCollect() {
+  coinCount++;
+  coinStatusBar.setPercentage(Math.min(100, coinCount * 20));
+  coinCollectSound.currentTime = 0;
+  coinCollectSound.play();
 }
 /**
  * Checks if the character collects a coin.
- *
- * Removes collected coins from the world
- * and increases the coin counter.
  *
  * @returns {void}
  */
 function collectCoins() {
   coins = coins.filter((coin) => {
     if (isCollectingCoin(coin)) {
-      coinCount++;
-      coinStatusBar.setPercentage(Math.min(100, coinCount * 20));
-      coinCollectSound.currentTime = 0;
-      coinCollectSound.play();
+      handleCoinCollect();
       return false;
     }
+
     return true;
   });
 }
