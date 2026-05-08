@@ -1,21 +1,12 @@
-
 /**
- * Main game script.
- *
- * Responsibilities:
- * - initialize canvas and rendering context
- * - create main game objects
- * - handle keyboard input
- * - run the main game loop
- * - update movement, gravity, enemies, and collisions
- * - draw the world and fixed UI elements
+ * Main game script for setup, input handling, game updates, rendering, and UI flow.
  */
 let canvas;
 let ctx;
 let keyboardState = new Keyboard();
 let animationFrameId = null;
 let character;
-const worldEnd = 2260; // Right boundary of the playable world.
+const worldEnd = 2260;
 const GAME_OVER_DELAY_MS = 900;
 const WIN_DELAY_MS = 1000;
 const CAMERA_X_OFFSET = 100;
@@ -32,7 +23,7 @@ const COIN_HITBOX_TOP_OFFSET = 10;
 const COIN_HITBOX_BOTTOM_OFFSET = 90;
 const COIN_STATUS_PERCENT_PER_COIN = 20;
 let statusBar;
-let gameOver = false; // Prevents the game over screen from being drawn multiple times.
+let gameOver = false;
 const gameOverImg = new Image();
 gameOverImg.src = "assets/img/screens/lose/game-over-pepe-pic.png";
 let gameWon = false;
@@ -54,16 +45,8 @@ const bottleBreakSound = new Audio("assets/audio/throwable/bottleBreak.mp3");
 const characterDamageSound = new Audio("assets/audio/character/characterDamage.mp3");
 const characterJumpSound = new Audio("assets/audio/character/characterJump.wav");
 
-
 /**
- * Background layers used to build the game world.
- *
- * Each group of images represents one full screen (720px width).
- * By placing them next to each other (x = -720, 0, 720),
- * we create a continuous background.
- *
- * This allows the world to scroll later,
- * without leaving empty space on the screen.
+ * Background layers for the scrolling game world.
  */
 let backgroundObjects = [
   // First screen (left side, off-screen)
@@ -106,6 +89,7 @@ let coinCount = 0;
 let coinStatusBar;
 let endboss;
 let endbossStatusBar;
+
 /**
  * Prepares a new game session.
  *
@@ -115,6 +99,7 @@ function prepareNewGame() {
   stopGameLoop();
   clearThrowableObjects();
 }
+
 /**
  * Initializes the game canvas and context.
  *
@@ -124,6 +109,7 @@ function initCanvas() {
   canvas = document.getElementById("game-canvas");
   ctx = canvas.getContext("2d");
 }
+
 /**
  * Creates the player character.
  *
@@ -132,6 +118,7 @@ function initCanvas() {
 function createCharacter() {
   character = new Character();
 }
+
 /**
  * Creates the chicken enemies.
  *
@@ -144,6 +131,7 @@ function createChickens() {
     new Chicken(1800, "normal"),
   ];
 }
+
 /**
  * Creates collectible bottles and resets the bottle counter.
  *
@@ -163,6 +151,7 @@ function createBottles() {
   ];
   bottleCount = 0;
 }
+
 /**
  * Creates collectible coins and resets the coin counter.
  *
@@ -179,6 +168,7 @@ function createCoins() {
   ];
   coinCount = 0;
 }
+
 /**
  * Creates all status bars.
  *
@@ -189,6 +179,7 @@ function createStatusBars() {
   bottleStatusBar = new BottleStatusBar();
   coinStatusBar = new CoinStatusBar();
 }
+
 /**
  * Creates the endboss and its status bar.
  *
@@ -198,6 +189,7 @@ function createEndboss() {
   endboss = new Endboss();
   endbossStatusBar = new EndbossStatusBar();
 }
+
 /**
  * Initializes the game.
  *
@@ -214,6 +206,7 @@ function init() {
   createEndboss();
   loop();
 }
+
 /**
  * Updates keyboard state when a key is pressed.
  */
@@ -223,6 +216,7 @@ window.addEventListener("keydown", (e) => {
   if (e.key === " ") keyboardState.SPACE = true;
   if (e.key === "d" || e.key === "D") keyboardState.D = true;
 });
+
 /**
  * Updates keyboard state when a key is released.
  */
@@ -232,6 +226,7 @@ window.addEventListener("keyup", (e) => {
   if (e.key === " ") keyboardState.SPACE = false;
   if (e.key === "d" || e.key === "D") keyboardState.D = false;
 });
+
 /**
  * Stops the currently active game loop.
  */
@@ -241,6 +236,7 @@ function stopGameLoop() {
     animationFrameId = null;
   }
 }
+
 /**
  * Stops and removes all active throwable bottles.
  */
@@ -252,6 +248,7 @@ function clearThrowableObjects() {
   });
   throwableObjects = [];
 }
+
 /**
  * Handles the character death state.
  *
@@ -277,6 +274,7 @@ function handleDeathState() {
   }
   return true;
 }
+
 /**
  * Updates the character inactivity timer.
  *
@@ -287,6 +285,7 @@ function updateCharacterActivity() {
     character.resetInactivityTimer();
   }
 }
+
 /**
  * Moves the character to the right and plays walking animation.
  *
@@ -297,6 +296,7 @@ function moveCharacterRight() {
   character.otherDirection = false;
   character.playWalkingAnimation();
 }
+
 /**
  * Moves the character to the left and plays walking animation.
  *
@@ -309,6 +309,7 @@ function moveCharacterLeft() {
   character.otherDirection = true;
   character.playWalkingAnimation();
 }
+
 /**
  * Updates character animation and horizontal movement.
  *
@@ -329,6 +330,7 @@ function updateCharacterAnimation() {
     character.showIdleImage();
   }
 }
+
 /**
  * Handles character jump input and jump sound.
  *
@@ -340,6 +342,7 @@ function handleCharacterJump() {
     character.jump();
   }
 }
+
 /**
  * Updates character animation, jumping, and gravity.
  *
@@ -350,6 +353,7 @@ function updateCharacter() {
   handleCharacterJump();
   character.updateGravity();
 }
+
 /**
  * Updates all enemies.
  *
@@ -361,6 +365,7 @@ function updateEnemies() {
   });
   endboss.update(character.x);
 }
+
 /**
  * Plays the character damage sound from the beginning.
  *
@@ -369,6 +374,7 @@ function updateEnemies() {
 function playCharacterDamageSound() {
   playSound(characterDamageSound);
 }
+
 /**
  * Handles jumping on a chicken.
  *
@@ -379,6 +385,7 @@ function handleChickenStomp(chicken) {
   chicken.die();
   character.speedY = 10;
 }
+
 /**
  * Damages the character after touching a chicken.
  *
@@ -392,6 +399,7 @@ function damageCharacterFromChicken() {
   }
   statusBar.setPercentage(character.health);
 }
+
 /**
  * Handles one chicken collision with the character.
  *
@@ -405,6 +413,7 @@ function handleChickenCollision(chicken) {
     damageCharacterFromChicken();
   }
 }
+
 /**
  * Checks collisions between the character and chickens.
  *
@@ -415,6 +424,7 @@ function checkChickenCollisions() {
     handleChickenCollision(chicken);
   });
 }
+
 /**
  * Checks all character and enemy collisions.
  *
@@ -424,6 +434,7 @@ function handleCollisions() {
   checkChickenCollisions();
   checkCharacterEndbossCollision();
 }
+
 /**
  * Updates collectibles, thrown bottles, and bottle collisions.
  *
@@ -438,6 +449,7 @@ function updateGameObjects() {
   updateBottleSplashes();
   removeMissedBottles();
 }
+
 /**
  * Updates win condition and removes inactive enemies.
  *
@@ -447,18 +459,7 @@ function updateGameProgress() {
   checkWinCondition();
   removeDeadChickens();
 }
-/**
- * Main game loop.
- *
- * Runs once per animation frame.
- *
- * Handles:
- * - player movement and animation states
- * - jumping and gravity
- * - enemy updates
- * - collision detection and damage
- * - rendering
- */
+
 /**
  * Updates all game state for one frame.
  *
@@ -493,6 +494,7 @@ function loop() {
   draw();
   animationFrameId = requestAnimationFrame(loop);
 }
+
 /**
  * Clears the whole canvas.
  *
@@ -501,6 +503,7 @@ function loop() {
 function clearCanvas() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
+
 /**
  * Calculates the camera x position.
  *
@@ -509,6 +512,7 @@ function clearCanvas() {
 function getCameraX() {
   return Math.max(0, character.x - CAMERA_X_OFFSET);
 }
+
 /**
  * Applies the camera translation to the canvas context.
  *
@@ -517,6 +521,7 @@ function getCameraX() {
 function applyCameraTransform() {
   ctx.translate(-getCameraX(), 0);
 }
+
 /**
  * Draws all background objects.
  *
@@ -525,6 +530,7 @@ function applyCameraTransform() {
 function drawBackgroundObjects() {
   backgroundObjects.forEach((bg) => bg.draw(ctx));
 }
+
 /**
  * Draws collectible and throwable objects.
  *
@@ -543,6 +549,7 @@ function drawCollectibleObjects() {
     coin.draw(ctx);
   });
 }
+
 /**
  * Draws enemy objects.
  *
@@ -555,6 +562,7 @@ function drawEnemyObjects() {
 
   endboss.draw(ctx);
 }
+
 /**
  * Draws the character when visible.
  *
@@ -565,6 +573,7 @@ function drawCharacterIfVisible() {
     character.draw(ctx);
   }
 }
+
 /**
  * Draws all game objects inside the moving world.
  *
@@ -579,6 +588,7 @@ function drawWorld() {
   drawCharacterIfVisible();
   ctx.restore();
 }
+
 /**
  * Draws fixed UI elements.
  *
@@ -590,6 +600,7 @@ function drawFixedUi() {
   coinStatusBar.draw(ctx);
   endbossStatusBar.draw(ctx);
 }
+
 /**
  * Draws the current game frame.
  *
@@ -600,6 +611,7 @@ function draw() {
   drawWorld();
   drawFixedUi();
 }
+
 /**
  * Shows the lose screen overlay after the character dies.
  *
@@ -610,6 +622,7 @@ function showGameOver() {
   playLoseSound();
   document.getElementById("lose-screen").classList.remove("hidden");
 }
+
 /**
  * Checks if the player has won after defeating the endboss.
  *
@@ -620,6 +633,7 @@ function checkWinCondition() {
     winTimeoutId = setTimeout(showWinScreen, WIN_DELAY_MS);
   }
 }
+
 /**
  * Shows the win screen after the endboss is defeated.
  *
@@ -635,6 +649,7 @@ function showWinScreen() {
   playWinSound();
   document.getElementById("win-screen").classList.remove("hidden");
 }
+
 /**
  * Hides the win screen.
  *
@@ -643,6 +658,7 @@ function showWinScreen() {
 function hideWinScreen() {
   document.getElementById("win-screen").classList.add("hidden");
 }
+
 /**
  * Clears the pending win timeout.
  *
@@ -654,6 +670,7 @@ function clearWinTimeout() {
     winTimeoutId = null;
   }
 }
+
 /**
  * Clears the pending game over timeout.
  *
@@ -665,6 +682,7 @@ function clearGameOverTimeout() {
     gameOverTimeoutId = null;
   }
 }
+
 /**
  * Updates the mute button icon based on the current mute state.
  *
@@ -674,6 +692,7 @@ function updateMuteButton() {
   const muteButton = document.getElementById("mute-button");
   muteButton.textContent = isMuted ? "🔇" : "🔊";
 }
+
 /**
  * Applies the current mute state to all sounds.
  *
@@ -689,6 +708,7 @@ function applyMuteState() {
   characterDamageSound.muted = isMuted;
   characterJumpSound.muted = isMuted;
 }
+
 /**
  * Toggles the mute state and saves it in localStorage.
  *
@@ -700,6 +720,7 @@ function toggleMute() {
   applyMuteState();
   updateMuteButton();
 }
+
 /**
  * Plays a short sound effect from the beginning.
  *
@@ -711,6 +732,7 @@ function playSound(sound) {
   sound.muted = isMuted;
   sound.play();
 }
+
 /**
  * Starts the background music.
  *
@@ -721,6 +743,7 @@ function startBackgroundMusic() {
   applyMuteState();
   backgroundMusic.play();
 }
+
 /**
  * Stops and resets the background music.
  *
@@ -730,6 +753,7 @@ function stopBackgroundMusic() {
   backgroundMusic.pause();
   backgroundMusic.currentTime = 0;
 }
+
 /**
  * Plays the lose sound from the beginning.
  *
@@ -738,6 +762,7 @@ function stopBackgroundMusic() {
 function playLoseSound() {
   playSound(loseSound);
 }
+
 /**
  * Plays the win sound from the beginning.
  *
@@ -746,6 +771,7 @@ function playLoseSound() {
 function playWinSound() {
   playSound(winSound);
 }
+
 /**
  * Stops and resets end screen sounds.
  *
@@ -757,6 +783,7 @@ function stopEndSounds() {
   winSound.pause();
   winSound.currentTime = 0;
 }
+
 /**
  * Checks if the character lands on top of a chicken.
  *
@@ -770,6 +797,7 @@ function isJumpingOnChicken(chicken) {
     character.speedY < 0 &&
     characterFeet <= chickenTop + CHICKEN_STOMP_TOLERANCE;
 }
+
 /**
  * Handles collecting a bottle.
  *
@@ -780,6 +808,7 @@ function handleBottleCollect() {
   bottleStatusBar.setPercentage((bottleCount / maxBottleCount) * 100);
   playSound(bottleCollectSound);
 }
+
 /**
  * Checks if the character collects a bottle.
  *
@@ -795,6 +824,7 @@ function collectBottles() {
     return true;
   });
 }
+
 /**
  * Gets the character bounds for coin collection.
  *
@@ -808,6 +838,7 @@ function getCharacterCoinBounds() {
     bottom: character.y + COIN_HITBOX_BOTTOM_OFFSET,
   };
 }
+
 /**
  * Gets the center position of a coin.
  *
@@ -820,6 +851,7 @@ function getCoinCenter(coin) {
     y: coin.y + coin.height / 2,
   };
 }
+
 /**
  * Checks if the character collects a coin with the upper body while jumping.
  *
@@ -836,6 +868,7 @@ function isCollectingCoin(coin) {
     coinCenter.y > characterBounds.top &&
     coinCenter.y < characterBounds.bottom;
 }
+
 /**
  * Handles collecting a coin.
  *
@@ -846,6 +879,7 @@ function handleCoinCollect() {
   coinStatusBar.setPercentage(Math.min(100, coinCount * COIN_STATUS_PERCENT_PER_COIN));
   playSound(coinCollectSound);
 }
+
 /**
  * Checks if the character collects a coin.
  *
@@ -861,6 +895,7 @@ function collectCoins() {
     return true;
   });
 }
+
 /**
  * Throws a bottle when the D key is pressed and bottles are available.
  *
@@ -876,6 +911,7 @@ function throwBottle() {
     keyboardState.D = false;
   }
 }
+
 /**
  * Updates splash animations for thrown bottles.
  *
@@ -888,6 +924,7 @@ function updateBottleSplashes() {
     }
   });
 }
+
 /**
  * Checks if a thrown bottle is outside the playable area.
  *
@@ -900,8 +937,9 @@ function isBottleOutOfBounds(bottle) {
   const isBelowCanvas = bottle.y > canvas.height + BOTTLE_OUT_OF_BOUNDS_BOTTOM_MARGIN;
   return isOutsideWorld || isBelowCanvas;
 }
+
 /**
- * Stops a missed bottle before it gets removed.
+ * Stops a missed bottle before removing it from the game.
  *
  * @param {ThrowableObject} bottle - The thrown bottle to check.
  * @returns {void}
@@ -931,7 +969,7 @@ function shouldKeepBottle(bottle) {
 }
 
 /**
- * Removes thrown bottles that left the playable area or finished splashing.
+ * Stops missed bottles and removes inactive thrown bottles.
  *
  * @returns {void}
  */
@@ -939,6 +977,7 @@ function removeMissedBottles() {
   throwableObjects.forEach(stopMissedBottleIfNeeded);
   throwableObjects = throwableObjects.filter(shouldKeepBottle);
 }
+
 /**
  * Plays the bottle break sound from the beginning.
  *
@@ -947,6 +986,7 @@ function removeMissedBottles() {
 function playBottleBreakSound() {
   playSound(bottleBreakSound);
 }
+
 /**
  * Handles a bottle hit on a chicken.
  *
@@ -959,6 +999,7 @@ function hitChickenWithBottle(bottle, chicken) {
   bottle.startSplash();
   playBottleBreakSound();
 }
+
 /**
  * Checks if a bottle hits any chicken.
  *
@@ -972,6 +1013,7 @@ function checkBottleHitChicken(bottle) {
     }
   });
 }
+
 /**
  * Checks if a bottle can hit the endboss.
  *
@@ -983,6 +1025,7 @@ function canBottleHitEndboss(bottle) {
     bottle.isColliding(endboss) &&
     endboss.health > 0;
 }
+
 /**
  * Handles a bottle hit on the endboss.
  *
@@ -995,6 +1038,7 @@ function hitEndbossWithBottle(bottle) {
   endbossStatusBar.setPercentage(endboss.health);
   playBottleBreakSound();
 }
+
 /**
  * Checks collisions between thrown bottles and chickens.
  *
@@ -1008,6 +1052,7 @@ function checkBottleChickenCollision() {
     checkBottleHitChicken(bottle);
   });
 }
+
 /**
  * Checks collisions between thrown bottles and the endboss.
  *
@@ -1023,6 +1068,7 @@ function checkBottleEndbossCollision() {
     }
   });
 }
+
 /**
  * Checks collision between the character and the endboss.
  *
@@ -1038,6 +1084,7 @@ function checkCharacterEndbossCollision() {
     statusBar.setPercentage(character.health);
   }
 }
+
 /**
  * Removes chickens that finished showing their dead image.
  *
@@ -1046,6 +1093,7 @@ function checkCharacterEndbossCollision() {
 function removeDeadChickens() {
   chickens = chickens.filter((chicken) => !chicken.markedForRemoval);
 }
+
 /**
  * Resets main game state flags.
  *
@@ -1056,6 +1104,7 @@ function resetGameFlags() {
   gameWon = false;
   deathAnimationStarted = false;
 }
+
 /**
  * Stops all game end and background sounds.
  *
@@ -1065,6 +1114,7 @@ function stopGameSounds() {
   stopEndSounds();
   stopBackgroundMusic();
 }
+
 /**
  * Hides win and lose screens.
  *
@@ -1074,6 +1124,7 @@ function hideEndScreens() {
   document.getElementById("lose-screen").classList.add("hidden");
   hideWinScreen();
 }
+
 /**
  * Shows the start screen and enables the start button.
  *
@@ -1083,6 +1134,7 @@ function showStartScreen() {
   document.getElementById("start-screen").style.display = "block";
   document.getElementById("start-button").disabled = false;
 }
+
 /**
  * Clears the canvas if it is ready.
  *
@@ -1093,6 +1145,7 @@ function clearCanvasIfReady() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
 }
+
 /**
  * Starts the game after the user clicks the start button.
  *
@@ -1110,6 +1163,7 @@ function startGame() {
   init();
   startBackgroundMusic();
 }
+
 /**
  * Restarts the game after losing without reloading the page.
  *
@@ -1143,6 +1197,7 @@ function backToMenu() {
   showStartScreen();
   clearCanvasIfReady();
 }
+
 /**
  * Checks if the player is pressing an action key.
  *

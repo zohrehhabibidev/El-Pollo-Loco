@@ -22,7 +22,6 @@
   height: 100%;
 }
 
-
 /* =========================
    Game toolbar
 ========================= */
@@ -43,7 +42,6 @@
   font-size: 22px;
   cursor: pointer;
 }
-
 
 /* =========================
    Start screen
@@ -71,7 +69,6 @@
   display: flex;
   gap: 22px;
 }
-
 
 /* =========================
    Shared game buttons
@@ -123,7 +120,6 @@
   transform: translateY(3px);
   box-shadow: 0 2px 0 rgba(0, 0, 0, 0.35);
 }
-
 
 /* =========================
    Guide popup
@@ -201,7 +197,6 @@
   text-align: center;
 }
 
-
 /* =========================
    Lose screen
 ========================= */
@@ -237,7 +232,6 @@
   z-index: 2;
 }
 
-
 /* =========================
    Win screen
 ========================= */
@@ -269,7 +263,6 @@
   gap: 16px;
 }
 
-
 /* =========================
    Portrait warning
 ========================= */
@@ -277,7 +270,6 @@
 #portrait-warning {
   display: none;
 }
-
 
 /* =========================
    Mobile touch controls
@@ -325,12 +317,12 @@
   transform: scale(0.95);
 }
 
-
 /* =========================
    Mobile portrait mode
 ========================= */
 
 @media (hover: none) and (orientation: portrait) {
+
   html,
   body {
     overflow: hidden;
@@ -374,12 +366,12 @@
   }
 }
 
-
 /* =========================
    Mobile landscape mode
 ========================= */
 
 @media (hover: none) and (orientation: landscape) {
+
   html,
   body {
     width: 100%;
@@ -464,7 +456,8 @@
     height: clamp(40px, 12vh, 46px);
     font-size: clamp(18px, 5vh, 22px);
   }
-    #guide-popup {
+
+  #guide-popup {
     z-index: 80;
     align-items: center;
   }
@@ -515,7 +508,8 @@
     font-size: 15px;
     line-height: 1;
   }
-    #page-footer {
+
+  #page-footer {
     display: none;
   }
 }

@@ -17,23 +17,23 @@ const smallChickenDeadImage =
   "assets/img/enemies/chicken_small/2_dead/dead.png";
 
 /**
- * Represents a simple enemy (chicken).
- *
- * The chicken:
- * - has a position and size
- * - moves slowly to the left
- * - uses a walking animation
+ * Represents a chicken enemy.
  *
  * @extends MovableObject
  */
 class Chicken extends MovableObject {
+  /**
+   * Creates a chicken enemy.
+   *
+   * @param {number} x - Start x position.
+   * @param {string} type - Chicken type.
+   */
   constructor(x, type) {
     super();
 
     this.x = x;
     this.y = 370;
 
-    // Set properties based on the type of chicken
     if (type === "normal") {
       this.speed = 0.5;
       this.IMAGES = normalChickenImages;
@@ -47,9 +47,8 @@ class Chicken extends MovableObject {
       this.width = 50;
       this.height = 50;
     }
-    // Load the animation images into the cache
+
     this.loadImages(this.IMAGES);
-    // Set the initial image to the first frame of the animation
     this.img = this.imageCache[this.IMAGES[0]];
 
     this.isDead = false;
@@ -62,7 +61,11 @@ class Chicken extends MovableObject {
     this.imageCache[this.deadImage].src = this.deadImage;
   }
 
-  // Moves the chicken to the left and updates the animation frame.
+  /**
+   * Updates chicken movement and animation.
+   *
+   * @returns {void}
+   */
   update() {
     if (this.isDead) {
       return;
@@ -77,10 +80,10 @@ class Chicken extends MovableObject {
   }
 
   /**
- * Kills the chicken and shows the dead image.
- *
- * @returns {void}
- */
+   * Kills the chicken and shows the dead image.
+   *
+   * @returns {void}
+   */
   die() {
     if (this.isDead) {
       return;

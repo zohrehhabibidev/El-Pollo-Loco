@@ -46,14 +46,14 @@ class Endboss extends MovableObject {
     this.isDead = false;
     this.isHurt = false;
     this.hurtTimeoutId = null;
-
   }
+
   /**
- * Updates the endboss movement and animation.
- *
- * @param {number} characterX - Current x position of the character.
- * @returns {void}
- */
+   * Updates the endboss movement and animation.
+   *
+   * @param {number} characterX - Current x position of the character.
+   * @returns {void}
+   */
   update(characterX) {
     if (this.isDead) {
       this.playAnimation(endbossDeadImages);

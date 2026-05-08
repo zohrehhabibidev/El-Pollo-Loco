@@ -1,27 +1,24 @@
 /**
- * Base class for movable objects.
+ * Base class for movable game objects.
  *
- * Extends DrawableObject and adds:
- * - horizontal movement (left / right)
- * - vertical movement (jump / fall)
- * - a simple gravity system
+ * @extends DrawableObject
  */
 class MovableObject extends DrawableObject {
+  /**
+   * Creates a movable object with movement and gravity values.
+   */
   constructor() {
     super();
 
-    // Speed for horizontal movement
     this.speed = 2;
-
-    // Vertical speed (used for jumping and falling)
     this.speedY = 0;
-
-    // Gravity strength (reduces speedY each frame)
     this.acceleration = 0.5;
   }
 
   /**
    * Moves the object to the right.
+   *
+   * @returns {void}
    */
   moveRight() {
     this.x += this.speed;
@@ -29,6 +26,8 @@ class MovableObject extends DrawableObject {
 
   /**
    * Moves the object to the left.
+   *
+   * @returns {void}
    */
   moveLeft() {
     this.x -= this.speed;
@@ -37,39 +36,25 @@ class MovableObject extends DrawableObject {
   /**
    * Checks if the object is above the ground.
    *
-   * Note:
-   * Uses a temporary ground value (y < 250).
-   * Will later be replaced with real collision logic.
+   * @returns {boolean} True if the object is above the ground.
    */
   isAboveGround() {
     return this.y < 250;
   }
 
   /**
-   * Starts a jump by setting vertical speed.
+   * Starts a jump.
    *
-   * The object will move upward first,
-   * then gravity will pull it back down.
+   * @returns {void}
    */
   jump() {
     this.speedY = 15;
   }
 
   /**
-   * Updates vertical movement using gravity.
+   * Updates vertical movement with gravity.
    *
-   * Called every frame from the game loop.
-   *
-   * Behavior:
-   * - moves the object based on speedY
-   * - reduces speedY over time (gravity)
-   *
-   * Result:
-   * jump → slow down → fall
-   *
-   * Ground handling:
-   * - prevents falling below y = 250
-   * - resets speedY when landing
+   * @returns {void}
    */
   updateGravity() {
     if (this.isAboveGround() || this.speedY > 0) {
@@ -83,15 +68,13 @@ class MovableObject extends DrawableObject {
     }
   }
 
-/**
- * Checks whether this object is colliding with another object.
- *
- * This uses simple rectangle collision detection.
- * Each object is treated like an invisible box.
- *
- * @param {MovableObject} obj - The other object to check collision with.
- * @returns {boolean} True if both objects overlap.
- */  isColliding(obj) {
+  /**
+   * Checks whether this object collides with another object.
+   *
+   * @param {MovableObject} obj - The other object to check.
+   * @returns {boolean} True if both objects overlap.
+   */
+  isColliding(obj) {
     return this.x + this.width > obj.x &&
       this.x < obj.x + obj.width &&
       this.y + this.height > obj.y &&

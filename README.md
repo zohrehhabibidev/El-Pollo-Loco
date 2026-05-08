@@ -1,6 +1,6 @@
 # El Pollo Loco
 
-A browser-based Jump and Run game built with HTML, CSS, JavaScript, and Canvas.
+A browser-based jump-and-run game built with HTML, CSS, JavaScript, and Canvas.
 
 The player controls Pepe, collects coins and salsa bottles, avoids or defeats chickens, and fights the final endboss.
 
@@ -8,10 +8,9 @@ The player controls Pepe, collects coins and salsa bottles, avoids or defeats ch
 
 Open `index.html` in a browser.
 
-Recommended:
-Use a local development server, for example the Live Server extension in VS Code.
+Recommended: use a local development server, for example the Live Server extension in VS Code.
 
-The game does not start automatically. Click the (Start) button on the landing screen to begin.
+The game does not start automatically. Click the Start button on the landing screen to begin.
 
 ## How to Play
 
@@ -26,10 +25,10 @@ After losing or winning, the player can restart the game or return to the menu w
 
 ## Controls
 
-- `Arrow Left` => Run left
-- `Arrow Right` => Run right
-- `Space` => Jump
-- `D` => Throw a bottle
+- `Arrow Left`: Run left
+- `Arrow Right`: Run right
+- `Space`: Jump
+- `D`: Throw a bottle
 
 ## Features
 
@@ -91,10 +90,10 @@ Audio and asset credits are listed below.
 Background music:
 https://pixabay.com/music/video-games-game-gaming-video-game-music-471936/
 
-Win sound effects:
+Win sound:
 https://pixabay.com/users/doge_goober57-41887056/
 
-Game over sound effects:
+Game over sound:
 https://pixabay.com/users/audley_fergine-32337609/
 
 ## Legal
@@ -105,4 +104,4 @@ This project includes an Impressum page:
 
 ## Status
 
-This project is still in development as part of a frontend learning project.
+This project was built as part of a frontend learning project.

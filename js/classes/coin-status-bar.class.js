@@ -2,6 +2,9 @@
  * Represents the coin status bar.
  */
 class CoinStatusBar extends DrawableObject {
+  /**
+   * Creates the coin status bar.
+   */
   constructor() {
     super();
 
@@ -37,7 +40,7 @@ class CoinStatusBar extends DrawableObject {
   }
 
   /**
-   * Resolves the correct image index for the current percentage.
+   * Resolves the image index for the current percentage.
    *
    * @returns {number} Image index.
    */

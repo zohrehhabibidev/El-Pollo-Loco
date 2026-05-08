@@ -2,6 +2,9 @@
  * Represents the endboss health status bar.
  */
 class EndbossStatusBar extends DrawableObject {
+  /**
+   * Creates the endboss status bar.
+   */
   constructor() {
     super();
 
@@ -23,12 +26,13 @@ class EndbossStatusBar extends DrawableObject {
 
     this.setPercentage(100);
   }
+
   /**
- * Updates the endboss status bar.
- *
- * @param {number} percentage - Endboss health percentage between 0 and 100.
- * @returns {void}
- */
+   * Updates the endboss status bar.
+   *
+   * @param {number} percentage - Endboss health percentage between 0 and 100.
+   * @returns {void}
+   */
   setPercentage(percentage) {
     this.percentage = percentage;
     const index = this.resolveImageIndex();
@@ -36,7 +40,7 @@ class EndbossStatusBar extends DrawableObject {
   }
 
   /**
-   * Resolves the correct image index for the current percentage.
+   * Resolves the image index for the current percentage.
    *
    * @returns {number} Image index.
    */

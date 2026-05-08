@@ -1,14 +1,15 @@
 /**
- * Represents a collectible salsa bottle on the ground.
+ * Represents a collectible salsa bottle.
  */
 class Bottle extends DrawableObject {
   /**
    * Creates a bottle at a specific x position.
    *
-   * @param {number} x - Horizontal position of the bottle.
+   * @param {number} x - Horizontal position.
    */
   constructor(x) {
     super();
+
     this.loadImage("assets/img/collectible/salsa_bottle/1_salsa_bottle_on_ground.png");
     this.x = x;
     this.y = 360;

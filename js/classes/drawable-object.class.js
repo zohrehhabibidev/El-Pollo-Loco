@@ -1,26 +1,16 @@
 /**
- * Base class for all drawable objects.
- *
- * Handles:
- * - image loading
- * - animation frame caching
- * - position and size
- * - drawing on the canvas
+ * Base class for drawable game objects.
  */
 class DrawableObject {
+  /**
+   * Creates a drawable object with default position, size, and animation values.
+   */
   constructor() {
-    // Stores preloaded images for animations
     this.imageCache = {};
-
-    // Current animation frame index
     this.currentImage = 0;
     this.animationCounter = 0;
     this.animationDelay = 8;
-
-    // Current image to draw
     this.img = new Image();
-
-    // Position and size
     this.x = 0;
     this.y = 0;
     this.width = 200;
@@ -28,7 +18,10 @@ class DrawableObject {
   }
 
   /**
-   * Loads a single image and sets it as the current image.
+   * Loads one image and sets it as the current image.
+   *
+   * @param {string} path - Image path.
+   * @returns {void}
    */
   loadImage(path) {
     this.img = new Image();
@@ -37,7 +30,9 @@ class DrawableObject {
 
   /**
    * Loads multiple images into the image cache.
-   * Used for animations.
+   *
+   * @param {string[]} paths - Image paths to load.
+   * @returns {void}
    */
   loadImages(paths) {
     paths.forEach((path) => {
@@ -48,7 +43,7 @@ class DrawableObject {
   }
 
   /**
-   * Plays an animation using the given image paths.
+   * Plays an animation using image paths.
    *
    * @param {string[]} images - Image paths used for the animation.
    * @returns {void}
@@ -71,7 +66,8 @@ class DrawableObject {
   /**
    * Draws the object on the canvas.
    *
-   * If otherDirection is true, the image is flipped horizontally.
+   * @param {CanvasRenderingContext2D} ctx - Canvas rendering context.
+   * @returns {void}
    */
   draw(ctx) {
     if (this.otherDirection) {

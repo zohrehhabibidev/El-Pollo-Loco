@@ -1,12 +1,12 @@
 /**
- * Represents a collectible coin in the game world.
+ * Represents a collectible coin.
  */
 class Coin extends DrawableObject {
   /**
    * Creates a coin at a specific position.
    *
-   * @param {number} x - Horizontal position of the coin.
-   * @param {number} y - Vertical position of the coin.
+   * @param {number} x - Horizontal position.
+   * @param {number} y - Vertical position.
    */
   constructor(x, y) {
     super();

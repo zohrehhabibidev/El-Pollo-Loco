@@ -2,6 +2,9 @@
  * Represents the bottle status bar.
  */
 class BottleStatusBar extends DrawableObject {
+  /**
+   * Creates the bottle status bar.
+   */
   constructor() {
     super();
 
@@ -37,7 +40,7 @@ class BottleStatusBar extends DrawableObject {
   }
 
   /**
-   * Resolves the correct image index for the current percentage.
+   * Resolves the image index for the current percentage.
    *
    * @returns {number} Image index.
    */

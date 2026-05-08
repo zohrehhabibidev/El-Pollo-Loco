@@ -1,8 +1,5 @@
 /**
- * Paths for the walking animation frames.
- *
- * Each image represents one frame of the walking cycle.
- * These frames are played in sequence while the character is moving.
+ * Walking animation frames.
  *
  * @type {string[]}
  */
@@ -16,9 +13,7 @@ const characterWalking = [
 ];
 
 /**
- * Paths for the idle animation frames.
- *
- * These frames are played when the character is not moving.
+ * Idle animation frames.
  *
  * @type {string[]}
  */
@@ -34,6 +29,12 @@ const idleImages = [
   "assets/img/character/1_idle/idle/I-9.png",
   "assets/img/character/1_idle/idle/I-10.png",
 ];
+
+/**
+ * Long idle animation frames.
+ *
+ * @type {string[]}
+ */
 const longIdleImages = [
   "assets/img/character/1_idle/long_idle/I-11.png",
   "assets/img/character/1_idle/long_idle/I-12.png",
@@ -48,9 +49,7 @@ const longIdleImages = [
 ];
 
 /**
- * Paths for the dead animation frames.
- *
- * These frames are played when the character dies.
+ * Dead animation frames.
  *
  * @type {string[]}
  */
@@ -64,9 +63,7 @@ const deadImages = [
 ];
 
 /**
- * Paths for the hurt animation frames.
- *
- * These frames are played when the character takes damage.
+ * Hurt animation frames.
  *
  * @type {string[]}
  */
@@ -76,6 +73,11 @@ const hurtImages = [
   "assets/img/character/4_hurt/H-43.png",
 ];
 
+/**
+ * Jump animation frames.
+ *
+ * @type {string[]}
+ */
 const jumpImages = [
   "assets/img/character/3_jump/J-31.png",
   "assets/img/character/3_jump/J-32.png",
@@ -91,36 +93,24 @@ const jumpImages = [
 /**
  * Represents the main player character.
  *
- * Responsibilities:
- * - manage position, size, and movement
- * - handle animation states (idle, walking, hurt, dead)
- * - manage health and damage behavior
- *
  * @extends MovableObject
  */
 class Character extends MovableObject {
+  /**
+   * Creates the player character.
+   */
   constructor() {
     super();
 
-    // Initial position in the world
     this.x = 50;
     this.y = 250;
-
-    // Character dimensions
     this.width = 150;
     this.height = 200;
-
-    // Horizontal movement speed
     this.speed = 3;
-
-    // Health system
     this.health = 100;
     this.isHurt = false;
-
-    // Visibility flag (used after death)
     this.visible = true;
 
-    // Preload all animation frames into cache
     this.loadImages(idleImages);
     this.loadImages(longIdleImages);
     this.lastActivityTime = Date.now();
@@ -131,17 +121,14 @@ class Character extends MovableObject {
     this.loadImages(deadImages);
     this.loadImages(jumpImages);
 
-    // Set initial image (idle state)
     this.img = this.imageCache[idleImages[0]];
-
-    // Direction flag (false = right, true = left)
     this.otherDirection = false;
   }
 
   /**
    * Plays the walking animation.
    *
-   * Called while the character is moving.
+   * @returns {void}
    */
   playWalkingAnimation() {
     this.playAnimation(characterWalking);
@@ -150,13 +137,14 @@ class Character extends MovableObject {
   /**
    * Plays the idle animation.
    *
-   * Called when no movement input is active.
+   * @returns {void}
    */
   showIdleImage() {
     this.playAnimation(idleImages);
   }
+
   /**
-   * Resets the inactivity timer after player input.
+   * Resets the inactivity timer.
    *
    * @returns {void}
    */
@@ -169,19 +157,21 @@ class Character extends MovableObject {
       this.animationCounter = 0;
     }
   }
+
   /**
-   * Checks if the character has been inactive long enough to sleep.
+   * Checks if the character has been inactive long enough.
    *
-   * @returns {boolean} True if the character should play the sleep animation.
+   * @returns {boolean} True if the character is long idle.
    */
   isLongIdle() {
     return Date.now() - this.lastActivityTime >= 15000;
   }
+
   /**
- * Plays the long idle / sleep animation.
- *
- * @returns {void}
- */
+   * Plays the long idle animation.
+   *
+   * @returns {void}
+   */
   showLongIdleImage() {
     if (!this.isSleeping) {
       this.isSleeping = true;
@@ -191,20 +181,21 @@ class Character extends MovableObject {
 
     this.playAnimation(longIdleImages);
   }
+
   /**
    * Plays the hurt animation.
    *
-   * Called while the character is in the hurt state.
+   * @returns {void}
    */
   playHurtAnimation() {
     this.playAnimation(hurtImages);
   }
 
   /**
-  * Plays the character dead animation once and stops on the last frame.
-  *
-  * @returns {void}
-  */
+   * Plays the dead animation once.
+   *
+   * @returns {void}
+   */
   playDeadAnimation() {
     if (this.currentImage >= deadImages.length) {
       this.img = this.imageCache[deadImages[deadImages.length - 1]];
@@ -224,9 +215,7 @@ class Character extends MovableObject {
   /**
    * Applies damage to the character.
    *
-   * - Reduces health
-   * - Activates temporary invulnerability (isHurt)
-   * - Prevents continuous damage while touching an enemy
+   * @returns {void}
    */
   takeDamage() {
     if (!this.isHurt) {
@@ -235,7 +224,6 @@ class Character extends MovableObject {
 
       if (this.health < 0) this.health = 0;
 
-      // Reset hurt state after 1 second
       setTimeout(() => {
         this.isHurt = false;
       }, 1000);
@@ -245,17 +233,17 @@ class Character extends MovableObject {
   /**
    * Checks whether the character is dead.
    *
-   * @returns {boolean} True if health is zero or below
+   * @returns {boolean} True if the character is dead.
    */
   isDead() {
     return this.health <= 0;
   }
 
   /**
- * Shows the character jump image based on vertical speed.
- *
- * @returns {void}
- */
+   * Shows the jump image based on vertical speed.
+   *
+   * @returns {void}
+   */
   playJumpAnimation() {
     if (this.speedY > 1) {
       this.img = this.imageCache[jumpImages[3]];

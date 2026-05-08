@@ -19,11 +19,11 @@ class ThrowableObject extends MovableObject {
     this.x = x;
     this.y = y;
 
-    this.width = 60; // Width of the bottle
-    this.height = 70; // Height of the bottle
+    this.width = 60;
+    this.height = 70;
 
-    this.speed = 6; // Forward speed of the bottle
-    this.speedY = 20; // Initial upward speed for the throw
+    this.speed = 6;
+    this.speedY = 20;
     this.acceleration = 1;
     this.throwDirection = otherDirection ? -1 : 1;
     this.movementIntervalId = null;
@@ -54,6 +54,7 @@ class ThrowableObject extends MovableObject {
       this.speedY -= this.acceleration;
     }, 1000 / 60);
   }
+
   /**
    * Starts the bottle splash animation after a hit.
    *
@@ -70,11 +71,12 @@ class ThrowableObject extends MovableObject {
     this.animationCounter = 0;
     this.img = this.imageCache[this.splashImages[0]];
   }
+
   /**
- * Plays the splash animation once and marks the bottle for removal.
- *
- * @returns {void}
- */
+   * Plays the splash animation once and marks the bottle for removal.
+   *
+   * @returns {void}
+   */
   playSplashAnimation() {
     if (!this.hasSplashed || this.markedForRemoval) {
       return;
@@ -97,6 +99,7 @@ class ThrowableObject extends MovableObject {
     this.img = this.imageCache[path];
     this.currentImage++;
   }
+
   /**
    * Stops the bottle movement interval.
    *
