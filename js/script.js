@@ -108,28 +108,50 @@ let coinStatusBar;
 let endboss;
 let endbossStatusBar;
 
-
-
 /**
- * Initializes the game.
+ * Prepares a new game session.
  *
- * Creates the canvas context, player character,
- * enemies, status bar, and starts the game loop.
+ * @returns {void}
  */
-function init() {
+function prepareNewGame() {
   stopGameLoop();
   clearThrowableObjects();
+}
+/**
+ * Initializes the game canvas and context.
+ *
+ * @returns {void}
+ */
+function initCanvas() {
   canvas = document.getElementById("game-canvas");
   ctx = canvas.getContext("2d");
-
+}
+/**
+ * Creates the player character.
+ *
+ * @returns {void}
+ */
+function createCharacter() {
   character = new Character();
-
+}
+/**
+ * Creates the chicken enemies.
+ *
+ * @returns {void}
+ */
+function createChickens() {
   chickens = [
     new Chicken(1200, "normal"),
     new Chicken(1500, "small"),
     new Chicken(1800, "normal"),
   ];
-
+}
+/**
+ * Creates collectible bottles and resets the bottle counter.
+ *
+ * @returns {void}
+ */
+function createBottles() {
   bottles = [
     new Bottle(350),
     new Bottle(650),
@@ -141,8 +163,15 @@ function init() {
     new Bottle(1950),
     new Bottle(2100),
   ];
-  bottleCount = 0;
 
+  bottleCount = 0;
+}
+/**
+ * Creates collectible coins and resets the coin counter.
+ *
+ * @returns {void}
+ */
+function createCoins() {
   coins = [
     new Coin(430, 190),
     new Coin(680, 140),
@@ -153,12 +182,40 @@ function init() {
   ];
 
   coinCount = 0;
-
+}
+/**
+ * Creates all status bars.
+ *
+ * @returns {void}
+ */
+function createStatusBars() {
   statusBar = new StatusBar();
   bottleStatusBar = new BottleStatusBar();
   coinStatusBar = new CoinStatusBar();
+}
+/**
+ * Creates the endboss and its status bar.
+ *
+ * @returns {void}
+ */
+function createEndboss() {
   endboss = new Endboss();
   endbossStatusBar = new EndbossStatusBar();
+}
+/**
+ * Initializes the game.
+ *
+ * @returns {void}
+ */
+function init() {
+  prepareNewGame();
+  initCanvas();
+  createCharacter();
+  createChickens();
+  createBottles();
+  createCoins();
+  createStatusBars();
+  createEndboss();
 
   loop();
 }
