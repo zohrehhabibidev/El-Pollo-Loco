@@ -336,8 +336,7 @@ function updateCharacterAnimation() {
  */
 function handleCharacterJump() {
   if (keyboardState.SPACE && !character.isAboveGround()) {
-    characterJumpSound.currentTime = 0;
-    characterJumpSound.play();
+    playSound(characterJumpSound);
     character.jump();
   }
 }
@@ -368,8 +367,7 @@ function updateEnemies() {
  * @returns {void}
  */
 function playCharacterDamageSound() {
-  characterDamageSound.currentTime = 0;
-  characterDamageSound.play();
+  playSound(characterDamageSound);
 }
 /**
  * Handles jumping on a chicken.
@@ -685,6 +683,17 @@ function toggleMute() {
   updateMuteButton();
 }
 /**
+ * Plays a short sound effect from the beginning.
+ *
+ * @param {HTMLAudioElement} sound - The sound to play.
+ * @returns {void}
+ */
+function playSound(sound) {
+  sound.currentTime = 0;
+  sound.muted = isMuted;
+  sound.play();
+}
+/**
  * Starts the background music.
  *
  * @returns {void}
@@ -709,9 +718,7 @@ function stopBackgroundMusic() {
  * @returns {void}
  */
 function playLoseSound() {
-  loseSound.currentTime = 0;
-  loseSound.muted = isMuted;
-  loseSound.play();
+  playSound(loseSound);
 }
 /**
  * Plays the win sound from the beginning.
@@ -719,9 +726,7 @@ function playLoseSound() {
  * @returns {void}
  */
 function playWinSound() {
-  winSound.currentTime = 0;
-  winSound.muted = isMuted;
-  winSound.play();
+  playSound(winSound);
 }
 /**
  * Stops and resets end screen sounds.
@@ -755,8 +760,7 @@ function isJumpingOnChicken(chicken) {
 function handleBottleCollect() {
   bottleCount++;
   bottleStatusBar.setPercentage((bottleCount / maxBottleCount) * 100);
-  bottleCollectSound.currentTime = 0;
-  bottleCollectSound.play();
+  playSound(bottleCollectSound);
 }
 /**
  * Checks if the character collects a bottle.
@@ -822,8 +826,7 @@ function isCollectingCoin(coin) {
 function handleCoinCollect() {
   coinCount++;
   coinStatusBar.setPercentage(Math.min(100, coinCount * COIN_STATUS_PERCENT_PER_COIN));
-  coinCollectSound.currentTime = 0;
-  coinCollectSound.play();
+  playSound(coinCollectSound);
 }
 /**
  * Checks if the character collects a coin.
@@ -912,8 +915,7 @@ function removeMissedBottles() {
  * @returns {void}
  */
 function playBottleBreakSound() {
-  bottleBreakSound.currentTime = 0;
-  bottleBreakSound.play();
+  playSound(bottleBreakSound);
 }
 /**
  * Handles a bottle hit on a chicken.
@@ -1001,8 +1003,7 @@ function checkCharacterEndbossCollision() {
     const oldHealth = character.health;
     character.takeDamage();
     if (character.health < oldHealth) {
-      characterDamageSound.currentTime = 0;
-      characterDamageSound.play();
+      playCharacterDamageSound();
     }
     statusBar.setPercentage(character.health);
   }
