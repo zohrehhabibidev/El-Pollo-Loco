@@ -382,32 +382,33 @@ function loop() {
   draw();
   animationFrameId = requestAnimationFrame(loop);
 }
+/**
+ * Clears the whole canvas.
+ *
+ * @returns {void}
+ */
+function clearCanvas() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
 
 /**
- * Draws the current game frame.
+ * Calculates the camera x position.
  *
- * The world is drawn inside the camera translation.
- * UI elements, such as the status bar, are drawn after
- * ctx.restore() so they stay fixed on the screen.
+ * @returns {number} The camera x position.
  */
-function draw() {
-  // Clear the entire canvas before drawing a new frame
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+function getCameraX() {
+  return Math.max(0, character.x - 100);
+}
 
-  // Save the current canvas state
+/**
+ * Draws all game objects inside the moving world.
+ *
+ * @returns {void}
+ */
+function drawWorld() {
   ctx.save();
+  ctx.translate(-getCameraX(), 0);
 
-  /**
-   * Move the camera so the character stays near the center.
-   *
-   * Explanation:
-   * - character.x → position of the player
-   * - -character.x → move the world in the opposite direction
-   * - +100 → offset so the character is not exactly centered
-   */
-  const cameraX = Math.max(0, character.x - 100);
-  ctx.translate(-cameraX, 0);
-  // Move the world to the left so the camera follows the character.
   backgroundObjects.forEach((bg) => bg.draw(ctx));
 
   bottles.forEach((bottle) => {
@@ -428,27 +429,36 @@ function draw() {
 
   endboss.draw(ctx);
 
-  // Draw the character only while it is visible.
   if (character.visible) {
     character.draw(ctx);
   }
 
-  // Restore the original canvas state (reset camera)
   ctx.restore();
+}
 
-  // Draw fixed UI after restoring the canvas state.
+/**
+ * Draws fixed UI elements.
+ *
+ * @returns {void}
+ */
+function drawFixedUi() {
   statusBar.draw(ctx);
   bottleStatusBar.draw(ctx);
   coinStatusBar.draw(ctx);
   endbossStatusBar.draw(ctx);
 }
+
 /**
- * Shows the game over screen.
+ * Draws the current game frame.
  *
- * Adds a dark overlay and draws the game over image
- * over the full canvas. If the image is not loaded yet,
- * it waits until loading is complete before drawing.
+ * @returns {void}
  */
+function draw() {
+  clearCanvas();
+  drawWorld();
+  drawFixedUi();
+}
+
 /**
  * Shows the lose screen overlay after the character dies.
  *
