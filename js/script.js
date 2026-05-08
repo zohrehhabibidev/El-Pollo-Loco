@@ -883,6 +883,18 @@ function isBottleOutOfBounds(bottle) {
   return isOutsideWorld || isBelowCanvas;
 }
 /**
+ * Stops a missed bottle before it gets removed.
+ *
+ * @param {ThrowableObject} bottle - The thrown bottle to check.
+ * @returns {void}
+ */
+function stopMissedBottleIfNeeded(bottle) {
+  if (!bottle.markedForRemoval && !bottle.hasSplashed && isBottleOutOfBounds(bottle)) {
+    bottle.stopMovement();
+  }
+}
+
+/**
  * Checks if a thrown bottle should stay active.
  *
  * @param {ThrowableObject} bottle - The thrown bottle to check.
@@ -892,21 +904,21 @@ function shouldKeepBottle(bottle) {
   if (bottle.markedForRemoval) {
     return false;
   }
+
   if (bottle.hasSplashed) {
     return true;
   }
-  if (isBottleOutOfBounds(bottle)) {
-    bottle.stopMovement();
-    return false;
-  }
-  return true;
+
+  return !isBottleOutOfBounds(bottle);
 }
+
 /**
  * Removes thrown bottles that left the playable area or finished splashing.
  *
  * @returns {void}
  */
 function removeMissedBottles() {
+  throwableObjects.forEach(stopMissedBottleIfNeeded);
   throwableObjects = throwableObjects.filter(shouldKeepBottle);
 }
 /**
