@@ -479,30 +479,73 @@ function getCameraX() {
   return Math.max(0, character.x - 100);
 }
 /**
+ * Applies the camera translation to the canvas context.
+ *
+ * @returns {void}
+ */
+function applyCameraTransform() {
+  ctx.translate(-getCameraX(), 0);
+}
+/**
+ * Draws all background objects.
+ *
+ * @returns {void}
+ */
+function drawBackgroundObjects() {
+  backgroundObjects.forEach((bg) => bg.draw(ctx));
+}
+/**
+ * Draws collectible and throwable objects.
+ *
+ * @returns {void}
+ */
+function drawCollectibleObjects() {
+  bottles.forEach((bottle) => {
+    bottle.draw(ctx);
+  });
+
+  throwableObjects.forEach((bottle) => {
+    bottle.draw(ctx);
+  });
+
+  coins.forEach((coin) => {
+    coin.draw(ctx);
+  });
+}
+/**
+ * Draws enemy objects.
+ *
+ * @returns {void}
+ */
+function drawEnemyObjects() {
+  chickens.forEach((chicken) => {
+    chicken.draw(ctx);
+  });
+
+  endboss.draw(ctx);
+}
+/**
+ * Draws the character when visible.
+ *
+ * @returns {void}
+ */
+function drawCharacterIfVisible() {
+  if (character.visible) {
+    character.draw(ctx);
+  }
+}
+/**
  * Draws all game objects inside the moving world.
  *
  * @returns {void}
  */
 function drawWorld() {
   ctx.save();
-  ctx.translate(-getCameraX(), 0);
-  backgroundObjects.forEach((bg) => bg.draw(ctx));
-  bottles.forEach((bottle) => {
-    bottle.draw(ctx);
-  });
-  throwableObjects.forEach((bottle) => {
-    bottle.draw(ctx);
-  });
-  coins.forEach((coin) => {
-    coin.draw(ctx);
-  });
-  chickens.forEach((chicken) => {
-    chicken.draw(ctx);
-  });
-  endboss.draw(ctx);
-  if (character.visible) {
-    character.draw(ctx);
-  }
+  applyCameraTransform();
+  drawBackgroundObjects();
+  drawCollectibleObjects();
+  drawEnemyObjects();
+  drawCharacterIfVisible();
   ctx.restore();
 }
 /**
