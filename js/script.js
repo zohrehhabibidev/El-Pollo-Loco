@@ -204,6 +204,36 @@ function clearThrowableObjects() {
   throwableObjects = [];
 }
 /**
+ * Handles the character death state.
+ *
+ * @returns {boolean} True if the death state was handled.
+ */
+function handleDeathState() {
+  if (!character.isDead()) {
+    return false;
+  }
+
+  if (!deathAnimationStarted) {
+    deathAnimationStarted = true;
+    character.currentImage = 0;
+    character.animationCounter = 0;
+
+    gameOverTimeoutId = setTimeout(() => {
+      gameOver = true;
+      showGameOver();
+    }, 900);
+  }
+
+  character.playDeadAnimation();
+  draw();
+
+  if (!gameOver) {
+    animationFrameId = requestAnimationFrame(loop);
+  }
+
+  return true;
+}
+/**
  * Main game loop.
  *
  * Runs once per animation frame.
@@ -219,27 +249,8 @@ function loop() {
   if (gameWon) {
     return;
   }
-  // Stop the game loop when the character is dead.
-  // The game over screen is shown only once.
-  if (character.isDead()) {
-    if (!deathAnimationStarted) {
-      deathAnimationStarted = true;
-      character.currentImage = 0;
-      character.animationCounter = 0;
 
-      gameOverTimeoutId = setTimeout(() => {
-        gameOver = true;
-        showGameOver();
-      }, 900);
-    }
-
-    character.playDeadAnimation();
-    draw();
-
-    if (!gameOver) {
-      animationFrameId = requestAnimationFrame(loop);
-    }
-
+  if (handleDeathState()) {
     return;
   }
 
