@@ -38,7 +38,12 @@ class Endboss extends MovableObject {
     this.y = 135;
     this.width = 260;
     this.height = 330;
-
+    this.offset = {
+      top: 85,
+      right: 45,
+      bottom: 20,
+      left: 45,
+    };
     this.speed = 0.4;
     this.activationX = 1700;
     this.minDistanceToCharacter = 120;
