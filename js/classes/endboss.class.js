@@ -35,7 +35,7 @@ class Endboss extends MovableObject {
     this.img = this.imageCache[endbossWalkImages[0]];
 
     this.x = 2450;
-    this.y = 120;
+    this.y = 135;
     this.width = 260;
     this.height = 330;
 

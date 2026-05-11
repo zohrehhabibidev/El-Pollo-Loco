@@ -12,7 +12,7 @@ class Bottle extends DrawableObject {
 
     this.loadImage("assets/img/collectible/salsa_bottle/1_salsa_bottle_on_ground.png");
     this.x = x;
-    this.y = 360;
+    this.y = 379;
     this.width = 60;
     this.height = 70;
     this.offset = {

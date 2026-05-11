@@ -32,13 +32,14 @@ class Chicken extends MovableObject {
     super();
 
     this.x = x;
-    this.y = 370;
 
     if (type === "normal") {
       this.speed = 0.5;
       this.IMAGES = normalChickenImages;
       this.width = 80;
       this.height = 80;
+      this.y = 382;
+
       this.offset = {
         top: 15,
         right: 15,
@@ -52,6 +53,7 @@ class Chicken extends MovableObject {
       this.IMAGES = smallChickenImages;
       this.width = 50;
       this.height = 50;
+      this.y = 400;
       this.offset = {
         top: 8,
         right: 10,
