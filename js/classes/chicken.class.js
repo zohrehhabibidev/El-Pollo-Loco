@@ -39,6 +39,12 @@ class Chicken extends MovableObject {
       this.IMAGES = normalChickenImages;
       this.width = 80;
       this.height = 80;
+      this.offset = {
+        top: 15,
+        right: 15,
+        bottom: 8,
+        left: 15,
+      };
     }
 
     if (type === "small") {
@@ -46,6 +52,12 @@ class Chicken extends MovableObject {
       this.IMAGES = smallChickenImages;
       this.width = 50;
       this.height = 50;
+      this.offset = {
+        top: 8,
+        right: 10,
+        bottom: 5,
+        left: 10,
+      };
     }
 
     this.loadImages(this.IMAGES);

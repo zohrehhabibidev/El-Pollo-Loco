@@ -106,6 +106,12 @@ class Character extends MovableObject {
     this.y = 250;
     this.width = 145;
     this.height = 225;
+    this.offset = {
+      top: 85,
+      right: 35,
+      bottom: 15,
+      left: 35,
+    };
     this.speed = 3;
     this.health = 100;
     this.isHurt = false;

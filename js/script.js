@@ -22,6 +22,9 @@ const COIN_HITBOX_HORIZONTAL_INSET = 35;
 const COIN_HITBOX_TOP_OFFSET = 10;
 const COIN_HITBOX_BOTTOM_OFFSET = 90;
 const COIN_STATUS_PERCENT_PER_COIN = 20;
+const DEBUG_HITBOXES = false;
+
+
 let statusBar;
 let gameOver = false;
 let gameWon = false;
@@ -551,6 +554,37 @@ function applyCameraTransform() {
   ctx.translate(-getCameraX(), 0);
 }
 
+function drawDebugBox(object, color) {
+  const box = object.getCollisionBox();
+
+  ctx.save();
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 2;
+  ctx.strokeRect(
+    box.left,
+    box.top,
+    box.right - box.left,
+    box.bottom - box.top
+  );
+  ctx.restore();
+}
+
+function drawDebugHitboxes() {
+  if (!DEBUG_HITBOXES) return;
+
+  ctx.save();
+  applyCameraTransform();
+
+  drawDebugBox(character, "blue");
+  chickens.forEach((chicken) => drawDebugBox(chicken, "red"));
+  drawDebugBox(endboss, "purple");
+  bottles.forEach((bottle) => drawDebugBox(bottle, "yellow"));
+  throwableObjects.forEach((bottle) => drawDebugBox(bottle, "orange"));
+  coins.forEach((coin) => drawDebugBox(coin, "green"));
+
+  ctx.restore();
+}
+
 /**
  * Draws all background objects.
  *
@@ -653,6 +687,7 @@ function draw() {
   drawWorld();
   drawFixedUi();
   drawCharacterWithCamera();
+  drawDebugHitboxes();
 }
 
 /**

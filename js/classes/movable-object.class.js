@@ -71,13 +71,16 @@ class MovableObject extends DrawableObject {
   /**
    * Checks whether this object collides with another object.
    *
-   * @param {MovableObject} obj - The other object to check.
-   * @returns {boolean} True if both objects overlap.
+   * @param {DrawableObject} obj - Object to check collision with.
+   * @returns {boolean} True if the objects collide.
    */
   isColliding(obj) {
-    return this.x + this.width > obj.x &&
-      this.x < obj.x + obj.width &&
-      this.y + this.height > obj.y &&
-      this.y < obj.y + obj.height;
+    const thisBox = this.getCollisionBox();
+    const objBox = obj.getCollisionBox();
+
+    return thisBox.right > objBox.left &&
+      thisBox.left < objBox.right &&
+      thisBox.bottom > objBox.top &&
+      thisBox.top < objBox.bottom;
   }
 }
