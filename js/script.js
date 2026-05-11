@@ -52,32 +52,33 @@ let backgroundObjects = [
   new BackgroundObject("assets/img/background/layers/3_third_layer/full.png", -720, 0),
   new BackgroundObject("assets/img/background/layers/2_second_layer/full.png", -720, 0),
   new BackgroundObject("assets/img/background/layers/1_first_layer/full.png", -720, 0),
-  new BackgroundObject("assets/img/background/layers/4_clouds/full.png", -720, 0),
+  new Cloud(-720, 0),
   // Second screen (visible start area)
   new BackgroundObject("assets/img/background/layers/air.png", 0, 0),
   new BackgroundObject("assets/img/background/layers/3_third_layer/full.png", 0, 0),
   new BackgroundObject("assets/img/background/layers/2_second_layer/full.png", 0, 0),
   new BackgroundObject("assets/img/background/layers/1_first_layer/full.png", 0, 0),
-  new BackgroundObject("assets/img/background/layers/4_clouds/full.png", 0, 0),
+  new Cloud(0, 0),
   // Third screen (right side)
   new BackgroundObject("assets/img/background/layers/air.png", 720, 0),
   new BackgroundObject("assets/img/background/layers/3_third_layer/full.png", 720, 0),
   new BackgroundObject("assets/img/background/layers/2_second_layer/full.png", 720, 0),
   new BackgroundObject("assets/img/background/layers/1_first_layer/full.png", 720, 0),
-  new BackgroundObject("assets/img/background/layers/4_clouds/full.png", 720, 0),
+  new Cloud(720, 0),
   // Fourth screen (x = 1440)
   new BackgroundObject("assets/img/background/layers/air.png", 1440, 0),
   new BackgroundObject("assets/img/background/layers/3_third_layer/full.png", 1440, 0),
   new BackgroundObject("assets/img/background/layers/2_second_layer/full.png", 1440, 0),
   new BackgroundObject("assets/img/background/layers/1_first_layer/full.png", 1440, 0),
-  new BackgroundObject("assets/img/background/layers/4_clouds/full.png", 1440, 0),
+  new Cloud(1440, 0),
   // Fifth screen (x = 2160)
   new BackgroundObject("assets/img/background/layers/air.png", 2160, 0),
   new BackgroundObject("assets/img/background/layers/3_third_layer/full.png", 2160, 0),
   new BackgroundObject("assets/img/background/layers/2_second_layer/full.png", 2160, 0),
   new BackgroundObject("assets/img/background/layers/1_first_layer/full.png", 2160, 0),
-  new BackgroundObject("assets/img/background/layers/4_clouds/full.png", 2160, 0),
+  new Cloud(2160, 0),
 ];
+
 let chickens = [];
 let bottles = [];
 let bottleCount = 0;
@@ -365,6 +366,19 @@ function updateEnemies() {
 }
 
 /**
+ * Updates all moving cloud objects.
+ *
+ * @returns {void}
+ */
+function updateClouds() {
+  backgroundObjects.forEach((bg) => {
+    if (bg instanceof Cloud) {
+      bg.update();
+    }
+  });
+}
+
+/**
  * Plays the character damage sound from the beginning.
  *
  * @returns {void}
@@ -467,6 +481,7 @@ function updateFrame() {
   updateCharacterActivity();
   updateCharacter();
   updateEnemies();
+  updateClouds();
   handleCollisions();
   updateGameObjects();
   updateGameProgress();
