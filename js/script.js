@@ -310,6 +310,21 @@ function moveCharacterLeft() {
 }
 
 /**
+ * Moves the character horizontally while jumping.
+ *
+ * @returns {void}
+ */
+function moveCharacterInAir() {
+  if (keyboardState.RIGHT && character.x < worldEnd) {
+    character.moveRight();
+    character.otherDirection = false;
+  } else if (keyboardState.LEFT && character.x > 0) {
+    character.moveLeft();
+    character.otherDirection = true;
+  }
+}
+
+/**
  * Updates character animation and horizontal movement.
  *
  * @returns {void}
@@ -318,6 +333,7 @@ function updateCharacterAnimation() {
   if (character.isHurt) {
     character.playHurtAnimation();
   } else if (character.isAboveGround()) {
+    moveCharacterInAir();
     character.playJumpAnimation();
   } else if (keyboardState.RIGHT && character.x < worldEnd) {
     moveCharacterRight();
