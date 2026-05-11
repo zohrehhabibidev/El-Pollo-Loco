@@ -611,7 +611,9 @@ function drawFixedUi() {
   statusBar.draw(ctx);
   bottleStatusBar.draw(ctx);
   coinStatusBar.draw(ctx);
-  endbossStatusBar.draw(ctx);
+  if (character.x >= endboss.activationX) {
+    endbossStatusBar.draw(ctx);
+  }
 }
 
 /**
