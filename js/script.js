@@ -614,7 +614,6 @@ function drawWorld() {
   drawBackgroundObjects();
   drawCollectibleObjects();
   drawEnemyObjects();
-  drawCharacterIfVisible();
   ctx.restore();
 }
 
@@ -633,6 +632,18 @@ function drawFixedUi() {
 }
 
 /**
+ * Draws the character with the camera transform.
+ *
+ * @returns {void}
+ */
+function drawCharacterWithCamera() {
+  ctx.save();
+  applyCameraTransform();
+  drawCharacterIfVisible();
+  ctx.restore();
+}
+
+/**
  * Draws the current game frame.
  *
  * @returns {void}
@@ -641,6 +652,7 @@ function draw() {
   clearCanvas();
   drawWorld();
   drawFixedUi();
+  drawCharacterWithCamera();
 }
 
 /**
