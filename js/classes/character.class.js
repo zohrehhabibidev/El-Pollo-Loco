@@ -104,8 +104,8 @@ class Character extends MovableObject {
 
     this.x = 50;
     this.y = 250;
-    this.width = 150;
-    this.height = 200;
+    this.width = 145;
+    this.height = 225;
     this.speed = 3;
     this.health = 100;
     this.isHurt = false;
