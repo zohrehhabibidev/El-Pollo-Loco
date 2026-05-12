@@ -1,22 +1,3 @@
-const endbossWalkImages = [
-  "assets/img/enemies/boss_chicken/1_walk/G1.png",
-  "assets/img/enemies/boss_chicken/1_walk/G2.png",
-  "assets/img/enemies/boss_chicken/1_walk/G3.png",
-  "assets/img/enemies/boss_chicken/1_walk/G4.png",
-];
-
-const endbossHurtImages = [
-  "assets/img/enemies/boss_chicken/4_hurt/G21.png",
-  "assets/img/enemies/boss_chicken/4_hurt/G22.png",
-  "assets/img/enemies/boss_chicken/4_hurt/G23.png",
-];
-
-const endbossDeadImages = [
-  "assets/img/enemies/boss_chicken/5_dead/G24.png",
-  "assets/img/enemies/boss_chicken/5_dead/G25.png",
-  "assets/img/enemies/boss_chicken/5_dead/G26.png",
-];
-
 /**
  * Represents the endboss enemy at the end of the level.
  *
@@ -28,11 +9,29 @@ class Endboss extends MovableObject {
    */
   constructor() {
     super();
+    this.endbossWalkImages = [
+      "assets/img/enemies/boss_chicken/1_walk/G1.png",
+      "assets/img/enemies/boss_chicken/1_walk/G2.png",
+      "assets/img/enemies/boss_chicken/1_walk/G3.png",
+      "assets/img/enemies/boss_chicken/1_walk/G4.png",
+    ];
 
-    this.loadImages(endbossWalkImages);
-    this.loadImages(endbossHurtImages);
-    this.loadImages(endbossDeadImages);
-    this.img = this.imageCache[endbossWalkImages[0]];
+    this.endbossHurtImages = [
+      "assets/img/enemies/boss_chicken/4_hurt/G21.png",
+      "assets/img/enemies/boss_chicken/4_hurt/G22.png",
+      "assets/img/enemies/boss_chicken/4_hurt/G23.png",
+    ];
+
+    this.endbossDeadImages = [
+      "assets/img/enemies/boss_chicken/5_dead/G24.png",
+      "assets/img/enemies/boss_chicken/5_dead/G25.png",
+      "assets/img/enemies/boss_chicken/5_dead/G26.png",
+    ];
+
+    this.loadImages(this.endbossWalkImages);
+    this.loadImages(this.endbossHurtImages);
+    this.loadImages(this.endbossDeadImages);
+    this.img = this.imageCache[this.endbossWalkImages[0]];
 
     this.x = 2450;
     this.y = 135;
@@ -61,12 +60,12 @@ class Endboss extends MovableObject {
    */
   update(characterX) {
     if (this.isDead) {
-      this.playAnimation(endbossDeadImages);
+      this.playAnimation(this.endbossDeadImages);
       return;
     }
 
     if (this.isHurt) {
-      this.playAnimation(endbossHurtImages);
+      this.playAnimation(this.endbossHurtImages);
       return;
     }
 
@@ -77,7 +76,7 @@ class Endboss extends MovableObject {
       this.x -= this.speed;
     }
 
-    this.playAnimation(endbossWalkImages);
+    this.playAnimation(this.endbossWalkImages);
   }
 
   /**
