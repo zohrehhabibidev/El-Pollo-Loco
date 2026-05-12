@@ -23,7 +23,7 @@ const COIN_HITBOX_HORIZONTAL_INSET = 35;
 const COIN_HITBOX_TOP_OFFSET = 10;
 const COIN_HITBOX_BOTTOM_OFFSET = 90;
 const COIN_STATUS_PERCENT_PER_COIN = 20;
-const DEBUG_HITBOXES = true;
+const DEBUG_HITBOXES = false;
 
 
 let statusBar;
@@ -47,42 +47,7 @@ const bottleBreakSound = new Audio("assets/audio/throwable/bottleBreak.mp3");
 const characterDamageSound = new Audio("assets/audio/character/characterDamage.mp3");
 const characterJumpSound = new Audio("assets/audio/character/characterJump.wav");
 
-/**
- * Background layers for the scrolling game world.
- */
-let backgroundObjects = [
-  // First screen (left side, off-screen)
-  new BackgroundObject("assets/img/background/layers/air.png", -720, 0),
-  new BackgroundObject("assets/img/background/layers/3_third_layer/full.png", -720, 0),
-  new BackgroundObject("assets/img/background/layers/2_second_layer/full.png", -720, 0),
-  new BackgroundObject("assets/img/background/layers/1_first_layer/full.png", -720, 0),
-  new Cloud(-720, 0),
-  // Second screen (visible start area)
-  new BackgroundObject("assets/img/background/layers/air.png", 0, 0),
-  new BackgroundObject("assets/img/background/layers/3_third_layer/full.png", 0, 0),
-  new BackgroundObject("assets/img/background/layers/2_second_layer/full.png", 0, 0),
-  new BackgroundObject("assets/img/background/layers/1_first_layer/full.png", 0, 0),
-  new Cloud(0, 0),
-  // Third screen (right side)
-  new BackgroundObject("assets/img/background/layers/air.png", 720, 0),
-  new BackgroundObject("assets/img/background/layers/3_third_layer/full.png", 720, 0),
-  new BackgroundObject("assets/img/background/layers/2_second_layer/full.png", 720, 0),
-  new BackgroundObject("assets/img/background/layers/1_first_layer/full.png", 720, 0),
-  new Cloud(720, 0),
-  // Fourth screen (x = 1440)
-  new BackgroundObject("assets/img/background/layers/air.png", 1440, 0),
-  new BackgroundObject("assets/img/background/layers/3_third_layer/full.png", 1440, 0),
-  new BackgroundObject("assets/img/background/layers/2_second_layer/full.png", 1440, 0),
-  new BackgroundObject("assets/img/background/layers/1_first_layer/full.png", 1440, 0),
-  new Cloud(1440, 0),
-  // Fifth screen (x = 2160)
-  new BackgroundObject("assets/img/background/layers/air.png", 2160, 0),
-  new BackgroundObject("assets/img/background/layers/3_third_layer/full.png", 2160, 0),
-  new BackgroundObject("assets/img/background/layers/2_second_layer/full.png", 2160, 0),
-  new BackgroundObject("assets/img/background/layers/1_first_layer/full.png", 2160, 0),
-  new Cloud(2160, 0),
-];
-
+let backgroundObjects = [];
 let chickens = [];
 let bottles = [];
 let bottleCount = 0;
@@ -104,16 +69,10 @@ function prepareNewGame() {
 }
 
 /**
- * Initializes the game canvas and context.
+ * Initializes the game canvas, creates the world, and syncs world objects.
  *
  * @returns {void}
  */
-// function initCanvas() {
-//   canvas = document.getElementById("game-canvas");
-//   ctx = canvas.getContext("2d");
-//   world = new World(canvas, keyboardState);
-//   world.createWorld();
-// }
 function initCanvas() {
   canvas = document.getElementById("game-canvas");
   ctx = canvas.getContext("2d");
@@ -143,101 +102,10 @@ function syncWorldObjects() {
 }
 
 /**
- * Creates the player character.
- *
- * @returns {void}
- */
-function createCharacter() {
-  character = new Character();
-}
-
-/**
- * Creates the chicken enemies.
- *
- * @returns {void}
- */
-function createChickens() {
-  chickens = [
-    new Chicken(1200, "normal"),
-    new Chicken(1500, "small"),
-    new Chicken(1800, "normal"),
-  ];
-}
-
-/**
- * Creates collectible bottles and resets the bottle counter.
- *
- * @returns {void}
- */
-function createBottles() {
-  bottles = [
-    new Bottle(350),
-    new Bottle(650),
-    new Bottle(950),
-    new Bottle(1150),
-    new Bottle(1350),
-    new Bottle(1550),
-    new Bottle(1750),
-    new Bottle(1950),
-    new Bottle(2100),
-  ];
-  bottleCount = 0;
-}
-
-/**
- * Creates collectible coins and resets the coin counter.
- *
- * @returns {void}
- */
-function createCoins() {
-  coins = [
-    new Coin(430, 190),
-    new Coin(680, 140),
-    new Coin(920, 210),
-    new Coin(1180, 155),
-    new Coin(1460, 185),
-    new Coin(1700, 130),
-  ];
-  coinCount = 0;
-}
-
-/**
- * Creates all status bars.
- *
- * @returns {void}
- */
-function createStatusBars() {
-  statusBar = new StatusBar();
-  bottleStatusBar = new BottleStatusBar();
-  coinStatusBar = new CoinStatusBar();
-}
-
-/**
- * Creates the endboss and its status bar.
- *
- * @returns {void}
- */
-function createEndboss() {
-  endboss = new Endboss();
-  endbossStatusBar = new EndbossStatusBar();
-}
-
-/**
  * Initializes the game.
  *
  * @returns {void}
  */
-// function init() {
-//   prepareNewGame();
-//   initCanvas();
-//   createCharacter();
-//   createChickens();
-//   createBottles();
-//   createCoins();
-//   createStatusBars();
-//   createEndboss();
-//   loop();
-// }
 function init() {
   prepareNewGame();
   initCanvas();
@@ -266,6 +134,8 @@ window.addEventListener("keyup", (e) => {
 
 /**
  * Stops the currently active game loop.
+ *
+ * @returns {void}
  */
 function stopGameLoop() {
   if (animationFrameId !== null) {
@@ -276,6 +146,8 @@ function stopGameLoop() {
 
 /**
  * Stops and removes all active throwable bottles.
+ *
+ * @returns {void}
  */
 function clearThrowableObjects() {
   throwableObjects.forEach((bottle) => {
@@ -590,6 +462,13 @@ function applyCameraTransform() {
   ctx.translate(-getCameraX(), 0);
 }
 
+/**
+ * Draws a debug collision box for one object.
+ *
+ * @param {DrawableObject} object - The object to draw the collision box for.
+ * @param {string} color - The stroke color of the debug box.
+ * @returns {void}
+ */
 function drawDebugBox(object, color) {
   const box = object.getCollisionBox();
 
@@ -605,6 +484,11 @@ function drawDebugBox(object, color) {
   ctx.restore();
 }
 
+/**
+ * Draws all debug collision boxes when debug mode is enabled.
+ *
+ * @returns {void}
+ */
 function drawDebugHitboxes() {
   if (!DEBUG_HITBOXES) return;
 
