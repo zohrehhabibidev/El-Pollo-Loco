@@ -643,6 +643,15 @@ class World {
   }
 
   /**
+ * Removes chickens that finished showing their dead image.
+ *
+ * @returns {void}
+ */
+  removeDeadChickens() {
+    this.chickens = this.chickens.filter((chicken) => !chicken.markedForRemoval);
+  }
+
+  /**
   * Handles collecting a bottle.
   *
   * @returns {void}

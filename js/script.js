@@ -218,7 +218,8 @@ function updateGameObjects() {
  */
 function updateGameProgress() {
   checkWinCondition();
-  removeDeadChickens();
+  world.removeDeadChickens();
+  syncWorldObjects();
 }
 
 /**
@@ -439,15 +440,6 @@ function stopEndSounds() {
  */
 function playBottleBreakSound() {
   playSound(bottleBreakSound);
-}
-
-/**
- * Removes chickens that finished showing their dead image.
- *
- * @returns {void}
- */
-function removeDeadChickens() {
-  chickens = chickens.filter((chicken) => !chicken.markedForRemoval);
 }
 
 /**
