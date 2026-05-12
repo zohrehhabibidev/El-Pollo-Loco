@@ -302,8 +302,6 @@ function updateGameProgress() {
   removeDeadChickens();
 }
 
-
-
 /**
  * Main game loop.
  *
@@ -336,7 +334,7 @@ function loop() {
  */
 function draw() {
   syncWorldFromLegacyGlobals();
-  world.draw(DEBUG_HITBOXES);
+  world.draw();
 }
 
 /**

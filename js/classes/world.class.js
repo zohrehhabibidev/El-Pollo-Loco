@@ -164,10 +164,10 @@ class World {
   }
 
   /**
- * Clears the whole canvas.
- *
- * @returns {void}
- */
+   * Clears the whole canvas.
+   *
+   * @returns {void}
+   */
   clearCanvas() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
   }
@@ -288,12 +288,11 @@ class World {
   }
 
   /**
- * Draws the current game frame.
- *
- * @param {boolean} debugHitboxes - Enables debug hitbox rendering.
- * @returns {void}
- */
-  draw(debugHitboxes) {
+  * Draws the current game frame.
+  *
+  * @returns {void}
+  */
+  draw() {
     this.clearCanvas();
     this.drawWorld();
     this.drawFixedUi();
