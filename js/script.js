@@ -108,10 +108,38 @@ function prepareNewGame() {
  *
  * @returns {void}
  */
+// function initCanvas() {
+//   canvas = document.getElementById("game-canvas");
+//   ctx = canvas.getContext("2d");
+//   world = new World(canvas, keyboardState);
+//   world.createWorld();
+// }
 function initCanvas() {
   canvas = document.getElementById("game-canvas");
   ctx = canvas.getContext("2d");
   world = new World(canvas, keyboardState);
+  world.createWorld();
+  syncWorldObjects();
+}
+/**
+ * Copies world-owned objects into the current global game references.
+ *
+ * @returns {void}
+ */
+function syncWorldObjects() {
+  character = world.character;
+  chickens = world.chickens;
+  bottles = world.bottles;
+  coins = world.coins;
+  backgroundObjects = world.backgroundObjects;
+  endboss = world.endboss;
+  statusBar = world.statusBar;
+  bottleStatusBar = world.bottleStatusBar;
+  coinStatusBar = world.coinStatusBar;
+  endbossStatusBar = world.endbossStatusBar;
+  bottleCount = world.bottleCount;
+  coinCount = world.coinCount;
+  throwableObjects = world.throwableObjects;
 }
 
 /**
@@ -199,15 +227,20 @@ function createEndboss() {
  *
  * @returns {void}
  */
+// function init() {
+//   prepareNewGame();
+//   initCanvas();
+//   createCharacter();
+//   createChickens();
+//   createBottles();
+//   createCoins();
+//   createStatusBars();
+//   createEndboss();
+//   loop();
+// }
 function init() {
   prepareNewGame();
   initCanvas();
-  createCharacter();
-  createChickens();
-  createBottles();
-  createCoins();
-  createStatusBars();
-  createEndboss();
   loop();
 }
 
