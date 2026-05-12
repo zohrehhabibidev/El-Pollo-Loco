@@ -162,4 +162,146 @@ class World {
     this.createEndboss();
     this.createBackgroundObjects();
   }
+
+  /**
+ * Clears the whole canvas.
+ *
+ * @returns {void}
+ */
+  clearCanvas() {
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+  }
+
+  /**
+   * Calculates the camera x position.
+   *
+   * @returns {number} The camera x position.
+   */
+  getCameraX() {
+    return Math.max(0, this.character.x - CAMERA_X_OFFSET);
+  }
+
+  /**
+   * Applies the camera translation to the canvas context.
+   *
+   * @returns {void}
+   */
+  applyCameraTransform() {
+    this.ctx.translate(-this.getCameraX(), 0);
+  }
+
+  /**
+ * Draws all background objects.
+ *
+ * @returns {void}
+ */
+  drawBackgroundObjects() {
+    this.backgroundObjects.forEach((bg) => bg.draw(this.ctx));
+  }
+
+  /**
+ * Draws collectible and throwable objects.
+ *
+ * @returns {void}
+ */
+  drawCollectibleObjects() {
+    this.bottles.forEach((bottle) => {
+      bottle.draw(this.ctx);
+    });
+
+    this.throwableObjects.forEach((bottle) => {
+      bottle.draw(this.ctx);
+    });
+
+    this.coins.forEach((coin) => {
+      coin.draw(this.ctx);
+    });
+  }
+
+  /**
+ * Draws enemy objects.
+ *
+ * @returns {void}
+ */
+  drawEnemyObjects() {
+    this.chickens.forEach((chicken) => {
+      chicken.draw(this.ctx);
+    });
+
+    this.endboss.draw(this.ctx);
+  }
+
+  /**
+ * Draws the character when visible.
+ *
+ * @returns {void}
+ */
+  drawCharacterIfVisible() {
+    if (this.character.visible) {
+      this.character.draw(this.ctx);
+    }
+  }
+
+  /**
+ * Draws all game objects inside the moving world.
+ *
+ * @returns {void}
+ */
+  drawWorld() {
+    this.ctx.save();
+    this.applyCameraTransform();
+
+    this.drawBackgroundObjects();
+    this.drawCollectibleObjects();
+    this.drawEnemyObjects();
+
+    this.ctx.restore();
+  }
+
+  /**
+ * Draws fixed UI elements.
+ *
+ * @returns {void}
+ */
+  drawFixedUi() {
+    this.statusBar.draw(this.ctx);
+    this.bottleStatusBar.draw(this.ctx);
+    this.coinStatusBar.draw(this.ctx);
+
+    if (this.character.x >= this.endboss.activationX) {
+      this.endbossStatusBar.draw(this.ctx);
+    }
+  }
+
+  /**
+ * Draws the character with the camera transform.
+ *
+ * @returns {void}
+ */
+  drawCharacterWithCamera() {
+    this.ctx.save();
+
+    this.applyCameraTransform();
+    this.drawCharacterIfVisible();
+
+    this.ctx.restore();
+  }
+
+  /**
+ * Draws the current game frame.
+ *
+ * @param {boolean} debugHitboxes - Enables debug hitbox rendering.
+ * @returns {void}
+ */
+  draw(debugHitboxes) {
+    this.clearCanvas();
+    this.drawWorld();
+    this.drawFixedUi();
+    this.drawCharacterWithCamera();
+
+    if (debugHitboxes) {
+      this.drawDebugHitboxes();
+    }
+  }
+
 }

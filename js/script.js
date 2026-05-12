@@ -102,6 +102,27 @@ function syncWorldObjects() {
 }
 
 /**
+ * Copies current legacy game references back into the world object.
+ *
+ * @returns {void}
+ */
+function syncWorldFromLegacyGlobals() {
+  world.character = character;
+  world.chickens = chickens;
+  world.bottles = bottles;
+  world.coins = coins;
+  world.backgroundObjects = backgroundObjects;
+  world.endboss = endboss;
+  world.statusBar = statusBar;
+  world.bottleStatusBar = bottleStatusBar;
+  world.coinStatusBar = coinStatusBar;
+  world.endbossStatusBar = endbossStatusBar;
+  world.bottleCount = bottleCount;
+  world.coinCount = coinCount;
+  world.throwableObjects = throwableObjects;
+}
+
+/**
  * Initializes the game.
  *
  * @returns {void}
@@ -603,11 +624,8 @@ function drawCharacterWithCamera() {
  * @returns {void}
  */
 function draw() {
-  clearCanvas();
-  drawWorld();
-  drawFixedUi();
-  drawCharacterWithCamera();
-  drawDebugHitboxes();
+  syncWorldFromLegacyGlobals();
+  world.draw(DEBUG_HITBOXES);
 }
 
 /**
