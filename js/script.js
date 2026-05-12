@@ -19,10 +19,6 @@ const BACKGROUND_MUSIC_VOLUME = 0.06;
 const BOTTLE_OUT_OF_BOUNDS_LEFT = -200;
 const BOTTLE_OUT_OF_BOUNDS_RIGHT_MARGIN = 400;
 const BOTTLE_OUT_OF_BOUNDS_BOTTOM_MARGIN = 200;
-const COIN_HITBOX_HORIZONTAL_INSET = 35;
-const COIN_HITBOX_TOP_OFFSET = 10;
-const COIN_HITBOX_BOTTOM_OFFSET = 90;
-const COIN_STATUS_PERCENT_PER_COIN = 20;
 const DEBUG_HITBOXES = false;
 
 
@@ -221,8 +217,6 @@ function playCharacterDamageSound() {
  * @returns {void}
  */
 function updateGameObjects() {
-  collectBottles();
-  collectCoins();
   throwBottle();
   checkBottleChickenCollision();
   checkBottleEndbossCollision();
@@ -448,104 +442,6 @@ function stopEndSounds() {
   loseSound.currentTime = 0;
   winSound.pause();
   winSound.currentTime = 0;
-}
-
-/**
- * Handles collecting a bottle.
- *
- * @returns {void}
- */
-function handleBottleCollect() {
-  bottleCount++;
-  bottleStatusBar.setPercentage((bottleCount / maxBottleCount) * 100);
-  playSound(bottleCollectSound);
-}
-
-/**
- * Checks if the character collects a bottle.
- *
- * @returns {void}
- */
-function collectBottles() {
-  bottles = bottles.filter((bottle) => {
-    if (character.isColliding(bottle)) {
-      handleBottleCollect();
-      return false;
-    }
-
-    return true;
-  });
-}
-
-/**
- * Gets the character bounds for coin collection.
- *
- * @returns {{left: number, right: number, top: number, bottom: number}} The character collection bounds.
- */
-function getCharacterCoinBounds() {
-  return {
-    left: character.x + COIN_HITBOX_HORIZONTAL_INSET,
-    right: character.x + character.width - COIN_HITBOX_HORIZONTAL_INSET,
-    top: character.y + COIN_HITBOX_TOP_OFFSET,
-    bottom: character.y + COIN_HITBOX_BOTTOM_OFFSET,
-  };
-}
-
-/**
- * Gets the center position of a coin.
- *
- * @param {Coin} coin - The coin to check.
- * @returns {{x: number, y: number}} The coin center position.
- */
-function getCoinCenter(coin) {
-  return {
-    x: coin.x + coin.width / 2,
-    y: coin.y + coin.height / 2,
-  };
-}
-
-/**
- * Checks if the character collects a coin with the upper body while jumping.
- *
- * @param {Coin} coin - The coin to check.
- * @returns {boolean} True when the coin center touches the character's upper body while airborne.
- */
-function isCollectingCoin(coin) {
-  const characterBounds = getCharacterCoinBounds();
-  const coinCenter = getCoinCenter(coin);
-
-  return character.isAboveGround() &&
-    coinCenter.x > characterBounds.left &&
-    coinCenter.x < characterBounds.right &&
-    coinCenter.y > characterBounds.top &&
-    coinCenter.y < characterBounds.bottom;
-}
-
-/**
- * Handles collecting a coin.
- *
- * @returns {void}
- */
-function handleCoinCollect() {
-  coinCount++;
-  coinStatusBar.setPercentage(Math.min(100, coinCount * COIN_STATUS_PERCENT_PER_COIN));
-  playSound(coinCollectSound);
-}
-
-/**
- * Checks if the character collects a coin.
- *
- * @returns {void}
- */
-function collectCoins() {
-  coins = coins.filter((coin) => {
-    if (isCollectingCoin(coin)) {
-      handleCoinCollect();
-      return false;
-    }
-
-    return true;
-  });
 }
 
 /**
