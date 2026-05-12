@@ -1,21 +1,3 @@
-const normalChickenImages = [
-  "assets/img/enemies/chicken_normal/1_walk/1_w.png",
-  "assets/img/enemies/chicken_normal/1_walk/2_w.png",
-  "assets/img/enemies/chicken_normal/1_walk/3_w.png",
-];
-
-const smallChickenImages = [
-  "assets/img/enemies/chicken_small/1_walk/1_w.png",
-  "assets/img/enemies/chicken_small/1_walk/2_w.png",
-  "assets/img/enemies/chicken_small/1_walk/3_w.png",
-];
-
-const normalChickenDeadImage =
-  "assets/img/enemies/chicken_normal/2_dead/dead.png";
-
-const smallChickenDeadImage =
-  "assets/img/enemies/chicken_small/2_dead/dead.png";
-
 /**
  * Represents a chicken enemy.
  *
@@ -30,12 +12,26 @@ class Chicken extends MovableObject {
    */
   constructor(x, type) {
     super();
+    this.normalChickenImages = [
+      "assets/img/enemies/chicken_normal/1_walk/1_w.png",
+      "assets/img/enemies/chicken_normal/1_walk/2_w.png",
+      "assets/img/enemies/chicken_normal/1_walk/3_w.png",
+    ];
+    this.smallChickenImages = [
+      "assets/img/enemies/chicken_small/1_walk/1_w.png",
+      "assets/img/enemies/chicken_small/1_walk/2_w.png",
+      "assets/img/enemies/chicken_small/1_walk/3_w.png",
+    ];
+    this.normalChickenDeadImage =
+      "assets/img/enemies/chicken_normal/2_dead/dead.png";
+    this.smallChickenDeadImage =
+      "assets/img/enemies/chicken_small/2_dead/dead.png";
 
     this.x = x;
 
     if (type === "normal") {
       this.speed = 0.5;
-      this.IMAGES = normalChickenImages;
+      this.IMAGES = this.normalChickenImages;
       this.width = 80;
       this.height = 80;
       this.y = 382;
@@ -50,7 +46,7 @@ class Chicken extends MovableObject {
 
     if (type === "small") {
       this.speed = 0.8;
-      this.IMAGES = smallChickenImages;
+      this.IMAGES = this.smallChickenImages;
       this.width = 50;
       this.height = 50;
       this.y = 400;
@@ -68,8 +64,8 @@ class Chicken extends MovableObject {
     this.isDead = false;
     this.markedForRemoval = false;
     this.deadImage = type === "normal"
-      ? normalChickenDeadImage
-      : smallChickenDeadImage;
+      ? this.normalChickenDeadImage
+      : this.smallChickenDeadImage;
 
     this.imageCache[this.deadImage] = new Image();
     this.imageCache[this.deadImage].src = this.deadImage;
