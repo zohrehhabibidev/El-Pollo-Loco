@@ -111,20 +111,72 @@ function preventMobileContextMenu(event) {
  */
 function bindMobileControl(buttonId, keyName) {
   const button = getMobileControlButton(buttonId);
+  let activePointerId = null;
 
   if (!button) {
     return;
   }
 
-  button.addEventListener("pointerdown", (event) =>
-    setMobileControlState(event, keyName, true)
-  );
-  button.addEventListener("pointerup", (event) =>
-    setMobileControlState(event, keyName, false)
-  );
-  button.addEventListener("pointercancel", () => releaseMobileControl(keyName));
-  button.addEventListener("pointerleave", () => releaseMobileControl(keyName));
+  button.addEventListener("pointerdown", (event) => {
+    activePointerId = event.pointerId;
+
+    if (button.setPointerCapture) {
+      button.setPointerCapture(event.pointerId);
+    }
+
+    setMobileControlState(event, keyName, true);
+  });
+
+  button.addEventListener("pointerup", (event) => {
+    if (event.pointerId === activePointerId) {
+      activePointerId = null;
+      setMobileControlState(event, keyName, false);
+    }
+  });
+
+  button.addEventListener("pointercancel", (event) => {
+    if (event.pointerId === activePointerId) {
+      activePointerId = null;
+      releaseMobileControl(keyName);
+    }
+  });
+
   button.addEventListener("contextmenu", preventMobileContextMenu);
+}
+
+/**
+ * Gets the mobile controls container.
+ *
+ * @returns {HTMLElement|null} The mobile controls element.
+ */
+function getMobileControls() {
+  return document.getElementById("mobile-controls");
+}
+
+/**
+ * Shows the mobile controls during active gameplay.
+ *
+ * @returns {void}
+ */
+function showMobileControls() {
+  const mobileControls = getMobileControls();
+
+  if (mobileControls) {
+    mobileControls.classList.add("mobile-controls--active");
+  }
+}
+
+/**
+ * Hides the mobile controls outside active gameplay.
+ *
+ * @returns {void}
+ */
+function hideMobileControls() {
+  const mobileControls = getMobileControls();
+
+  if (mobileControls) {
+    mobileControls.classList.remove("mobile-controls--active");
+  }
 }
 
 initStartScreen();

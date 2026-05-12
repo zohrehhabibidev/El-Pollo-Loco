@@ -265,6 +265,7 @@ function handleDeathState() {
     character.currentImage = 0;
     character.animationCounter = 0;
     gameOverTimeoutId = setTimeout(() => {
+      gameOverTimeoutId = null;
       gameOver = true;
       showGameOver();
     }, GAME_OVER_DELAY_MS);
@@ -698,6 +699,7 @@ function draw() {
 function showGameOver() {
   stopBackgroundMusic();
   playLoseSound();
+  hideMobileControls();
   document.getElementById("lose-screen").classList.remove("hidden");
 }
 
@@ -725,6 +727,7 @@ function showWinScreen() {
   winTimeoutId = null;
   stopBackgroundMusic();
   playWinSound();
+  hideMobileControls();
   document.getElementById("win-screen").classList.remove("hidden");
 }
 
@@ -869,11 +872,12 @@ function stopEndSounds() {
  * @returns {boolean} True if the character hits the chicken from above while falling.
  */
 function isJumpingOnChicken(chicken) {
-  const characterFeet = character.y + character.height;
-  const chickenTop = chicken.y;
+  const characterBox = character.getCollisionBox();
+  const chickenBox = chicken.getCollisionBox();
+
   return character.isColliding(chicken) &&
     character.speedY < 0 &&
-    characterFeet <= chickenTop + CHICKEN_STOMP_TOLERANCE;
+    characterBox.bottom <= chickenBox.top + CHICKEN_STOMP_TOLERANCE;
 }
 
 /**
@@ -1209,6 +1213,7 @@ function hideEndScreens() {
  * @returns {void}
  */
 function showStartScreen() {
+  hideMobileControls();
   document.getElementById("start-screen").style.display = "block";
   document.getElementById("start-button").disabled = false;
 }
@@ -1236,10 +1241,12 @@ function startGame() {
   clearGameOverTimeout();
   clearWinTimeout();
   hideEndScreens();
+  keyboardState = new Keyboard();
   startButton.disabled = true;
   startScreen.style.display = "none";
   init();
   startBackgroundMusic();
+  showMobileControls();
 }
 
 /**
@@ -1256,6 +1263,7 @@ function restartGame() {
   hideEndScreens();
   init();
   startBackgroundMusic();
+  showMobileControls();
 }
 
 /**
@@ -1274,6 +1282,7 @@ function backToMenu() {
   hideEndScreens();
   showStartScreen();
   clearCanvasIfReady();
+  hideMobileControls();
 }
 
 /**
