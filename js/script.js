@@ -219,8 +219,6 @@ function playCharacterDamageSound() {
 function updateGameObjects() {
   checkBottleChickenCollision();
   checkBottleEndbossCollision();
-  updateBottleSplashes();
-  removeMissedBottles();
 }
 
 /**
@@ -443,71 +441,6 @@ function stopEndSounds() {
   winSound.currentTime = 0;
 }
 
-/**
- * Updates splash animations for thrown bottles.
- *
- * @returns {void}
- */
-function updateBottleSplashes() {
-  throwableObjects.forEach((bottle) => {
-    if (bottle.hasSplashed) {
-      bottle.playSplashAnimation();
-    }
-  });
-}
-
-/**
- * Checks if a thrown bottle is outside the playable area.
- *
- * @param {ThrowableObject} bottle - The thrown bottle to check.
- * @returns {boolean} True if the bottle is outside the playable area.
- */
-function isBottleOutOfBounds(bottle) {
-  const isOutsideWorld = bottle.x < BOTTLE_OUT_OF_BOUNDS_LEFT ||
-    bottle.x > worldEnd + BOTTLE_OUT_OF_BOUNDS_RIGHT_MARGIN;
-  const isBelowCanvas = bottle.y > canvas.height + BOTTLE_OUT_OF_BOUNDS_BOTTOM_MARGIN;
-  return isOutsideWorld || isBelowCanvas;
-}
-
-/**
- * Stops a missed bottle before removing it from the game.
- *
- * @param {ThrowableObject} bottle - The thrown bottle to check.
- * @returns {void}
- */
-function stopMissedBottleIfNeeded(bottle) {
-  if (!bottle.markedForRemoval && !bottle.hasSplashed && isBottleOutOfBounds(bottle)) {
-    bottle.stopMovement();
-  }
-}
-
-/**
- * Checks if a thrown bottle should stay active.
- *
- * @param {ThrowableObject} bottle - The thrown bottle to check.
- * @returns {boolean} True if the bottle should stay in the game.
- */
-function shouldKeepBottle(bottle) {
-  if (bottle.markedForRemoval) {
-    return false;
-  }
-
-  if (bottle.hasSplashed) {
-    return true;
-  }
-
-  return !isBottleOutOfBounds(bottle);
-}
-
-/**
- * Stops missed bottles and removes inactive thrown bottles.
- *
- * @returns {void}
- */
-function removeMissedBottles() {
-  throwableObjects.forEach(stopMissedBottleIfNeeded);
-  throwableObjects = throwableObjects.filter(shouldKeepBottle);
-}
 
 /**
  * Plays the bottle break sound from the beginning.

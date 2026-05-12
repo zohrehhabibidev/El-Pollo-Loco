@@ -33,6 +33,10 @@ class World {
     this.thrownBottleXOffset = 100;
     this.thrownBottleYOffset = 120;
     this.maxBottleCount = 9;
+    this.bottleOutOfBoundsLeft = -200;
+    this.bottleOutOfBoundsRightMargin = 400;
+    this.bottleOutOfBoundsBottomMargin = 200;
+    this.worldEnd = 2260;
   }
 
   /**
@@ -454,6 +458,8 @@ class World {
     this.collectBottles();
     this.collectCoins();
     this.throwBottle();
+    this.updateBottleSplashes();
+    this.removeMissedBottles();
   }
 
   /**
@@ -672,6 +678,73 @@ class World {
       this.bottleStatusBar.setPercentage((this.bottleCount / this.maxBottleCount) * 100);
       this.keyboard.D = false;
     }
+  }
+
+  /**
+ * Updates splash animations for thrown bottles.
+ *
+ * @returns {void}
+ */
+  updateBottleSplashes() {
+    this.throwableObjects.forEach((bottle) => {
+      if (bottle.hasSplashed) {
+        bottle.playSplashAnimation();
+      }
+    });
+  }
+
+  /**
+ * Checks if a thrown bottle is outside the playable area.
+ *
+ * @param {ThrowableObject} bottle - The thrown bottle to check.
+ * @returns {boolean} True if the bottle is outside the playable area.
+ */
+  isBottleOutOfBounds(bottle) {
+    const isOutsideWorld = bottle.x < this.bottleOutOfBoundsLeft ||
+      bottle.x > this.worldEnd + this.bottleOutOfBoundsRightMargin;
+    const isBelowCanvas = bottle.y > this.canvas.height + this.bottleOutOfBoundsBottomMargin;
+
+    return isOutsideWorld || isBelowCanvas;
+  }
+
+  /**
+ * Stops a missed bottle before removing it from the game.
+ *
+ * @param {ThrowableObject} bottle - The thrown bottle to check.
+ * @returns {void}
+ */
+  stopMissedBottleIfNeeded(bottle) {
+    if (!bottle.markedForRemoval && !bottle.hasSplashed && this.isBottleOutOfBounds(bottle)) {
+      bottle.stopMovement();
+    }
+  }
+
+  /**
+   * Checks if a thrown bottle should stay active.
+   *
+   * @param {ThrowableObject} bottle - The thrown bottle to check.
+   * @returns {boolean} True if the bottle should stay in the game.
+   */
+  shouldKeepBottle(bottle) {
+    if (bottle.markedForRemoval) {
+      return false;
+    }
+
+    if (bottle.hasSplashed) {
+      return true;
+    }
+
+    return !this.isBottleOutOfBounds(bottle);
+  }
+
+  /**
+ * Stops missed bottles and removes inactive thrown bottles.
+ *
+ * @returns {void}
+ */
+  removeMissedBottles() {
+    this.throwableObjects.forEach(this.stopMissedBottleIfNeeded.bind(this));
+    this.throwableObjects = this.throwableObjects.filter(this.shouldKeepBottle.bind(this));
   }
 
 }
