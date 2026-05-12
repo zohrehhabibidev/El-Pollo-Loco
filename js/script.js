@@ -257,27 +257,6 @@ function handleChickenCollision(chicken) {
 }
 
 /**
- * Checks collisions between the character and chickens.
- *
- * @returns {void}
- */
-function checkChickenCollisions() {
-  chickens.forEach((chicken) => {
-    handleChickenCollision(chicken);
-  });
-}
-
-/**
- * Checks all character and enemy collisions.
- *
- * @returns {void}
- */
-function handleCollisions() {
-  checkChickenCollisions();
-  checkCharacterEndbossCollision();
-}
-
-/**
  * Updates collectibles, thrown bottles, and bottle collisions.
  *
  * @returns {void}
@@ -320,7 +299,8 @@ function loop() {
 
   world.updateFrame();
   syncWorldObjects();
-  handleCollisions();
+  world.handleCollisions();
+  syncWorldObjects();
   updateGameObjects();
   updateGameProgress();
   draw();
@@ -795,22 +775,6 @@ function checkBottleEndbossCollision() {
       hitEndbossWithBottle(bottle);
     }
   });
-}
-
-/**
- * Checks collision between the character and the endboss.
- *
- * @returns {void}
- */
-function checkCharacterEndbossCollision() {
-  if (!endboss.isDead && character.isColliding(endboss)) {
-    const oldHealth = character.health;
-    character.takeDamage();
-    if (character.health < oldHealth) {
-      playCharacterDamageSound();
-    }
-    statusBar.setPercentage(character.health);
-  }
 }
 
 /**

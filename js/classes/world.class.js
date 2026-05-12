@@ -449,4 +449,99 @@ class World {
     this.updateClouds();
   }
 
+  /**
+ * Checks if the character lands on top of a chicken.
+ *
+ * @param {Chicken} chicken - The chicken to check.
+ * @returns {boolean} True if the character hits the chicken from above while falling.
+ */
+  isJumpingOnChicken(chicken) {
+    const characterBox = this.character.getCollisionBox();
+    const chickenBox = chicken.getCollisionBox();
+
+    return this.character.isColliding(chicken) &&
+      this.character.speedY < 0 &&
+      characterBox.bottom <= chickenBox.top + CHICKEN_STOMP_TOLERANCE;
+  }
+
+  /**
+   * Handles jumping on a chicken.
+   *
+   * @param {Chicken} chicken - The chicken hit from above.
+   * @returns {void}
+   */
+  handleChickenStomp(chicken) {
+    chicken.die();
+    this.character.speedY = 10;
+  }
+
+  /**
+   * Damages the character after touching a chicken.
+   *
+   * @returns {void}
+   */
+  damageCharacterFromChicken() {
+    const oldHealth = this.character.health;
+    this.character.takeDamage();
+
+    if (this.character.health < oldHealth) {
+      playCharacterDamageSound();
+    }
+
+    this.statusBar.setPercentage(this.character.health);
+  }
+
+  /**
+   * Handles one chicken collision with the character.
+   *
+   * @param {Chicken} chicken - The chicken to check.
+   * @returns {void}
+   */
+  handleChickenCollision(chicken) {
+    if (!chicken.isDead && this.isJumpingOnChicken(chicken)) {
+      this.handleChickenStomp(chicken);
+    } else if (!chicken.isDead && this.character.isColliding(chicken)) {
+      this.damageCharacterFromChicken();
+    }
+  }
+
+  /**
+   * Checks collisions between the character and chickens.
+   *
+   * @returns {void}
+   */
+  checkChickenCollisions() {
+    this.chickens.forEach((chicken) => {
+      this.handleChickenCollision(chicken);
+    });
+  }
+
+  /**
+   * Checks collision between the character and the endboss.
+   *
+   * @returns {void}
+   */
+  checkCharacterEndbossCollision() {
+    if (!this.endboss.isDead && this.character.isColliding(this.endboss)) {
+      const oldHealth = this.character.health;
+      this.character.takeDamage();
+
+      if (this.character.health < oldHealth) {
+        playCharacterDamageSound();
+      }
+
+      this.statusBar.setPercentage(this.character.health);
+    }
+  }
+
+  /**
+   * Checks all character and enemy collisions.
+   *
+   * @returns {void}
+   */
+  handleCollisions() {
+    this.checkChickenCollisions();
+    this.checkCharacterEndbossCollision();
+  }
+
 }
