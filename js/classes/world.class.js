@@ -299,9 +299,155 @@ class World {
     this.drawFixedUi();
     this.drawCharacterWithCamera();
 
-    if (debugHitboxes) {
-      this.drawDebugHitboxes();
+    // if (debugHitboxes) {
+    //   this.drawDebugHitboxes();
+    // }
+  }
+
+  /**
+  * Updates the character inactivity timer.
+  *
+  * @returns {void}
+  */
+  updateCharacterActivity() {
+    if (this.isPlayerActive()) {
+      this.character.resetInactivityTimer();
     }
+  }
+
+  /**
+   * Moves the character to the right and plays walking animation.
+   *
+   * @returns {void}
+   */
+  moveCharacterRight() {
+    this.character.moveRight();
+    this.character.otherDirection = false;
+    this.character.playWalkingAnimation();
+  }
+
+  /**
+   * Moves the character to the left and plays walking animation.
+   *
+   * @returns {void}
+   */
+  moveCharacterLeft() {
+    if (this.character.x > 0) {
+      this.character.moveLeft();
+    }
+
+    this.character.otherDirection = true;
+    this.character.playWalkingAnimation();
+  }
+
+  /**
+   * Moves the character horizontally while jumping.
+   *
+   * @returns {void}
+   */
+  moveCharacterInAir() {
+    if (this.keyboard.RIGHT && this.character.x < worldEnd) {
+      this.character.moveRight();
+      this.character.otherDirection = false;
+    } else if (this.keyboard.LEFT && this.character.x > 0) {
+      this.character.moveLeft();
+      this.character.otherDirection = true;
+    }
+  }
+
+  /**
+   * Updates character animation and horizontal movement.
+   *
+   * @returns {void}
+   */
+  updateCharacterAnimation() {
+    if (this.character.isHurt) {
+      this.character.playHurtAnimation();
+    } else if (this.character.isAboveGround()) {
+      this.moveCharacterInAir();
+      this.character.playJumpAnimation();
+    } else if (this.keyboard.RIGHT && this.character.x < worldEnd) {
+      this.moveCharacterRight();
+    } else if (this.keyboard.LEFT) {
+      this.moveCharacterLeft();
+    } else if (this.character.isLongIdle()) {
+      this.character.showLongIdleImage();
+    } else {
+      this.character.showIdleImage();
+    }
+  }
+
+  /**
+   * Handles character jump input and jump sound.
+   *
+   * @returns {void}
+   */
+  handleCharacterJump() {
+    if (this.keyboard.SPACE && !this.character.isAboveGround()) {
+      playSound(characterJumpSound);
+      this.character.jump();
+    }
+  }
+
+  /**
+   * Updates character animation, jumping, and gravity.
+   *
+   * @returns {void}
+   */
+  updateCharacter() {
+    this.updateCharacterAnimation();
+    this.handleCharacterJump();
+    this.character.updateGravity();
+  }
+
+  /**
+   * Updates all enemies.
+   *
+   * @returns {void}
+   */
+  updateEnemies() {
+    this.chickens.forEach((chicken) => {
+      chicken.update();
+    });
+
+    this.endboss.update(this.character.x);
+  }
+
+  /**
+   * Updates all moving cloud objects.
+   *
+   * @returns {void}
+   */
+  updateClouds() {
+    this.backgroundObjects.forEach((bg) => {
+      if (bg instanceof Cloud) {
+        bg.update();
+      }
+    });
+  }
+
+  /**
+   * Checks if the player is pressing an action key.
+   *
+   * @returns {boolean} True if the player is currently active.
+   */
+  isPlayerActive() {
+    return this.keyboard.RIGHT ||
+      this.keyboard.LEFT ||
+      this.keyboard.SPACE ||
+      this.keyboard.D;
+  }
+
+  /**
+   * Updates character, enemies, and background movement.
+   *
+   * @returns {void}
+   */
+  updateFrame() {
+    this.updateCharacterActivity();
+    this.updateCharacter();
+    this.updateEnemies();
+    this.updateClouds();
   }
 
 }

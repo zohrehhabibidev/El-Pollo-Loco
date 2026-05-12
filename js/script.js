@@ -206,125 +206,7 @@ function handleDeathState() {
   return true;
 }
 
-/**
- * Updates the character inactivity timer.
- *
- * @returns {void}
- */
-function updateCharacterActivity() {
-  if (isPlayerActive()) {
-    character.resetInactivityTimer();
-  }
-}
 
-/**
- * Moves the character to the right and plays walking animation.
- *
- * @returns {void}
- */
-function moveCharacterRight() {
-  character.moveRight();
-  character.otherDirection = false;
-  character.playWalkingAnimation();
-}
-
-/**
- * Moves the character to the left and plays walking animation.
- *
- * @returns {void}
- */
-function moveCharacterLeft() {
-  if (character.x > 0) {
-    character.moveLeft();
-  }
-  character.otherDirection = true;
-  character.playWalkingAnimation();
-}
-
-/**
- * Moves the character horizontally while jumping.
- *
- * @returns {void}
- */
-function moveCharacterInAir() {
-  if (keyboardState.RIGHT && character.x < worldEnd) {
-    character.moveRight();
-    character.otherDirection = false;
-  } else if (keyboardState.LEFT && character.x > 0) {
-    character.moveLeft();
-    character.otherDirection = true;
-  }
-}
-
-/**
- * Updates character animation and horizontal movement.
- *
- * @returns {void}
- */
-function updateCharacterAnimation() {
-  if (character.isHurt) {
-    character.playHurtAnimation();
-  } else if (character.isAboveGround()) {
-    moveCharacterInAir();
-    character.playJumpAnimation();
-  } else if (keyboardState.RIGHT && character.x < worldEnd) {
-    moveCharacterRight();
-  } else if (keyboardState.LEFT) {
-    moveCharacterLeft();
-  } else if (character.isLongIdle()) {
-    character.showLongIdleImage();
-  } else {
-    character.showIdleImage();
-  }
-}
-
-/**
- * Handles character jump input and jump sound.
- *
- * @returns {void}
- */
-function handleCharacterJump() {
-  if (keyboardState.SPACE && !character.isAboveGround()) {
-    playSound(characterJumpSound);
-    character.jump();
-  }
-}
-
-/**
- * Updates character animation, jumping, and gravity.
- *
- * @returns {void}
- */
-function updateCharacter() {
-  updateCharacterAnimation();
-  handleCharacterJump();
-  character.updateGravity();
-}
-
-/**
- * Updates all enemies.
- *
- * @returns {void}
- */
-function updateEnemies() {
-  chickens.forEach((chicken) => {
-    chicken.update();
-  });
-  endboss.update(character.x);
-}
-
-/**
- * Updates all moving cloud objects.
- *
- * @returns {void}
- */
-function updateClouds() {
-  backgroundObjects.forEach((bg) => {
-    if (bg instanceof Cloud) {
-      bg.update();
-    }
-  });
-}
 
 /**
  * Plays the character damage sound from the beginning.
@@ -420,20 +302,7 @@ function updateGameProgress() {
   removeDeadChickens();
 }
 
-/**
- * Updates all game state for one frame.
- *
- * @returns {void}
- */
-function updateFrame() {
-  updateCharacterActivity();
-  updateCharacter();
-  updateEnemies();
-  updateClouds();
-  handleCollisions();
-  updateGameObjects();
-  updateGameProgress();
-}
+
 
 /**
  * Main game loop.
@@ -451,7 +320,11 @@ function loop() {
     return;
   }
 
-  updateFrame();
+  world.updateFrame();
+  syncWorldObjects();
+  handleCollisions();
+  updateGameObjects();
+  updateGameProgress();
   draw();
   animationFrameId = requestAnimationFrame(loop);
 }
