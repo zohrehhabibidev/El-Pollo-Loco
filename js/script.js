@@ -3,6 +3,7 @@
  */
 let canvas;
 let ctx;
+let world;
 let keyboardState = new Keyboard();
 let animationFrameId = null;
 let character;
@@ -110,6 +111,7 @@ function prepareNewGame() {
 function initCanvas() {
   canvas = document.getElementById("game-canvas");
   ctx = canvas.getContext("2d");
+  world = new World(canvas, keyboardState);
 }
 
 /**
