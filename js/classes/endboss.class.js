@@ -46,7 +46,7 @@ class Endboss extends MovableObject {
     };
     this.speed = 2;
     this.activationX = 1700;
-    this.minDistanceToCharacter = 120;
+    this.minDistanceToCharacter = 60;
     this.health = 100;
     this.isDead = false;
     this.isHurt = false;
