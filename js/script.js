@@ -276,7 +276,7 @@ function showGameOver() {
  * @returns {void}
  */
 function checkWinCondition() {
-  if (endboss.isDead && !gameWon && !winTimeoutId) {
+  if (world.isEndbossDefeated() && !gameWon && !winTimeoutId) {
     winTimeoutId = setTimeout(showWinScreen, WIN_DELAY_MS);
   }
 }

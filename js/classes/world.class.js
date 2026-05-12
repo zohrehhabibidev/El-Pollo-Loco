@@ -652,6 +652,15 @@ class World {
   }
 
   /**
+   * Checks whether the endboss is defeated.
+   *
+   * @returns {boolean} True if the endboss is dead.
+   */
+  isEndbossDefeated() {
+    return this.endboss.isDead;
+  }
+
+  /**
   * Handles collecting a bottle.
   *
   * @returns {void}
