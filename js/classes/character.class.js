@@ -112,7 +112,7 @@ class Character extends MovableObject {
       bottom: 15,
       left: 35,
     };
-    this.speed = 4;
+    this.speed = 5;
     this.health = 100;
     this.isHurt = false;
     this.visible = true;
