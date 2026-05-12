@@ -35,11 +35,6 @@ const characterJumpSound = new Audio("assets/audio/character/characterJump.wav")
 
 let backgroundObjects = [];
 let chickens = [];
-let bottles = [];
-let bottleCount = 0;
-let throwableObjects = [];
-let coins = [];
-let coinCount = 0;
 let coinStatusBar;
 let endbossStatusBar;
 
@@ -73,16 +68,11 @@ function initCanvas() {
 function syncWorldObjects() {
   character = world.character;
   chickens = world.chickens;
-  bottles = world.bottles;
-  coins = world.coins;
   backgroundObjects = world.backgroundObjects;
   statusBar = world.statusBar;
   bottleStatusBar = world.bottleStatusBar;
   coinStatusBar = world.coinStatusBar;
   endbossStatusBar = world.endbossStatusBar;
-  bottleCount = world.bottleCount;
-  coinCount = world.coinCount;
-  throwableObjects = world.throwableObjects;
 }
 
 /**
@@ -93,16 +83,11 @@ function syncWorldObjects() {
 function syncWorldFromLegacyGlobals() {
   world.character = character;
   world.chickens = chickens;
-  world.bottles = bottles;
-  world.coins = coins;
   world.backgroundObjects = backgroundObjects;
   world.statusBar = statusBar;
   world.bottleStatusBar = bottleStatusBar;
   world.coinStatusBar = coinStatusBar;
   world.endbossStatusBar = endbossStatusBar;
-  world.bottleCount = bottleCount;
-  world.coinCount = coinCount;
-  world.throwableObjects = throwableObjects;
 }
 
 /**
@@ -154,12 +139,17 @@ function stopGameLoop() {
  * @returns {void}
  */
 function clearThrowableObjects() {
-  throwableObjects.forEach((bottle) => {
+  if (!world) {
+    return;
+  }
+
+  world.throwableObjects.forEach((bottle) => {
     if (bottle.stopMovement) {
       bottle.stopMovement();
     }
   });
-  throwableObjects = [];
+
+  world.throwableObjects = [];
 }
 
 /**
