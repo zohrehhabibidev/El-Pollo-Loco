@@ -202,13 +202,13 @@ function playCharacterDamageSound() {
 }
 
 /**
- * Updates collectibles, thrown bottles, and bottle collisions.
+ * Updates thrown bottle collisions.
  *
  * @returns {void}
  */
 function updateGameObjects() {
-  checkBottleChickenCollision();
-  checkBottleEndbossCollision();
+  world.checkBottleChickenCollision();
+  world.checkBottleEndbossCollision();
 }
 
 /**
@@ -439,88 +439,6 @@ function stopEndSounds() {
  */
 function playBottleBreakSound() {
   playSound(bottleBreakSound);
-}
-
-/**
- * Handles a bottle hit on a chicken.
- *
- * @param {ThrowableObject} bottle - The thrown bottle.
- * @param {Chicken} chicken - The hit chicken.
- * @returns {void}
- */
-function hitChickenWithBottle(bottle, chicken) {
-  chicken.die();
-  bottle.startSplash();
-  playBottleBreakSound();
-}
-
-/**
- * Checks if a bottle hits any chicken.
- *
- * @param {ThrowableObject} bottle - The thrown bottle.
- * @returns {void}
- */
-function checkBottleHitChicken(bottle) {
-  chickens.forEach((chicken) => {
-    if (!chicken.isDead && bottle.isColliding(chicken)) {
-      hitChickenWithBottle(bottle, chicken);
-    }
-  });
-}
-
-/**
- * Checks if a bottle can hit the endboss.
- *
- * @param {ThrowableObject} bottle - The thrown bottle.
- * @returns {boolean} True if the bottle can hit the endboss.
- */
-function canBottleHitEndboss(bottle) {
-  return !endboss.isDead &&
-    bottle.isColliding(endboss) &&
-    endboss.health > 0;
-}
-
-/**
- * Handles a bottle hit on the endboss.
- *
- * @param {ThrowableObject} bottle - The thrown bottle.
- * @returns {void}
- */
-function hitEndbossWithBottle(bottle) {
-  bottle.startSplash();
-  endboss.takeDamage(ENDBOSS_BOTTLE_DAMAGE);
-  endbossStatusBar.setPercentage(endboss.health);
-  playBottleBreakSound();
-}
-
-/**
- * Checks collisions between thrown bottles and chickens.
- *
- * @returns {void}
- */
-function checkBottleChickenCollision() {
-  throwableObjects.forEach((bottle) => {
-    if (bottle.hasSplashed) {
-      return;
-    }
-    checkBottleHitChicken(bottle);
-  });
-}
-
-/**
- * Checks collisions between thrown bottles and the endboss.
- *
- * @returns {void}
- */
-function checkBottleEndbossCollision() {
-  throwableObjects.forEach((bottle) => {
-    if (bottle.hasSplashed) {
-      return;
-    }
-    if (canBottleHitEndboss(bottle)) {
-      hitEndbossWithBottle(bottle);
-    }
-  });
 }
 
 /**
