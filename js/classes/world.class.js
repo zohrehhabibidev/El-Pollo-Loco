@@ -297,10 +297,6 @@ class World {
     this.drawWorld();
     this.drawFixedUi();
     this.drawCharacterWithCamera();
-
-    // if (debugHitboxes) {
-    //   this.drawDebugHitboxes();
-    // }
   }
 
   /**

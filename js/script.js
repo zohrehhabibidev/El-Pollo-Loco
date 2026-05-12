@@ -206,8 +206,6 @@ function handleDeathState() {
   return true;
 }
 
-
-
 /**
  * Plays the character damage sound from the beginning.
  *
@@ -215,45 +213,6 @@ function handleDeathState() {
  */
 function playCharacterDamageSound() {
   playSound(characterDamageSound);
-}
-
-/**
- * Handles jumping on a chicken.
- *
- * @param {Chicken} chicken - The chicken hit from above.
- * @returns {void}
- */
-function handleChickenStomp(chicken) {
-  chicken.die();
-  character.speedY = 10;
-}
-
-/**
- * Damages the character after touching a chicken.
- *
- * @returns {void}
- */
-function damageCharacterFromChicken() {
-  const oldHealth = character.health;
-  character.takeDamage();
-  if (character.health < oldHealth) {
-    playCharacterDamageSound();
-  }
-  statusBar.setPercentage(character.health);
-}
-
-/**
- * Handles one chicken collision with the character.
- *
- * @param {Chicken} chicken - The chicken to check.
- * @returns {void}
- */
-function handleChickenCollision(chicken) {
-  if (!chicken.isDead && isJumpingOnChicken(chicken)) {
-    handleChickenStomp(chicken);
-  } else if (!chicken.isDead && character.isColliding(chicken)) {
-    damageCharacterFromChicken();
-  }
 }
 
 /**
@@ -489,21 +448,6 @@ function stopEndSounds() {
   loseSound.currentTime = 0;
   winSound.pause();
   winSound.currentTime = 0;
-}
-
-/**
- * Checks if the character lands on top of a chicken.
- *
- * @param {Chicken} chicken - The chicken to check.
- * @returns {boolean} True if the character hits the chicken from above while falling.
- */
-function isJumpingOnChicken(chicken) {
-  const characterBox = character.getCollisionBox();
-  const chickenBox = chicken.getCollisionBox();
-
-  return character.isColliding(chicken) &&
-    character.speedY < 0 &&
-    characterBox.bottom <= chickenBox.top + CHICKEN_STOMP_TOLERANCE;
 }
 
 /**
