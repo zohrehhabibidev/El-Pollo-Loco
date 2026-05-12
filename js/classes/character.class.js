@@ -1,96 +1,4 @@
 /**
- * Walking animation frames.
- *
- * @type {string[]}
- */
-const characterWalking = [
-  "assets/img/character/2_walk/W-21.png",
-  "assets/img/character/2_walk/W-22.png",
-  "assets/img/character/2_walk/W-23.png",
-  "assets/img/character/2_walk/W-24.png",
-  "assets/img/character/2_walk/W-25.png",
-  "assets/img/character/2_walk/W-26.png",
-];
-
-/**
- * Idle animation frames.
- *
- * @type {string[]}
- */
-const idleImages = [
-  "assets/img/character/1_idle/idle/I-1.png",
-  "assets/img/character/1_idle/idle/I-2.png",
-  "assets/img/character/1_idle/idle/I-3.png",
-  "assets/img/character/1_idle/idle/I-4.png",
-  "assets/img/character/1_idle/idle/I-5.png",
-  "assets/img/character/1_idle/idle/I-6.png",
-  "assets/img/character/1_idle/idle/I-7.png",
-  "assets/img/character/1_idle/idle/I-8.png",
-  "assets/img/character/1_idle/idle/I-9.png",
-  "assets/img/character/1_idle/idle/I-10.png",
-];
-
-/**
- * Long idle animation frames.
- *
- * @type {string[]}
- */
-const longIdleImages = [
-  "assets/img/character/1_idle/long_idle/I-11.png",
-  "assets/img/character/1_idle/long_idle/I-12.png",
-  "assets/img/character/1_idle/long_idle/I-13.png",
-  "assets/img/character/1_idle/long_idle/I-14.png",
-  "assets/img/character/1_idle/long_idle/I-15.png",
-  "assets/img/character/1_idle/long_idle/I-16.png",
-  "assets/img/character/1_idle/long_idle/I-17.png",
-  "assets/img/character/1_idle/long_idle/I-18.png",
-  "assets/img/character/1_idle/long_idle/I-19.png",
-  "assets/img/character/1_idle/long_idle/I-20.png",
-];
-
-/**
- * Dead animation frames.
- *
- * @type {string[]}
- */
-const deadImages = [
-  "assets/img/character/5_dead/D-51.png",
-  "assets/img/character/5_dead/D-52.png",
-  "assets/img/character/5_dead/D-53.png",
-  "assets/img/character/5_dead/D-54.png",
-  "assets/img/character/5_dead/D-55.png",
-  "assets/img/character/5_dead/D-56.png",
-];
-
-/**
- * Hurt animation frames.
- *
- * @type {string[]}
- */
-const hurtImages = [
-  "assets/img/character/4_hurt/H-41.png",
-  "assets/img/character/4_hurt/H-42.png",
-  "assets/img/character/4_hurt/H-43.png",
-];
-
-/**
- * Jump animation frames.
- *
- * @type {string[]}
- */
-const jumpImages = [
-  "assets/img/character/3_jump/J-31.png",
-  "assets/img/character/3_jump/J-32.png",
-  "assets/img/character/3_jump/J-33.png",
-  "assets/img/character/3_jump/J-34.png",
-  "assets/img/character/3_jump/J-35.png",
-  "assets/img/character/3_jump/J-36.png",
-  "assets/img/character/3_jump/J-37.png",
-  "assets/img/character/3_jump/J-38.png",
-  "assets/img/character/3_jump/J-39.png",
-];
-
-/**
  * Represents the main player character.
  *
  * @extends MovableObject
@@ -101,6 +9,62 @@ class Character extends MovableObject {
    */
   constructor() {
     super();
+    this.characterWalking = [
+      "assets/img/character/2_walk/W-21.png",
+      "assets/img/character/2_walk/W-22.png",
+      "assets/img/character/2_walk/W-23.png",
+      "assets/img/character/2_walk/W-24.png",
+      "assets/img/character/2_walk/W-25.png",
+      "assets/img/character/2_walk/W-26.png",
+    ];
+    this.idleImages = [
+      "assets/img/character/1_idle/idle/I-1.png",
+      "assets/img/character/1_idle/idle/I-2.png",
+      "assets/img/character/1_idle/idle/I-3.png",
+      "assets/img/character/1_idle/idle/I-4.png",
+      "assets/img/character/1_idle/idle/I-5.png",
+      "assets/img/character/1_idle/idle/I-6.png",
+      "assets/img/character/1_idle/idle/I-7.png",
+      "assets/img/character/1_idle/idle/I-8.png",
+      "assets/img/character/1_idle/idle/I-9.png",
+      "assets/img/character/1_idle/idle/I-10.png",
+    ];
+    this.longIdleImages = [
+      "assets/img/character/1_idle/long_idle/I-11.png",
+      "assets/img/character/1_idle/long_idle/I-12.png",
+      "assets/img/character/1_idle/long_idle/I-13.png",
+      "assets/img/character/1_idle/long_idle/I-14.png",
+      "assets/img/character/1_idle/long_idle/I-15.png",
+      "assets/img/character/1_idle/long_idle/I-16.png",
+      "assets/img/character/1_idle/long_idle/I-17.png",
+      "assets/img/character/1_idle/long_idle/I-18.png",
+      "assets/img/character/1_idle/long_idle/I-19.png",
+      "assets/img/character/1_idle/long_idle/I-20.png",
+    ];
+    this.deadImages = [
+      "assets/img/character/5_dead/D-51.png",
+      "assets/img/character/5_dead/D-52.png",
+      "assets/img/character/5_dead/D-53.png",
+      "assets/img/character/5_dead/D-54.png",
+      "assets/img/character/5_dead/D-55.png",
+      "assets/img/character/5_dead/D-56.png",
+    ];
+    this.hurtImages = [
+      "assets/img/character/4_hurt/H-41.png",
+      "assets/img/character/4_hurt/H-42.png",
+      "assets/img/character/4_hurt/H-43.png",
+    ];
+    this.jumpImages = [
+      "assets/img/character/3_jump/J-31.png",
+      "assets/img/character/3_jump/J-32.png",
+      "assets/img/character/3_jump/J-33.png",
+      "assets/img/character/3_jump/J-34.png",
+      "assets/img/character/3_jump/J-35.png",
+      "assets/img/character/3_jump/J-36.png",
+      "assets/img/character/3_jump/J-37.png",
+      "assets/img/character/3_jump/J-38.png",
+      "assets/img/character/3_jump/J-39.png",
+    ];
 
     this.x = 50;
     this.y = 250;
@@ -117,17 +81,17 @@ class Character extends MovableObject {
     this.isHurt = false;
     this.visible = true;
 
-    this.loadImages(idleImages);
-    this.loadImages(longIdleImages);
+    this.loadImages(this.idleImages);
+    this.loadImages(this.longIdleImages);
     this.lastActivityTime = Date.now();
     this.isSleeping = false;
 
-    this.loadImages(characterWalking);
-    this.loadImages(hurtImages);
-    this.loadImages(deadImages);
-    this.loadImages(jumpImages);
+    this.loadImages(this.characterWalking);
+    this.loadImages(this.hurtImages);
+    this.loadImages(this.deadImages);
+    this.loadImages(this.jumpImages);
 
-    this.img = this.imageCache[idleImages[0]];
+    this.img = this.imageCache[this.idleImages[0]];
     this.otherDirection = false;
   }
 
@@ -137,7 +101,7 @@ class Character extends MovableObject {
    * @returns {void}
    */
   playWalkingAnimation() {
-    this.playAnimation(characterWalking);
+    this.playAnimation(this.characterWalking);
   }
 
   /**
@@ -146,7 +110,7 @@ class Character extends MovableObject {
    * @returns {void}
    */
   showIdleImage() {
-    this.playAnimation(idleImages);
+    this.playAnimation(this.idleImages);
   }
 
   /**
@@ -185,7 +149,7 @@ class Character extends MovableObject {
       this.animationCounter = 0;
     }
 
-    this.playAnimation(longIdleImages);
+    this.playAnimation(this.longIdleImages);
   }
 
   /**
@@ -194,7 +158,7 @@ class Character extends MovableObject {
    * @returns {void}
    */
   playHurtAnimation() {
-    this.playAnimation(hurtImages);
+    this.playAnimation(this.hurtImages);
   }
 
   /**
@@ -203,12 +167,12 @@ class Character extends MovableObject {
    * @returns {void}
    */
   playDeadAnimation() {
-    if (this.currentImage >= deadImages.length) {
-      this.img = this.imageCache[deadImages[deadImages.length - 1]];
+    if (this.currentImage >= this.deadImages.length) {
+      this.img = this.imageCache[this.deadImages[this.deadImages.length - 1]];
       return;
     }
 
-    this.img = this.imageCache[deadImages[this.currentImage]];
+    this.img = this.imageCache[this.deadImages[this.currentImage]];
 
     this.animationCounter++;
 
@@ -252,11 +216,11 @@ class Character extends MovableObject {
    */
   playJumpAnimation() {
     if (this.speedY > 1) {
-      this.img = this.imageCache[jumpImages[3]];
+      this.img = this.imageCache[this.jumpImages[3]];
     } else if (this.speedY < -1) {
-      this.img = this.imageCache[jumpImages[6]];
+      this.img = this.imageCache[this.jumpImages[6]];
     } else {
-      this.img = this.imageCache[jumpImages[4]];
+      this.img = this.imageCache[this.jumpImages[4]];
     }
   }
 }
