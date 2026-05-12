@@ -7,19 +7,10 @@ let world;
 let keyboardState = new Keyboard();
 let animationFrameId = null;
 let character;
-const worldEnd = 2260;
 const GAME_OVER_DELAY_MS = 900;
 const WIN_DELAY_MS = 1000;
-const CAMERA_X_OFFSET = 100;
-const CHICKEN_STOMP_TOLERANCE = 40;
 const ENDBOSS_BOTTLE_DAMAGE = 20;
-const THROWN_BOTTLE_X_OFFSET = 100;
-const THROWN_BOTTLE_Y_OFFSET = 120;
 const BACKGROUND_MUSIC_VOLUME = 0.06;
-const BOTTLE_OUT_OF_BOUNDS_LEFT = -200;
-const BOTTLE_OUT_OF_BOUNDS_RIGHT_MARGIN = 400;
-const BOTTLE_OUT_OF_BOUNDS_BOTTOM_MARGIN = 200;
-const DEBUG_HITBOXES = false;
 
 
 let statusBar;
@@ -29,7 +20,6 @@ let winTimeoutId = null;
 let deathAnimationStarted = false;
 let gameOverTimeoutId = null;
 let bottleStatusBar;
-const maxBottleCount = 9;
 let isMuted = localStorage.getItem("isMuted") === "true";
 const backgroundMusic = new Audio("assets/audio/background/background-game-music.mp3");
 backgroundMusic.loop = true;
@@ -649,16 +639,4 @@ function backToMenu() {
   showStartScreen();
   clearCanvasIfReady();
   hideMobileControls();
-}
-
-/**
- * Checks if the player is pressing an action key.
- *
- * @returns {boolean} True if the player is currently active.
- */
-function isPlayerActive() {
-  return keyboardState.RIGHT ||
-    keyboardState.LEFT ||
-    keyboardState.SPACE ||
-    keyboardState.D;
 }

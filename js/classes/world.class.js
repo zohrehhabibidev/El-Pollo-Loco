@@ -1,8 +1,4 @@
-const COIN_HITBOX_HORIZONTAL_INSET = 35;
-const COIN_HITBOX_TOP_OFFSET = 10;
-const COIN_HITBOX_BOTTOM_OFFSET = 90;
-const COIN_STATUS_PERCENT_PER_COIN = 20;
-const MAX_BOTTLE_COUNT = 9;
+
 /**
  * Represents the game world and its objects.
  */
@@ -30,13 +26,20 @@ class World {
     this.endbossStatusBar = null;
     this.bottleCount = 0;
     this.coinCount = 0;
+    this.COIN_HITBOX_HORIZONTAL_INSET = 35;
+    this.COIN_HITBOX_TOP_OFFSET = 10;
+    this.COIN_HITBOX_BOTTOM_OFFSET = 90;
+    this.COIN_STATUS_PERCENT_PER_COIN = 20;
+    this.maxBottleCount = 9;
     this.thrownBottleXOffset = 100;
     this.thrownBottleYOffset = 120;
-    this.maxBottleCount = 9;
     this.bottleOutOfBoundsLeft = -200;
     this.bottleOutOfBoundsRightMargin = 400;
     this.bottleOutOfBoundsBottomMargin = 200;
     this.worldEnd = 2260;
+    this.cameraXOffset = 100;
+    this.chickenStompTolerance = 40;
+
   }
 
   /**
@@ -190,7 +193,7 @@ class World {
    * @returns {number} The camera x position.
    */
   getCameraX() {
-    return Math.max(0, this.character.x - CAMERA_X_OFFSET);
+    return Math.max(0, this.character.x - this.cameraXOffset);
   }
 
   /**
@@ -353,7 +356,7 @@ class World {
    * @returns {void}
    */
   moveCharacterInAir() {
-    if (this.keyboard.RIGHT && this.character.x < worldEnd) {
+    if (this.keyboard.RIGHT && this.character.x < this.worldEnd) {
       this.character.moveRight();
       this.character.otherDirection = false;
     } else if (this.keyboard.LEFT && this.character.x > 0) {
@@ -373,7 +376,7 @@ class World {
     } else if (this.character.isAboveGround()) {
       this.moveCharacterInAir();
       this.character.playJumpAnimation();
-    } else if (this.keyboard.RIGHT && this.character.x < worldEnd) {
+    } else if (this.keyboard.RIGHT && this.character.x < this.worldEnd) {
       this.moveCharacterRight();
     } else if (this.keyboard.LEFT) {
       this.moveCharacterLeft();
@@ -474,7 +477,7 @@ class World {
 
     return this.character.isColliding(chicken) &&
       this.character.speedY < 0 &&
-      characterBox.bottom <= chickenBox.top + CHICKEN_STOMP_TOLERANCE;
+      characterBox.bottom <= chickenBox.top + this.chickenStompTolerance;
   }
 
   /**
@@ -564,7 +567,7 @@ class World {
  */
   handleBottleCollect() {
     this.bottleCount++;
-    this.bottleStatusBar.setPercentage((this.bottleCount / MAX_BOTTLE_COUNT) * 100);
+    this.bottleStatusBar.setPercentage((this.bottleCount / this.maxBottleCount) * 100);
     playSound(bottleCollectSound);
   }
 
@@ -592,10 +595,10 @@ class World {
  */
   getCharacterCoinBounds() {
     return {
-      left: this.character.x + COIN_HITBOX_HORIZONTAL_INSET,
-      right: this.character.x + this.character.width - COIN_HITBOX_HORIZONTAL_INSET,
-      top: this.character.y + COIN_HITBOX_TOP_OFFSET,
-      bottom: this.character.y + COIN_HITBOX_BOTTOM_OFFSET,
+      left: this.character.x + this.COIN_HITBOX_HORIZONTAL_INSET,
+      right: this.character.x + this.character.width - this.COIN_HITBOX_HORIZONTAL_INSET,
+      top: this.character.y + this.COIN_HITBOX_TOP_OFFSET,
+      bottom: this.character.y + this.COIN_HITBOX_BOTTOM_OFFSET,
     };
   }
 
@@ -636,7 +639,7 @@ class World {
  */
   handleCoinCollect() {
     this.coinCount++;
-    this.coinStatusBar.setPercentage(Math.min(100, this.coinCount * COIN_STATUS_PERCENT_PER_COIN));
+    this.coinStatusBar.setPercentage(Math.min(100, this.coinCount * this.COIN_STATUS_PERCENT_PER_COIN));
     playSound(coinCollectSound);
   }
 
