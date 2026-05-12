@@ -41,7 +41,6 @@ let throwableObjects = [];
 let coins = [];
 let coinCount = 0;
 let coinStatusBar;
-let endboss;
 let endbossStatusBar;
 
 /**
@@ -77,7 +76,6 @@ function syncWorldObjects() {
   bottles = world.bottles;
   coins = world.coins;
   backgroundObjects = world.backgroundObjects;
-  endboss = world.endboss;
   statusBar = world.statusBar;
   bottleStatusBar = world.bottleStatusBar;
   coinStatusBar = world.coinStatusBar;
@@ -98,7 +96,6 @@ function syncWorldFromLegacyGlobals() {
   world.bottles = bottles;
   world.coins = coins;
   world.backgroundObjects = backgroundObjects;
-  world.endboss = endboss;
   world.statusBar = statusBar;
   world.bottleStatusBar = bottleStatusBar;
   world.coinStatusBar = coinStatusBar;
