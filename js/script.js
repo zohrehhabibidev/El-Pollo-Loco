@@ -217,7 +217,6 @@ function playCharacterDamageSound() {
  * @returns {void}
  */
 function updateGameObjects() {
-  throwBottle();
   checkBottleChickenCollision();
   checkBottleEndbossCollision();
   updateBottleSplashes();
@@ -442,22 +441,6 @@ function stopEndSounds() {
   loseSound.currentTime = 0;
   winSound.pause();
   winSound.currentTime = 0;
-}
-
-/**
- * Throws a bottle when the D key is pressed and bottles are available.
- *
- * @returns {void}
- */
-function throwBottle() {
-  if (keyboardState.D && bottleCount > 0 && !character.isHurt) {
-    const bottleX = character.otherDirection ? character.x : character.x + THROWN_BOTTLE_X_OFFSET;
-    const bottle = new ThrowableObject(bottleX, character.y + THROWN_BOTTLE_Y_OFFSET, character.otherDirection);
-    throwableObjects.push(bottle);
-    bottleCount--;
-    bottleStatusBar.setPercentage((bottleCount / maxBottleCount) * 100);
-    keyboardState.D = false;
-  }
 }
 
 /**

@@ -30,6 +30,9 @@ class World {
     this.endbossStatusBar = null;
     this.bottleCount = 0;
     this.coinCount = 0;
+    this.thrownBottleXOffset = 100;
+    this.thrownBottleYOffset = 120;
+    this.maxBottleCount = 9;
   }
 
   /**
@@ -450,6 +453,7 @@ class World {
     this.updateClouds();
     this.collectBottles();
     this.collectCoins();
+    this.throwBottle();
   }
 
   /**
@@ -644,6 +648,30 @@ class World {
 
       return true;
     });
+  }
+
+  /**
+   * Throws a bottle when the throw key is pressed and bottles are available.
+   *
+   * @returns {void}
+   */
+  throwBottle() {
+    if (this.keyboard.D && this.bottleCount > 0 && !this.character.isHurt) {
+      const bottleX = this.character.otherDirection
+        ? this.character.x
+        : this.character.x + this.thrownBottleXOffset;
+
+      const bottle = new ThrowableObject(
+        bottleX,
+        this.character.y + this.thrownBottleYOffset,
+        this.character.otherDirection
+      );
+
+      this.throwableObjects.push(bottle);
+      this.bottleCount--;
+      this.bottleStatusBar.setPercentage((this.bottleCount / this.maxBottleCount) * 100);
+      this.keyboard.D = false;
+    }
   }
 
 }
