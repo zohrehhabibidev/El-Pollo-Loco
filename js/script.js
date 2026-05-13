@@ -1,7 +1,6 @@
 /**
  * Main game script for setup, input handling, game updates, rendering, and UI flow.
  */
-let canvas;
 let world;
 let keyboardState = new Keyboard();
 let animationFrameId = null;
@@ -38,7 +37,7 @@ function prepareNewGame() {
  * @returns {void}
  */
 function initCanvas() {
-  canvas = document.getElementById("game-canvas");
+  const canvas = document.getElementById("game-canvas");
   world = new World(canvas, keyboardState);
   world.createWorld();
 }
