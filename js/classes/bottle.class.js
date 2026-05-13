@@ -1,5 +1,7 @@
 /**
  * Represents a collectible salsa bottle.
+ *
+ * @extends DrawableObject
  */
 class Bottle extends DrawableObject {
   /**

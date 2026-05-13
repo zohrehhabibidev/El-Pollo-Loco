@@ -1,5 +1,7 @@
 /**
  * Represents a background layer in the game.
+ *
+ * @extends DrawableObject
  */
 class BackgroundObject extends DrawableObject {
   /**

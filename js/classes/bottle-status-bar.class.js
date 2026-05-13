@@ -1,5 +1,7 @@
 /**
  * Represents the bottle status bar.
+ *
+ * @extends DrawableObject
  */
 class BottleStatusBar extends DrawableObject {
   /**

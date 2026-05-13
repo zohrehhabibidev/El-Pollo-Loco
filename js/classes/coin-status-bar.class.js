@@ -1,5 +1,7 @@
 /**
  * Represents the coin status bar.
+ *
+ * @extends DrawableObject
  */
 class CoinStatusBar extends DrawableObject {
   /**

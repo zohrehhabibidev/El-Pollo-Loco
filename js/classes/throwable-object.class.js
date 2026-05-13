@@ -1,5 +1,7 @@
 /**
  * Represents a bottle that is thrown by the player.
+ *
+ * @extends MovableObject
  */
 class ThrowableObject extends MovableObject {
   /**

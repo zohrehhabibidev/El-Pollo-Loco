@@ -1,5 +1,7 @@
 /**
  * Represents a collectible coin.
+ *
+ * @extends DrawableObject
  */
 class Coin extends DrawableObject {
   /**

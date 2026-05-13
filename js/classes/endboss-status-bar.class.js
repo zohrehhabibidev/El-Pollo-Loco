@@ -1,5 +1,7 @@
 /**
  * Represents the endboss health status bar.
+ *
+ * @extends DrawableObject
  */
 class EndbossStatusBar extends DrawableObject {
   /**
