@@ -141,15 +141,6 @@ function handleDeathState() {
 }
 
 /**
- * Updates win condition and removes inactive enemies.
- *
- * @returns {void}
- */
-function updateGameProgress() {
-  checkWinCondition();
-}
-
-/**
  * Main game loop.
  *
  * Runs once per animation frame.
@@ -167,7 +158,7 @@ function loop() {
 
   world.updateFrame();
   world.handleCollisions();
-  updateGameProgress();
+  checkWinCondition();
   draw();
   animationFrameId = requestAnimationFrame(loop);
 }
