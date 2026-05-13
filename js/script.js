@@ -146,7 +146,6 @@ function loop() {
   }
 
   world.updateFrame();
-  world.handleCollisions();
   checkWinCondition();
   draw();
   animationFrameId = requestAnimationFrame(loop);

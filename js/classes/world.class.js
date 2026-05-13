@@ -475,6 +475,7 @@ class World {
     this.updateCharacterActivity();
     this.updateCharacter();
     this.updateEnemies();
+    this.handleCollisions();
     this.updateClouds();
     this.collectBottles();
     this.collectCoins();
