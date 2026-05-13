@@ -85,7 +85,7 @@ The mobile landscape layout includes touch buttons for movement, jumping, and th
 
 ## Credits
 
-Audio and asset credits are listed below.
+This project uses external audio, image, and font assets for educational purposes.
 
 Background music:
 https://pixabay.com/music/video-games-game-gaming-video-game-music-471936/
@@ -95,6 +95,12 @@ https://pixabay.com/users/doge_goober57-41887056/
 
 Game over sound:
 https://pixabay.com/users/audley_fergine-32337609/
+
+Game graphics / sprites:
+El Pollo Loco learning project assets provided as part of the course material.
+
+Font:
+Zabars font included locally in `assets/fonts/`.
 
 ## Legal
 
