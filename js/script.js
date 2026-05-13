@@ -279,18 +279,6 @@ function toggleMute() {
 }
 
 /**
- * Plays a short sound effect from the beginning.
- *
- * @param {HTMLAudioElement} sound - The sound to play.
- * @returns {void}
- */
-function playSound(sound) {
-  sound.currentTime = 0;
-  sound.muted = isMuted;
-  sound.play();
-}
-
-/**
  * Starts the background music.
  *
  * @returns {void}
@@ -448,4 +436,10 @@ function backToMenu() {
   showStartScreen();
   clearCanvasIfReady();
   hideMobileControls();
+}
+
+function playSound(sound) {
+  sound.currentTime = 0;
+  sound.muted = isMuted;
+  sound.play();
 }
