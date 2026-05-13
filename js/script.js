@@ -2,7 +2,6 @@
  * Main game script for setup, input handling, game updates, rendering, and UI flow.
  */
 let canvas;
-let ctx;
 let world;
 let keyboardState = new Keyboard();
 let animationFrameId = null;
@@ -40,7 +39,6 @@ function prepareNewGame() {
  */
 function initCanvas() {
   canvas = document.getElementById("game-canvas");
-  ctx = canvas.getContext("2d");
   world = new World(canvas, keyboardState);
   world.createWorld();
 }
@@ -377,8 +375,8 @@ function showStartScreen() {
  * @returns {void}
  */
 function clearCanvasIfReady() {
-  if (ctx && canvas) {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  if (world) {
+    world.clearCanvas();
   }
 }
 
