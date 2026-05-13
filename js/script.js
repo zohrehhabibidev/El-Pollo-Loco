@@ -1,18 +1,24 @@
 /**
  * Main game script for setup, input handling, game updates, rendering, and UI flow.
  */
+// World and input state.
 let world;
 let keyboardState = new Keyboard();
+
+// Active animation frame ID.
 let animationFrameId = null;
 const GAME_OVER_DELAY_MS = 900;
 const WIN_DELAY_MS = 1000;
 const BACKGROUND_MUSIC_VOLUME = 0.06;
 
+// Game lifecycle flags and timeout IDs.
 let gameOver = false;
 let gameWon = false;
 let winTimeoutId = null;
 let deathAnimationStarted = false;
 let gameOverTimeoutId = null;
+
+// Audio objects and mute state.
 let isMuted = localStorage.getItem("isMuted") === "true";
 const backgroundMusic = new Audio("assets/audio/background/background-game-music.mp3");
 backgroundMusic.loop = true;
@@ -22,7 +28,7 @@ const loseSound = new Audio("assets/audio/lose/game-over.mp3");
 const winSound = new Audio("assets/audio/win/win-sound.mp3");
 
 /**
- * Prepares a new game session.
+ * Stops the previous game loop and clears active throwable bottles before creating a new session.
  *
  * @returns {void}
  */
@@ -32,7 +38,7 @@ function prepareNewGame() {
 }
 
 /**
- * Initializes the game world.
+ * Creates a new `World` instance, stores it globally, and populates it with game objects.
  *
  * @returns {void}
  */
@@ -43,7 +49,7 @@ function initWorld() {
 }
 
 /**
- * Initializes the game.
+ * Prepares the previous session, creates a fresh world, and starts the game loop.
  *
  * @returns {void}
  */
@@ -97,7 +103,8 @@ function clearThrowableObjects() {
 }
 
 /**
- * Handles the character death state.
+ * Handles the character death flow by starting the death animation, scheduling the game-over screen,
+ * drawing death frames, and continuing the loop until game over.
  *
  * @returns {boolean} True if the death state was handled.
  */
@@ -127,9 +134,8 @@ function handleDeathState() {
 }
 
 /**
- * Main game loop.
- *
- * Runs once per animation frame.
+ * Runs one frame of the game loop unless the game is won, handles death flow, updates the world,
+ * checks win state, draws, and schedules the next frame.
  *
  * @returns {void}
  */
@@ -158,7 +164,7 @@ function draw() {
 }
 
 /**
- * Shows the lose screen overlay after the character dies.
+ * Shows the lose screen, stops background music, plays the lose sound, and hides mobile controls.
  *
  * @returns {void}
  */
@@ -170,7 +176,7 @@ function showGameOver() {
 }
 
 /**
- * Checks if the player has won after defeating the endboss.
+ * Schedules the win screen after the endboss is defeated, unless a win is already pending or finished.
  *
  * @returns {void}
  */
@@ -181,7 +187,8 @@ function checkWinCondition() {
 }
 
 /**
- * Shows the win screen after the endboss is defeated.
+ * Shows the win screen if the game is not already over, marks the game as won, stops background music,
+ * plays the win sound, and hides mobile controls.
  *
  * @returns {void}
  */
@@ -357,7 +364,7 @@ function showStartScreen() {
 }
 
 /**
- * Clears the canvas if it is ready.
+ * Clears the world canvas if the world is ready.
  *
  * @returns {void}
  */
@@ -368,7 +375,8 @@ function clearCanvasIfReady() {
 }
 
 /**
- * Starts the game after the user clicks the start button.
+ * Resets game state and timeouts, hides overlays, creates a fresh keyboard/world, starts music,
+ * and shows mobile controls.
  *
  * @returns {void}
  */
@@ -388,7 +396,7 @@ function startGame() {
 }
 
 /**
- * Restarts the game after losing without reloading the page.
+ * Restarts the game without reloading the page after a win or loss.
  *
  * @returns {void}
  */
@@ -405,7 +413,8 @@ function restartGame() {
 }
 
 /**
- * Returns the player to the start screen.
+ * Stops the game, clears pending objects, timeouts, and sounds, resets input and flags, returns to
+ * the start screen, and clears the canvas.
  *
  * @returns {void}
  */
@@ -423,6 +432,12 @@ function backToMenu() {
   hideMobileControls();
 }
 
+/**
+ * Plays a sound from the beginning while respecting the current mute state.
+ *
+ * @param {HTMLAudioElement} sound - The sound to play.
+ * @returns {void}
+ */
 function playSound(sound) {
   sound.currentTime = 0;
   sound.muted = isMuted;

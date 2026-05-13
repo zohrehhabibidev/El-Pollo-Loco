@@ -110,7 +110,7 @@ class World {
   }
 
   /**
-   * Creates all game status bars.
+   * Creates the character, bottle, and coin status bars.
    *
    * @returns {void}
    */
@@ -185,7 +185,7 @@ class World {
   }
 
   /**
-   * Plays a short world sound effect from the beginning.
+   * Plays a world sound effect from the beginning while respecting the mute state.
    *
    * @param {HTMLAudioElement} sound - The sound to play.
    * @returns {void}
@@ -224,19 +224,19 @@ class World {
   }
 
   /**
- * Draws all background objects.
- *
- * @returns {void}
- */
+   * Draws all background objects.
+   *
+   * @returns {void}
+   */
   drawBackgroundObjects() {
     this.backgroundObjects.forEach((bg) => bg.draw(this.ctx));
   }
 
   /**
- * Draws collectible and throwable objects.
- *
- * @returns {void}
- */
+   * Draws collectible and throwable objects.
+   *
+   * @returns {void}
+   */
   drawCollectibleObjects() {
     this.bottles.forEach((bottle) => {
       bottle.draw(this.ctx);
@@ -252,10 +252,10 @@ class World {
   }
 
   /**
- * Draws enemy objects.
- *
- * @returns {void}
- */
+   * Draws enemy objects.
+   *
+   * @returns {void}
+   */
   drawEnemyObjects() {
     this.chickens.forEach((chicken) => {
       chicken.draw(this.ctx);
@@ -265,10 +265,10 @@ class World {
   }
 
   /**
- * Draws the character when visible.
- *
- * @returns {void}
- */
+   * Draws the character when visible.
+   *
+   * @returns {void}
+   */
   drawCharacterIfVisible() {
     if (this.character.visible) {
       this.character.draw(this.ctx);
@@ -276,10 +276,10 @@ class World {
   }
 
   /**
- * Draws all game objects inside the moving world.
- *
- * @returns {void}
- */
+   * Draws world objects that move with the camera.
+   *
+   * @returns {void}
+   */
   drawWorld() {
     this.ctx.save();
     this.applyCameraTransform();
@@ -292,10 +292,10 @@ class World {
   }
 
   /**
- * Draws fixed UI elements.
- *
- * @returns {void}
- */
+   * Draws fixed status bars.
+   *
+   * @returns {void}
+   */
   drawFixedUi() {
     this.statusBar.draw(this.ctx);
     this.bottleStatusBar.draw(this.ctx);
@@ -307,10 +307,10 @@ class World {
   }
 
   /**
- * Draws the character with the camera transform.
- *
- * @returns {void}
- */
+   * Draws the character with the camera transform.
+   *
+   * @returns {void}
+   */
   drawCharacterWithCamera() {
     this.ctx.save();
 
@@ -321,10 +321,10 @@ class World {
   }
 
   /**
-  * Draws the current game frame.
-  *
-  * @returns {void}
-  */
+   * Draws the current game frame.
+   *
+   * @returns {void}
+   */
   draw() {
     this.clearCanvas();
     this.drawWorld();
@@ -333,10 +333,10 @@ class World {
   }
 
   /**
-  * Updates the character inactivity timer.
-  *
-  * @returns {void}
-  */
+   * Updates the character inactivity timer.
+   *
+   * @returns {void}
+   */
   updateCharacterActivity() {
     if (this.isPlayerActive()) {
       this.character.resetInactivityTimer();
@@ -467,7 +467,7 @@ class World {
   }
 
   /**
-   * Updates character, enemies, and background movement.
+   * Updates character, enemies, collisions, collectibles, bottles, and background movement.
    *
    * @returns {void}
    */
@@ -488,11 +488,11 @@ class World {
   }
 
   /**
- * Checks if the character lands on top of a chicken.
- *
- * @param {Chicken} chicken - The chicken to check.
- * @returns {boolean} True if the character hits the chicken from above while falling.
- */
+   * Checks if the character lands on top of a chicken.
+   *
+   * @param {Chicken} chicken - The chicken to check.
+   * @returns {boolean} True if the character hits the chicken from above while falling.
+   */
   isJumpingOnChicken(chicken) {
     const characterBox = this.character.getCollisionBox();
     const chickenBox = chicken.getCollisionBox();
@@ -583,12 +583,12 @@ class World {
   }
 
   /**
- * Handles a bottle hit on a chicken.
- *
- * @param {ThrowableObject} bottle - The thrown bottle.
- * @param {Chicken} chicken - The hit chicken.
- * @returns {void}
- */
+   * Handles a bottle hit on a chicken.
+   *
+   * @param {ThrowableObject} bottle - The thrown bottle.
+   * @param {Chicken} chicken - The hit chicken.
+   * @returns {void}
+   */
   hitChickenWithBottle(bottle, chicken) {
     chicken.die();
     bottle.startSplash();
@@ -596,11 +596,11 @@ class World {
   }
 
   /**
- * Checks if a bottle hits any chicken.
- *
- * @param {ThrowableObject} bottle - The thrown bottle.
- * @returns {void}
- */
+   * Checks if a bottle hits any chicken.
+   *
+   * @param {ThrowableObject} bottle - The thrown bottle.
+   * @returns {void}
+   */
   checkBottleHitChicken(bottle) {
     this.chickens.forEach((chicken) => {
       if (!chicken.isDead && bottle.isColliding(chicken)) {
@@ -610,11 +610,11 @@ class World {
   }
 
   /**
- * Checks if a bottle can hit the endboss.
- *
- * @param {ThrowableObject} bottle - The thrown bottle.
- * @returns {boolean} True if the bottle can hit the endboss.
- */
+   * Checks if a bottle can hit the endboss.
+   *
+   * @param {ThrowableObject} bottle - The thrown bottle.
+   * @returns {boolean} True if the bottle can hit the endboss.
+   */
   canBottleHitEndboss(bottle) {
     return !this.endboss.isDead &&
       bottle.isColliding(this.endboss) &&
@@ -622,11 +622,11 @@ class World {
   }
 
   /**
- * Handles a bottle hit on the endboss.
- *
- * @param {ThrowableObject} bottle - The thrown bottle.
- * @returns {void}
- */
+   * Handles a bottle hit on the endboss.
+   *
+   * @param {ThrowableObject} bottle - The thrown bottle.
+   * @returns {void}
+   */
   hitEndbossWithBottle(bottle) {
     bottle.startSplash();
     this.endboss.takeDamage(this.endbossBottleDamage);
@@ -635,10 +635,10 @@ class World {
   }
 
   /**
- * Checks collisions between thrown bottles and chickens.
- *
- * @returns {void}
- */
+   * Checks collisions between thrown bottles and chickens.
+   *
+   * @returns {void}
+   */
   checkBottleChickenCollision() {
     this.throwableObjects.forEach((bottle) => {
       if (bottle.hasSplashed) {
@@ -649,10 +649,10 @@ class World {
   }
 
   /**
- * Checks collisions between thrown bottles and the endboss.
- *
- * @returns {void}
- */
+   * Checks collisions between thrown bottles and the endboss.
+   *
+   * @returns {void}
+   */
   checkBottleEndbossCollision() {
     this.throwableObjects.forEach((bottle) => {
       if (bottle.hasSplashed) {
@@ -665,10 +665,10 @@ class World {
   }
 
   /**
- * Removes chickens that finished showing their dead image.
- *
- * @returns {void}
- */
+   * Removes chickens that finished showing their dead image.
+   *
+   * @returns {void}
+   */
   removeDeadChickens() {
     this.chickens = this.chickens.filter((chicken) => !chicken.markedForRemoval);
   }
@@ -683,10 +683,10 @@ class World {
   }
 
   /**
-  * Handles collecting a bottle.
-  *
-  * @returns {void}
-  */
+   * Increases collected bottle count, updates the bottle status bar, and plays a sound.
+   *
+   * @returns {void}
+   */
   handleBottleCollect() {
     this.bottleCount++;
     this.bottleStatusBar.setPercentage((this.bottleCount / this.maxBottleCount) * 100);
@@ -695,7 +695,7 @@ class World {
 
 
   /**
-   * Checks if the character collects a bottle.
+   * Collects touched bottles and removes them from the world.
    *
    * @returns {void}
    */
@@ -711,10 +711,10 @@ class World {
   }
 
   /**
-  * Gets the character bounds for coin collection.
-  *
-  * @returns {{left: number, right: number, top: number, bottom: number}} The character collection bounds.
-  */
+   * Gets the character bounds for coin collection.
+   *
+   * @returns {{left: number, right: number, top: number, bottom: number}} The character collection bounds.
+   */
   getCharacterCoinBounds() {
     return {
       left: this.character.x + this.COIN_HITBOX_HORIZONTAL_INSET,
@@ -725,11 +725,11 @@ class World {
   }
 
   /**
-  * Gets the center position of a coin.
-  *
-  * @param {Coin} coin - The coin to check.
-  * @returns {{x: number, y: number}} The coin center position.
-  */
+   * Gets the center position of a coin.
+   *
+   * @param {Coin} coin - The coin to check.
+   * @returns {{x: number, y: number}} The coin center position.
+   */
   getCoinCenter(coin) {
     return {
       x: coin.x + coin.width / 2,
@@ -738,11 +738,11 @@ class World {
   }
 
   /**
-  * Checks if the character collects a coin with the upper body while jumping.
-  *
-  * @param {Coin} coin - The coin to check.
-  * @returns {boolean} True when the coin center touches the character's upper body while airborne.
-  */
+   * Checks if the character collects a coin with the upper body while jumping.
+   *
+   * @param {Coin} coin - The coin to check.
+   * @returns {boolean} True when the coin center touches the character's upper body while airborne.
+   */
   isCollectingCoin(coin) {
     const characterBounds = this.getCharacterCoinBounds();
     const coinCenter = this.getCoinCenter(coin);
@@ -755,10 +755,10 @@ class World {
   }
 
   /**
-  * Handles collecting a coin.
-  *
-  * @returns {void}
-  */
+   * Increases collected coin count, updates the coin status bar, and plays a sound.
+   *
+   * @returns {void}
+   */
   handleCoinCollect() {
     this.coinCount++;
     this.coinStatusBar.setPercentage(Math.min(100, this.coinCount * this.COIN_STATUS_PERCENT_PER_COIN));
@@ -766,7 +766,7 @@ class World {
   }
 
   /**
-   * Checks if the character collects a coin.
+   * Collects reachable coins and removes them from the world.
    *
    * @returns {void}
    */
@@ -806,10 +806,10 @@ class World {
   }
 
   /**
-  * Updates splash animations for thrown bottles.
-  *
-  * @returns {void}
-  */
+   * Updates splash animations for thrown bottles.
+   *
+   * @returns {void}
+   */
   updateBottleSplashes() {
     this.throwableObjects.forEach((bottle) => {
       if (bottle.hasSplashed) {
@@ -819,11 +819,11 @@ class World {
   }
 
   /**
-  * Checks if a thrown bottle is outside the playable area.
-  *
-  * @param {ThrowableObject} bottle - The thrown bottle to check.
-  * @returns {boolean} True if the bottle is outside the playable area.
-  */
+   * Checks if a thrown bottle is outside the playable area.
+   *
+   * @param {ThrowableObject} bottle - The thrown bottle to check.
+   * @returns {boolean} True if the bottle is outside the playable area.
+   */
   isBottleOutOfBounds(bottle) {
     const isOutsideWorld = bottle.x < this.bottleOutOfBoundsLeft ||
       bottle.x > this.worldEnd + this.bottleOutOfBoundsRightMargin;
@@ -833,11 +833,11 @@ class World {
   }
 
   /**
-  * Stops a missed bottle before removing it from the game.
-  *
-  * @param {ThrowableObject} bottle - The thrown bottle to check.
-  * @returns {void}
-  */
+   * Stops a missed bottle before removing it from the game.
+   *
+   * @param {ThrowableObject} bottle - The thrown bottle to check.
+   * @returns {void}
+   */
   stopMissedBottleIfNeeded(bottle) {
     if (!bottle.markedForRemoval && !bottle.hasSplashed && this.isBottleOutOfBounds(bottle)) {
       bottle.stopMovement();
@@ -863,20 +863,20 @@ class World {
   }
 
   /**
-  * Stops missed bottles and removes inactive thrown bottles.
-  *
-  * @returns {void}
-  */
+   * Stops missed bottles and removes inactive thrown bottles.
+   *
+   * @returns {void}
+   */
   removeMissedBottles() {
     this.throwableObjects.forEach(this.stopMissedBottleIfNeeded.bind(this));
     this.throwableObjects = this.throwableObjects.filter(this.shouldKeepBottle.bind(this));
   }
 
   /**
- * Stops and removes all active throwable bottles.
- *
- * @returns {void}
- */
+   * Stops and removes all active throwable bottles.
+   *
+   * @returns {void}
+   */
   clearThrowableObjects() {
     this.throwableObjects.forEach((bottle) => {
       if (bottle.stopMovement) {
@@ -888,10 +888,10 @@ class World {
   }
 
   /**
- * Checks whether the character is dead.
- *
- * @returns {boolean} True if the character is dead.
- */
+   * Checks whether the character is dead.
+   *
+   * @returns {boolean} True if the character is dead.
+   */
   isCharacterDead() {
     return this.character.isDead();
   }
