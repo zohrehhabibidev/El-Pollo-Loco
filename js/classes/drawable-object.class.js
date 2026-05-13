@@ -49,7 +49,7 @@ class DrawableObject {
   }
 
   /**
-   * Plays an animation using image paths.
+   * Advances the animation after the configured delay using cached image paths.
    *
    * @param {string[]} images - Image paths used for the animation.
    * @returns {void}
@@ -70,10 +70,10 @@ class DrawableObject {
   }
 
   /**
- * Gets the adjusted collision box of the object.
- *
- * @returns {{left: number, right: number, top: number, bottom: number}} Collision box.
- */
+   * Gets the adjusted collision box of the object.
+   *
+   * @returns {{left: number, right: number, top: number, bottom: number}} Collision box.
+   */
   getCollisionBox() {
     return {
       left: this.x + this.offset.left,

@@ -82,7 +82,7 @@ class Endboss extends MovableObject {
   /**
    * Reduces the endboss health after a bottle hit.
    *
-   * @param {number} damage - Amount of damage taken.
+   * @param {number} [damage=20] - Amount of damage taken.
    * @returns {void}
    */
   takeDamage(damage = 20) {
