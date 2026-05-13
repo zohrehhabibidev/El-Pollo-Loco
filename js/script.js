@@ -33,8 +33,6 @@ const bottleBreakSound = new Audio("assets/audio/throwable/bottleBreak.mp3");
 const characterDamageSound = new Audio("assets/audio/character/characterDamage.mp3");
 const characterJumpSound = new Audio("assets/audio/character/characterJump.wav");
 
-let backgroundObjects = [];
-let chickens = [];
 let coinStatusBar;
 let endbossStatusBar;
 
@@ -67,8 +65,6 @@ function initCanvas() {
  */
 function syncWorldObjects() {
   character = world.character;
-  chickens = world.chickens;
-  backgroundObjects = world.backgroundObjects;
   statusBar = world.statusBar;
   bottleStatusBar = world.bottleStatusBar;
   coinStatusBar = world.coinStatusBar;
@@ -82,8 +78,6 @@ function syncWorldObjects() {
  */
 function syncWorldFromLegacyGlobals() {
   world.character = character;
-  world.chickens = chickens;
-  world.backgroundObjects = backgroundObjects;
   world.statusBar = statusBar;
   world.bottleStatusBar = bottleStatusBar;
   world.coinStatusBar = coinStatusBar;
