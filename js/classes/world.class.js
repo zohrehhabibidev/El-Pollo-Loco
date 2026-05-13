@@ -328,8 +328,8 @@ class World {
   draw() {
     this.clearCanvas();
     this.drawWorld();
-    this.drawFixedUi();
     this.drawCharacterWithCamera();
+    this.drawFixedUi();
   }
 
   /**
