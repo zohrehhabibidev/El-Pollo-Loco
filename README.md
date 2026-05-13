@@ -48,6 +48,7 @@ After losing or winning, the player can restart the game or return to the menu w
 - Restart and menu navigation without page reload
 - Background music and sound effects
 - Mute button with saved mute state using localStorage
+- Fullscreen toggle button
 - Impressum page
 - Mobile touch controls
 - Portrait warning for mobile devices
