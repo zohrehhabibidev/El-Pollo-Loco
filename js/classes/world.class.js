@@ -887,6 +887,34 @@ class World {
     this.throwableObjects = [];
   }
 
+  /**
+ * Checks whether the character is dead.
+ *
+ * @returns {boolean} True if the character is dead.
+ */
+  isCharacterDead() {
+    return this.character.isDead();
+  }
+
+  /**
+   * Resets the character death animation.
+   *
+   * @returns {void}
+   */
+  resetCharacterDeathAnimation() {
+    this.character.currentImage = 0;
+    this.character.animationCounter = 0;
+  }
+
+  /**
+   * Plays one frame of the character death animation.
+   *
+   * @returns {void}
+   */
+  playCharacterDeathAnimation() {
+    this.character.playDeadAnimation();
+  }
+
 
 
 }

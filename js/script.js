@@ -102,16 +102,13 @@ function clearThrowableObjects() {
  * @returns {boolean} True if the death state was handled.
  */
 function handleDeathState() {
-  const character = world.character;
-
-  if (!character.isDead()) {
+  if (!world.isCharacterDead()) {
     return false;
   }
 
   if (!deathAnimationStarted) {
     deathAnimationStarted = true;
-    character.currentImage = 0;
-    character.animationCounter = 0;
+    world.resetCharacterDeathAnimation();
     gameOverTimeoutId = setTimeout(() => {
       gameOverTimeoutId = null;
       gameOver = true;
@@ -119,7 +116,7 @@ function handleDeathState() {
     }, GAME_OVER_DELAY_MS);
   }
 
-  character.playDeadAnimation();
+  world.playCharacterDeathAnimation();
   draw();
 
   if (!gameOver) {
