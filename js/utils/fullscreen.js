@@ -46,7 +46,7 @@ function updateFullscreenButton() {
 }
 
 /**
- * Enters fullscreen mode for the game layout if supported.
+ * Enters fullscreen mode for the game stage if supported.
  *
  * @returns {void}
  */
@@ -74,7 +74,7 @@ function exitFullscreen() {
 }
 
 /**
- * Toggles fullscreen mode for the game layout.
+ * Toggles fullscreen mode for the game stage.
  *
  * @returns {void}
  */
