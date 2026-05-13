@@ -8,7 +8,6 @@ let keyboardState = new Keyboard();
 let animationFrameId = null;
 const GAME_OVER_DELAY_MS = 900;
 const WIN_DELAY_MS = 1000;
-const ENDBOSS_BOTTLE_DAMAGE = 20;
 const BACKGROUND_MUSIC_VOLUME = 0.06;
 
 let gameOver = false;
@@ -23,11 +22,6 @@ backgroundMusic.volume = BACKGROUND_MUSIC_VOLUME;
 backgroundMusic.muted = isMuted;
 const loseSound = new Audio("assets/audio/lose/game-over.mp3");
 const winSound = new Audio("assets/audio/win/win-sound.mp3");
-const bottleCollectSound = new Audio("assets/audio/collectibles/bottleCollectSound.wav");
-const coinCollectSound = new Audio("assets/audio/collectibles/collectSound.wav");
-const bottleBreakSound = new Audio("assets/audio/throwable/bottleBreak.mp3");
-const characterDamageSound = new Audio("assets/audio/character/characterDamage.mp3");
-const characterJumpSound = new Audio("assets/audio/character/characterJump.wav");
 
 /**
  * Prepares a new game session.
@@ -144,15 +138,6 @@ function handleDeathState() {
   }
 
   return true;
-}
-
-/**
- * Plays the character damage sound from the beginning.
- *
- * @returns {void}
- */
-function playCharacterDamageSound() {
-  playSound(characterDamageSound);
 }
 
 /**
@@ -292,7 +277,7 @@ function updateMuteButton() {
 }
 
 /**
- * Applies the current mute state to all sounds.
+ * Applies the current mute state to app-level sounds.
  *
  * @returns {void}
  */
@@ -300,11 +285,6 @@ function applyMuteState() {
   backgroundMusic.muted = isMuted;
   winSound.muted = isMuted;
   loseSound.muted = isMuted;
-  bottleCollectSound.muted = isMuted;
-  coinCollectSound.muted = isMuted;
-  bottleBreakSound.muted = isMuted;
-  characterDamageSound.muted = isMuted;
-  characterJumpSound.muted = isMuted;
 }
 
 /**
@@ -380,16 +360,6 @@ function stopEndSounds() {
   loseSound.currentTime = 0;
   winSound.pause();
   winSound.currentTime = 0;
-}
-
-
-/**
- * Plays the bottle break sound from the beginning.
- *
- * @returns {void}
- */
-function playBottleBreakSound() {
-  playSound(bottleBreakSound);
 }
 
 /**

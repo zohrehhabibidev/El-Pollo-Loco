@@ -39,6 +39,12 @@ class World {
     this.worldEnd = 2260;
     this.cameraXOffset = 100;
     this.chickenStompTolerance = 40;
+    this.endbossBottleDamage = 20;
+    this.bottleCollectSound = new Audio("assets/audio/collectibles/bottleCollectSound.wav");
+    this.coinCollectSound = new Audio("assets/audio/collectibles/collectSound.wav");
+    this.bottleBreakSound = new Audio("assets/audio/throwable/bottleBreak.mp3");
+    this.characterJumpSound = new Audio("assets/audio/character/characterJump.wav");
+    this.characterDamageSound = new Audio("assets/audio/character/characterDamage.mp3");
 
   }
 
@@ -176,6 +182,18 @@ class World {
     this.createStatusBars();
     this.createEndboss();
     this.createBackgroundObjects();
+  }
+
+  /**
+   * Plays a short world sound effect from the beginning.
+   *
+   * @param {HTMLAudioElement} sound - The sound to play.
+   * @returns {void}
+   */
+  playSound(sound) {
+    sound.currentTime = 0;
+    sound.muted = isMuted;
+    sound.play();
   }
 
   /**
@@ -394,7 +412,7 @@ class World {
    */
   handleCharacterJump() {
     if (this.keyboard.SPACE && !this.character.isAboveGround()) {
-      playSound(characterJumpSound);
+      this.playSound(this.characterJumpSound);
       this.character.jump();
     }
   }
@@ -501,7 +519,7 @@ class World {
     this.character.takeDamage();
 
     if (this.character.health < oldHealth) {
-      playCharacterDamageSound();
+      this.playSound(this.characterDamageSound);
     }
 
     this.statusBar.setPercentage(this.character.health);
@@ -543,7 +561,7 @@ class World {
       this.character.takeDamage();
 
       if (this.character.health < oldHealth) {
-        playCharacterDamageSound();
+        this.playSound(this.characterDamageSound);
       }
 
       this.statusBar.setPercentage(this.character.health);
@@ -570,7 +588,7 @@ class World {
   hitChickenWithBottle(bottle, chicken) {
     chicken.die();
     bottle.startSplash();
-    playBottleBreakSound();
+    this.playSound(this.bottleBreakSound);
   }
 
   /**
@@ -607,9 +625,9 @@ class World {
  */
   hitEndbossWithBottle(bottle) {
     bottle.startSplash();
-    this.endboss.takeDamage(ENDBOSS_BOTTLE_DAMAGE);
+    this.endboss.takeDamage(this.endbossBottleDamage);
     this.endbossStatusBar.setPercentage(this.endboss.health);
-    playBottleBreakSound();
+    this.playSound(this.bottleBreakSound);
   }
 
   /**
@@ -668,7 +686,7 @@ class World {
   handleBottleCollect() {
     this.bottleCount++;
     this.bottleStatusBar.setPercentage((this.bottleCount / this.maxBottleCount) * 100);
-    playSound(bottleCollectSound);
+    this.playSound(this.bottleCollectSound);
   }
 
 
@@ -740,7 +758,7 @@ class World {
   handleCoinCollect() {
     this.coinCount++;
     this.coinStatusBar.setPercentage(Math.min(100, this.coinCount * this.COIN_STATUS_PERCENT_PER_COIN));
-    playSound(coinCollectSound);
+    this.playSound(this.coinCollectSound);
   }
 
   /**
@@ -849,5 +867,7 @@ class World {
     this.throwableObjects.forEach(this.stopMissedBottleIfNeeded.bind(this));
     this.throwableObjects = this.throwableObjects.filter(this.shouldKeepBottle.bind(this));
   }
+
+
 
 }
