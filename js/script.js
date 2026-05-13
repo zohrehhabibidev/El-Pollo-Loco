@@ -91,17 +91,9 @@ function stopGameLoop() {
  * @returns {void}
  */
 function clearThrowableObjects() {
-  if (!world) {
-    return;
+  if (world) {
+    world.clearThrowableObjects();
   }
-
-  world.throwableObjects.forEach((bottle) => {
-    if (bottle.stopMovement) {
-      bottle.stopMovement();
-    }
-  });
-
-  world.throwableObjects = [];
 }
 
 /**

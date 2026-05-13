@@ -871,6 +871,21 @@ class World {
     this.throwableObjects = this.throwableObjects.filter(this.shouldKeepBottle.bind(this));
   }
 
+  /**
+ * Stops and removes all active throwable bottles.
+ *
+ * @returns {void}
+ */
+  clearThrowableObjects() {
+    this.throwableObjects.forEach((bottle) => {
+      if (bottle.stopMovement) {
+        bottle.stopMovement();
+      }
+    });
+
+    this.throwableObjects = [];
+  }
+
 
 
 }
