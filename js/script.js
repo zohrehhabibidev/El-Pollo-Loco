@@ -141,16 +141,6 @@ function handleDeathState() {
 }
 
 /**
- * Updates thrown bottle collisions.
- *
- * @returns {void}
- */
-function updateGameObjects() {
-  world.checkBottleChickenCollision();
-  world.checkBottleEndbossCollision();
-}
-
-/**
  * Updates win condition and removes inactive enemies.
  *
  * @returns {void}
@@ -178,7 +168,6 @@ function loop() {
 
   world.updateFrame();
   world.handleCollisions();
-  updateGameObjects();
   updateGameProgress();
   draw();
   animationFrameId = requestAnimationFrame(loop);

@@ -481,6 +481,8 @@ class World {
     this.throwBottle();
     this.updateBottleSplashes();
     this.removeMissedBottles();
+    this.checkBottleChickenCollision();
+    this.checkBottleEndbossCollision();
   }
 
   /**
