@@ -6,7 +6,6 @@ let ctx;
 let world;
 let keyboardState = new Keyboard();
 let animationFrameId = null;
-let character;
 const GAME_OVER_DELAY_MS = 900;
 const WIN_DELAY_MS = 1000;
 const ENDBOSS_BOTTLE_DAMAGE = 20;
@@ -41,7 +40,7 @@ function prepareNewGame() {
 }
 
 /**
- * Initializes the game canvas, creates the world, and syncs world objects.
+ * Initializes the game canvas and creates the world.
  *
  * @returns {void}
  */
@@ -50,24 +49,6 @@ function initCanvas() {
   ctx = canvas.getContext("2d");
   world = new World(canvas, keyboardState);
   world.createWorld();
-  syncWorldObjects();
-}
-/**
- * Copies world-owned objects into the current global game references.
- *
- * @returns {void}
- */
-function syncWorldObjects() {
-  character = world.character;
-}
-
-/**
- * Copies current legacy game references back into the world object.
- *
- * @returns {void}
- */
-function syncWorldFromLegacyGlobals() {
-  world.character = character;
 }
 
 /**
@@ -192,7 +173,6 @@ function updateGameObjects() {
 function updateGameProgress() {
   checkWinCondition();
   world.removeDeadChickens();
-  syncWorldObjects();
 }
 
 /**
@@ -212,9 +192,7 @@ function loop() {
   }
 
   world.updateFrame();
-  syncWorldObjects();
   world.handleCollisions();
-  syncWorldObjects();
   updateGameObjects();
   updateGameProgress();
   draw();
@@ -227,7 +205,6 @@ function loop() {
  * @returns {void}
  */
 function draw() {
-  syncWorldFromLegacyGlobals();
   world.draw();
 }
 
