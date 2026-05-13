@@ -32,11 +32,11 @@ function prepareNewGame() {
 }
 
 /**
- * Initializes the game canvas and creates the world.
+ * Initializes the game world.
  *
  * @returns {void}
  */
-function initCanvas() {
+function initWorld() {
   const canvas = document.getElementById("game-canvas");
   world = new World(canvas, keyboardState);
   world.createWorld();
@@ -49,7 +49,7 @@ function initCanvas() {
  */
 function init() {
   prepareNewGame();
-  initCanvas();
+  initWorld();
   loop();
 }
 
