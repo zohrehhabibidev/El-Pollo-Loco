@@ -12,14 +12,11 @@ const WIN_DELAY_MS = 1000;
 const ENDBOSS_BOTTLE_DAMAGE = 20;
 const BACKGROUND_MUSIC_VOLUME = 0.06;
 
-
-let statusBar;
 let gameOver = false;
 let gameWon = false;
 let winTimeoutId = null;
 let deathAnimationStarted = false;
 let gameOverTimeoutId = null;
-let bottleStatusBar;
 let isMuted = localStorage.getItem("isMuted") === "true";
 const backgroundMusic = new Audio("assets/audio/background/background-game-music.mp3");
 backgroundMusic.loop = true;
@@ -32,9 +29,6 @@ const coinCollectSound = new Audio("assets/audio/collectibles/collectSound.wav")
 const bottleBreakSound = new Audio("assets/audio/throwable/bottleBreak.mp3");
 const characterDamageSound = new Audio("assets/audio/character/characterDamage.mp3");
 const characterJumpSound = new Audio("assets/audio/character/characterJump.wav");
-
-let coinStatusBar;
-let endbossStatusBar;
 
 /**
  * Prepares a new game session.
@@ -65,10 +59,6 @@ function initCanvas() {
  */
 function syncWorldObjects() {
   character = world.character;
-  statusBar = world.statusBar;
-  bottleStatusBar = world.bottleStatusBar;
-  coinStatusBar = world.coinStatusBar;
-  endbossStatusBar = world.endbossStatusBar;
 }
 
 /**
@@ -78,10 +68,6 @@ function syncWorldObjects() {
  */
 function syncWorldFromLegacyGlobals() {
   world.character = character;
-  world.statusBar = statusBar;
-  world.bottleStatusBar = bottleStatusBar;
-  world.coinStatusBar = coinStatusBar;
-  world.endbossStatusBar = endbossStatusBar;
 }
 
 /**
