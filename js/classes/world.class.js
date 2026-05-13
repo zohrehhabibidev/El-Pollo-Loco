@@ -483,6 +483,7 @@ class World {
     this.removeMissedBottles();
     this.checkBottleChickenCollision();
     this.checkBottleEndbossCollision();
+    this.removeDeadChickens();
   }
 
   /**

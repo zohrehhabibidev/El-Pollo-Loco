@@ -147,7 +147,6 @@ function handleDeathState() {
  */
 function updateGameProgress() {
   checkWinCondition();
-  world.removeDeadChickens();
 }
 
 /**
