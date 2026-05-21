@@ -34,7 +34,7 @@ function prepareNewGame() {
  */
 function initWorld() {
   const canvas = document.getElementById("game-canvas");
-  world = new World(canvas, keyboardState);
+  world = new World(canvas, keyboardState, createLevel1());
   world.createWorld();
 }
 

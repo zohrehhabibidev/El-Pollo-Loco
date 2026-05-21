@@ -4,42 +4,51 @@
  */
 class World {
   /**
-   * Creates the game world.
+   * Creates the game world with canvas, input state, and level data.
    *
    * @param {HTMLCanvasElement} canvas - The game canvas.
    * @param {Keyboard} keyboard - The keyboard input state.
+   * @param {Level} level - The level data and objects for the current game session.
    */
-  constructor(canvas, keyboard) {
+  constructor(canvas, keyboard, level) {
     this.canvas = canvas;
     this.ctx = canvas.getContext("2d");
     this.keyboard = keyboard;
+    this.level = level;
+
     this.character = null;
-    this.chickens = [];
-    this.bottles = [];
+    this.chickens = level.chickens;
+    this.bottles = level.bottles;
     this.throwableObjects = [];
-    this.coins = [];
-    this.backgroundObjects = [];
-    this.endboss = null;
+    this.coins = level.coins;
+    this.backgroundObjects = level.backgroundObjects;
+    this.endboss = level.endboss;
+
     this.statusBar = null;
     this.bottleStatusBar = null;
     this.coinStatusBar = null;
     this.endbossStatusBar = null;
+
     this.bottleCount = 0;
     this.coinCount = 0;
+
     this.COIN_HITBOX_HORIZONTAL_INSET = 35;
     this.COIN_HITBOX_TOP_OFFSET = 10;
     this.COIN_HITBOX_BOTTOM_OFFSET = 90;
     this.COIN_STATUS_PERCENT_PER_COIN = 20;
-    this.maxBottleCount = 12;
+
+    this.maxBottleCount = level.maxBottleCount;
+    this.worldEnd = level.worldEnd;
+
     this.thrownBottleXOffset = 100;
     this.thrownBottleYOffset = 120;
     this.bottleOutOfBoundsLeft = -200;
     this.bottleOutOfBoundsRightMargin = 400;
     this.bottleOutOfBoundsBottomMargin = 200;
-    this.worldEnd = 2980;
     this.cameraXOffset = 100;
     this.chickenStompTolerance = 40;
     this.endbossBottleDamage = 20;
+
     this.bottleCollectSound = new Audio("assets/audio/collectibles/bottleCollectSound.wav");
     this.coinCollectSound = new Audio("assets/audio/collectibles/collectSound.wav");
     this.bottleBreakSound = new Audio("assets/audio/throwable/bottleBreak.mp3");
@@ -57,126 +66,15 @@ class World {
   }
 
   /**
-   * Creates all chicken enemies.
-   *
-   * @returns {void}
-   */
-  createChickens() {
-    this.chickens = [
-      new Chicken(1200, "normal"),
-      new Chicken(1500, "small"),
-      new Chicken(1800, "normal"),
-      new Chicken(2300, "normal"),
-      new Chicken(2650, "small"),
-    ];
-  }
-
-  /**
-   * Creates collectible bottles and resets the bottle counter.
-   *
-   * @returns {void}
-   */
-  createBottles() {
-    this.bottles = [
-      new Bottle(350),
-      new Bottle(650),
-      new Bottle(950),
-      new Bottle(1150),
-      new Bottle(1350),
-      new Bottle(1550),
-      new Bottle(1750),
-      new Bottle(1950),
-      new Bottle(2100),
-      new Bottle(2200),
-      new Bottle(2480),
-      new Bottle(2840),
-    ];
-
-    this.bottleCount = 0;
-  }
-
-  /**
-   * Creates collectible coins and resets the coin counter.
-   *
-   * @returns {void}
-   */
-  createCoins() {
-    this.coins = [
-      new Coin(430, 190),
-      new Coin(680, 140),
-      new Coin(920, 210),
-      new Coin(1180, 155),
-      new Coin(1460, 185),
-      new Coin(1700, 130),
-    ];
-
-    this.coinCount = 0;
-  }
-
-  /**
-   * Creates the character, bottle, and coin status bars.
-   *
-   * @returns {void}
-   */
+  * Creates all game status bars.
+  *
+  * @returns {void}
+  */
   createStatusBars() {
     this.statusBar = new StatusBar();
     this.bottleStatusBar = new BottleStatusBar();
     this.coinStatusBar = new CoinStatusBar();
-  }
-
-  /**
-   * Creates the endboss and its status bar.
-   *
-   * @returns {void}
-   */
-  createEndboss() {
-    this.endboss = new Endboss();
     this.endbossStatusBar = new EndbossStatusBar();
-  }
-
-  /**
-   * Creates all background objects for the game world.
-   *
-   * @returns {void}
-   */
-  createBackgroundObjects() {
-    this.backgroundObjects = [
-      new BackgroundObject("assets/img/background/layers/air.png", -720, 0),
-      new BackgroundObject("assets/img/background/layers/3_third_layer/full.png", -720, 0),
-      new BackgroundObject("assets/img/background/layers/2_second_layer/full.png", -720, 0),
-      new BackgroundObject("assets/img/background/layers/1_first_layer/full.png", -720, 0),
-      new Cloud(-720, 0),
-
-      new BackgroundObject("assets/img/background/layers/air.png", 0, 0),
-      new BackgroundObject("assets/img/background/layers/3_third_layer/full.png", 0, 0),
-      new BackgroundObject("assets/img/background/layers/2_second_layer/full.png", 0, 0),
-      new BackgroundObject("assets/img/background/layers/1_first_layer/full.png", 0, 0),
-      new Cloud(0, 0),
-
-      new BackgroundObject("assets/img/background/layers/air.png", 720, 0),
-      new BackgroundObject("assets/img/background/layers/3_third_layer/full.png", 720, 0),
-      new BackgroundObject("assets/img/background/layers/2_second_layer/full.png", 720, 0),
-      new BackgroundObject("assets/img/background/layers/1_first_layer/full.png", 720, 0),
-      new Cloud(720, 0),
-
-      new BackgroundObject("assets/img/background/layers/air.png", 1440, 0),
-      new BackgroundObject("assets/img/background/layers/3_third_layer/full.png", 1440, 0),
-      new BackgroundObject("assets/img/background/layers/2_second_layer/full.png", 1440, 0),
-      new BackgroundObject("assets/img/background/layers/1_first_layer/full.png", 1440, 0),
-      new Cloud(1440, 0),
-
-      new BackgroundObject("assets/img/background/layers/air.png", 2160, 0),
-      new BackgroundObject("assets/img/background/layers/3_third_layer/full.png", 2160, 0),
-      new BackgroundObject("assets/img/background/layers/2_second_layer/full.png", 2160, 0),
-      new BackgroundObject("assets/img/background/layers/1_first_layer/full.png", 2160, 0),
-      new Cloud(2160, 0),
-
-      new BackgroundObject("assets/img/background/layers/air.png", 2880, 0),
-      new BackgroundObject("assets/img/background/layers/3_third_layer/full.png", 2880, 0),
-      new BackgroundObject("assets/img/background/layers/2_second_layer/full.png", 2880, 0),
-      new BackgroundObject("assets/img/background/layers/1_first_layer/full.png", 2880, 0),
-      new Cloud(2880, 0),
-    ];
   }
 
   /**
@@ -186,12 +84,7 @@ class World {
    */
   createWorld() {
     this.createCharacter();
-    this.createChickens();
-    this.createBottles();
-    this.createCoins();
     this.createStatusBars();
-    this.createEndboss();
-    this.createBackgroundObjects();
   }
 
   /**
@@ -262,10 +155,10 @@ class World {
   }
 
   /**
- * Draws chickens and the endboss.
- *
- * @returns {void}
- */
+   * Draws chickens and the endboss.
+   *
+   * @returns {void}
+   */
   drawEnemyObjects() {
     this.chickens.forEach((chicken) => {
       chicken.draw(this.ctx);
@@ -439,10 +332,10 @@ class World {
   }
 
   /**
- * Updates chicken movement and endboss behavior.
- *
- * @returns {void}
- */
+   * Updates chicken movement and endboss behavior.
+   *
+   * @returns {void}
+   */
   updateEnemies() {
     this.chickens.forEach((chicken) => {
       chicken.update();
@@ -565,10 +458,10 @@ class World {
   }
 
   /**
-  * Checks and handles collision between the character and the endboss.
-  *
-  * @returns {void}
-  */
+   * Checks and handles collision between the character and the endboss.
+   *
+   * @returns {void}
+   */
   checkCharacterEndbossCollision() {
     if (!this.endboss.isDead && this.character.isColliding(this.endboss)) {
       const oldHealth = this.character.health;
@@ -645,10 +538,10 @@ class World {
   }
 
   /**
-  * Checks and handles collisions between thrown bottles and chickens.
-  *
-  * @returns {void}
-  */
+   * Checks and handles collisions between thrown bottles and chickens.
+   *
+   * @returns {void}
+   */
   checkBottleChickenCollision() {
     this.throwableObjects.forEach((bottle) => {
       if (bottle.hasSplashed) {
@@ -659,10 +552,10 @@ class World {
   }
 
   /**
-  * Checks and handles collisions between thrown bottles and the endboss.
-  *
-  * @returns {void}
-  */
+   * Checks and handles collisions between thrown bottles and the endboss.
+   *
+   * @returns {void}
+   */
   checkBottleEndbossCollision() {
     this.throwableObjects.forEach((bottle) => {
       if (bottle.hasSplashed) {
