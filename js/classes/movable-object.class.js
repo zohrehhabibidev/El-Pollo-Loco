@@ -13,6 +13,7 @@ class MovableObject extends DrawableObject {
     this.speed = 2;
     this.speedY = 0;
     this.acceleration = 0.5;
+    this.groundY = 250;
   }
 
   /**
@@ -39,7 +40,7 @@ class MovableObject extends DrawableObject {
    * @returns {boolean} True if the object is above the ground.
    */
   isAboveGround() {
-    return this.y < 250;
+    return this.y < this.groundY;
   }
 
   /**
@@ -62,8 +63,8 @@ class MovableObject extends DrawableObject {
       this.speedY -= this.acceleration;
     }
 
-    if (this.y > 250) {
-      this.y = 250;
+    if (this.y > this.groundY) {
+      this.y = this.groundY;
       this.speedY = 0;
     }
   }

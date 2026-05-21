@@ -34,7 +34,7 @@ class Chicken extends MovableObject {
       this.IMAGES = this.normalChickenImages;
       this.width = 80;
       this.height = 80;
-      this.y = 382;
+      this.y = 352;
 
       this.offset = {
         top: 15,
@@ -49,7 +49,7 @@ class Chicken extends MovableObject {
       this.IMAGES = this.smallChickenImages;
       this.width = 50;
       this.height = 50;
-      this.y = 400;
+      this.y = 375;
       this.offset = {
         top: 8,
         right: 10,
