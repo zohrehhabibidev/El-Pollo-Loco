@@ -28,7 +28,7 @@ function prepareNewGame() {
 }
 
 /**
- * Creates a new `World` instance, stores it globally, and populates it with game objects.
+ * Creates a fresh `World` with a fresh level from `createLevel1()` and stores it globally.
  *
  * @returns {void}
  */

@@ -66,10 +66,10 @@ class World {
   }
 
   /**
-  * Creates all game status bars.
-  *
-  * @returns {void}
-  */
+   * Creates the health, bottle, coin, and endboss status bars.
+   *
+   * @returns {void}
+   */
   createStatusBars() {
     this.statusBar = new StatusBar();
     this.bottleStatusBar = new BottleStatusBar();
@@ -78,7 +78,7 @@ class World {
   }
 
   /**
-   * Creates all objects that belong to the game world.
+   * Creates the character and status bars for the game world.
    *
    * @returns {void}
    */
@@ -447,7 +447,7 @@ class World {
   }
 
   /**
-   * Checks collisions between the character and chickens.
+   * Checks and handles collisions between the character and chickens.
    *
    * @returns {void}
    */
@@ -499,7 +499,7 @@ class World {
   }
 
   /**
-   * Checks if a bottle hits any chicken.
+   * Checks and handles a bottle hit on any chicken.
    *
    * @param {ThrowableObject} bottle - The thrown bottle.
    * @returns {void}

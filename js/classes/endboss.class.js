@@ -5,8 +5,8 @@
  */
 class Endboss extends MovableObject {
   /**
- * Creates the endboss with its position, size, health, and chase settings.
- */
+   * Creates the endboss with its position, size, health, and chase settings.
+   */
   constructor() {
     super();
     this.endbossWalkImages = [
@@ -174,10 +174,10 @@ class Endboss extends MovableObject {
   }
 
   /**
-  * Plays the endboss dead animation once.
-  *
-  * @returns {void}
-  */
+   * Plays the endboss dead animation once.
+   *
+   * @returns {void}
+   */
   playDeadAnimation() {
     if (this.currentImage >= this.endbossDeadImages.length) {
       const lastDeadImage = this.endbossDeadImages[this.endbossDeadImages.length - 1];
