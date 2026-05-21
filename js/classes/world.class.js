@@ -30,13 +30,13 @@ class World {
     this.COIN_HITBOX_TOP_OFFSET = 10;
     this.COIN_HITBOX_BOTTOM_OFFSET = 90;
     this.COIN_STATUS_PERCENT_PER_COIN = 20;
-    this.maxBottleCount = 9;
+    this.maxBottleCount = 12;
     this.thrownBottleXOffset = 100;
     this.thrownBottleYOffset = 120;
     this.bottleOutOfBoundsLeft = -200;
     this.bottleOutOfBoundsRightMargin = 400;
     this.bottleOutOfBoundsBottomMargin = 200;
-    this.worldEnd = 2260;
+    this.worldEnd = 2980;
     this.cameraXOffset = 100;
     this.chickenStompTolerance = 40;
     this.endbossBottleDamage = 20;
@@ -67,6 +67,8 @@ class World {
       new Chicken(1200, "normal"),
       new Chicken(1500, "small"),
       new Chicken(1800, "normal"),
+      new Chicken(2300, "normal"),
+      new Chicken(2650, "small"),
     ];
   }
 
@@ -86,6 +88,9 @@ class World {
       new Bottle(1750),
       new Bottle(1950),
       new Bottle(2100),
+      new Bottle(2200),
+      new Bottle(2480),
+      new Bottle(2840),
     ];
 
     this.bottleCount = 0;
@@ -166,6 +171,12 @@ class World {
       new BackgroundObject("assets/img/background/layers/2_second_layer/full.png", 2160, 0),
       new BackgroundObject("assets/img/background/layers/1_first_layer/full.png", 2160, 0),
       new Cloud(2160, 0),
+
+      new BackgroundObject("assets/img/background/layers/air.png", 2880, 0),
+      new BackgroundObject("assets/img/background/layers/3_third_layer/full.png", 2880, 0),
+      new BackgroundObject("assets/img/background/layers/2_second_layer/full.png", 2880, 0),
+      new BackgroundObject("assets/img/background/layers/1_first_layer/full.png", 2880, 0),
+      new Cloud(2880, 0),
     ];
   }
 
