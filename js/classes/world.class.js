@@ -45,7 +45,6 @@ class World {
     this.bottleBreakSound = new Audio("assets/audio/throwable/bottleBreak.mp3");
     this.characterJumpSound = new Audio("assets/audio/character/characterJump.wav");
     this.characterDamageSound = new Audio("assets/audio/character/characterDamage.mp3");
-
   }
 
   /**
@@ -263,10 +262,10 @@ class World {
   }
 
   /**
-   * Draws enemy objects.
-   *
-   * @returns {void}
-   */
+ * Draws chickens and the endboss.
+ *
+ * @returns {void}
+ */
   drawEnemyObjects() {
     this.chickens.forEach((chicken) => {
       chicken.draw(this.ctx);
@@ -312,7 +311,7 @@ class World {
     this.bottleStatusBar.draw(this.ctx);
     this.coinStatusBar.draw(this.ctx);
 
-    if (this.character.x >= this.endboss.activationX) {
+    if (this.endboss.isActivated) {
       this.endbossStatusBar.draw(this.ctx);
     }
   }
@@ -440,10 +439,10 @@ class World {
   }
 
   /**
-   * Updates all enemies.
-   *
-   * @returns {void}
-   */
+ * Updates chicken movement and endboss behavior.
+ *
+ * @returns {void}
+ */
   updateEnemies() {
     this.chickens.forEach((chicken) => {
       chicken.update();
@@ -566,10 +565,10 @@ class World {
   }
 
   /**
-   * Checks collision between the character and the endboss.
-   *
-   * @returns {void}
-   */
+  * Checks and handles collision between the character and the endboss.
+  *
+  * @returns {void}
+  */
   checkCharacterEndbossCollision() {
     if (!this.endboss.isDead && this.character.isColliding(this.endboss)) {
       const oldHealth = this.character.health;
@@ -584,7 +583,7 @@ class World {
   }
 
   /**
-   * Checks all character and enemy collisions.
+   * Checks and handles character collisions with chickens and the endboss.
    *
    * @returns {void}
    */
@@ -646,10 +645,10 @@ class World {
   }
 
   /**
-   * Checks collisions between thrown bottles and chickens.
-   *
-   * @returns {void}
-   */
+  * Checks and handles collisions between thrown bottles and chickens.
+  *
+  * @returns {void}
+  */
   checkBottleChickenCollision() {
     this.throwableObjects.forEach((bottle) => {
       if (bottle.hasSplashed) {
@@ -660,10 +659,10 @@ class World {
   }
 
   /**
-   * Checks collisions between thrown bottles and the endboss.
-   *
-   * @returns {void}
-   */
+  * Checks and handles collisions between thrown bottles and the endboss.
+  *
+  * @returns {void}
+  */
   checkBottleEndbossCollision() {
     this.throwableObjects.forEach((bottle) => {
       if (bottle.hasSplashed) {
@@ -703,7 +702,6 @@ class World {
     this.bottleStatusBar.setPercentage((this.bottleCount / this.maxBottleCount) * 100);
     this.playSound(this.bottleCollectSound);
   }
-
 
   /**
    * Collects touched bottles and removes them from the world.
@@ -925,7 +923,4 @@ class World {
   playCharacterDeathAnimation() {
     this.character.playDeadAnimation();
   }
-
-
-
 }

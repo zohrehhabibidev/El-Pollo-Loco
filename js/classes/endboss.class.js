@@ -5,8 +5,8 @@
  */
 class Endboss extends MovableObject {
   /**
-   * Creates the endboss with its start position and size.
-   */
+ * Creates the endboss with its position, size, health, and chase settings.
+ */
   constructor() {
     super();
     this.endbossWalkImages = [
@@ -45,38 +45,38 @@ class Endboss extends MovableObject {
     };
     this.speed = 2;
     this.activationX = 2420;
-    this.minDistanceToCharacter = 60;
     this.health = 100;
     this.isDead = false;
     this.isHurt = false;
     this.hurtTimeoutId = null;
+    this.isActivated = false;
+    this.chaseRange = 800;
+    this.stopDistance = 40;
   }
 
   /**
-   * Updates the endboss movement and animation.
+   * Updates endboss activation, movement, and animation.
    *
-   * @param {number} characterX - Current x position of the character.
+   * @param {number} characterX - The character x position.
    * @returns {void}
    */
   update(characterX) {
+    this.activateIfNeeded(characterX);
+
     if (this.isDead) {
-      this.playAnimation(this.endbossDeadImages);
+      this.playDeadAnimation();
       return;
+    }
+
+    if (this.isActivated) {
+      this.chaseCharacter(characterX);
     }
 
     if (this.isHurt) {
-      this.playAnimation(this.endbossHurtImages);
-      return;
+      this.playHurtAnimation();
+    } else {
+      this.playWalkingAnimation();
     }
-
-    if (
-      characterX >= this.activationX &&
-      this.x - characterX > this.minDistanceToCharacter
-    ) {
-      this.x -= this.speed;
-    }
-
-    this.playAnimation(this.endbossWalkImages);
   }
 
   /**
@@ -99,6 +99,8 @@ class Endboss extends MovableObject {
     if (this.health === 0) {
       this.isDead = true;
       this.isHurt = false;
+      this.currentImage = 0;
+      this.animationCounter = 0;
 
       if (this.hurtTimeoutId) {
         clearTimeout(this.hurtTimeoutId);
@@ -118,5 +120,77 @@ class Endboss extends MovableObject {
       this.isHurt = false;
       this.hurtTimeoutId = null;
     }, 1000);
+  }
+
+  /**
+   * Activates the endboss when the character reaches the activation point.
+   *
+   * @param {number} characterX - The character x position.
+   * @returns {void}
+   */
+  activateIfNeeded(characterX) {
+    if (characterX >= this.activationX) {
+      this.isActivated = true;
+    }
+  }
+
+  /**
+   * Moves the endboss toward the character while the character is in chase range.
+   *
+   * @param {number} characterX - The character x position.
+   * @returns {void}
+   */
+  chaseCharacter(characterX) {
+    const distanceToCharacter = characterX - this.x;
+    const absoluteDistance = Math.abs(distanceToCharacter);
+
+    if (absoluteDistance > this.chaseRange || absoluteDistance <= this.stopDistance) {
+      return;
+    }
+
+    if (distanceToCharacter < 0) {
+      this.x -= this.speed;
+    } else {
+      this.x += this.speed;
+    }
+  }
+
+  /**
+   * Plays the endboss walking animation.
+   *
+   * @returns {void}
+   */
+  playWalkingAnimation() {
+    this.playAnimation(this.endbossWalkImages);
+  }
+
+  /**
+   * Plays the endboss hurt animation.
+   *
+   * @returns {void}
+   */
+  playHurtAnimation() {
+    this.playAnimation(this.endbossHurtImages);
+  }
+
+  /**
+  * Plays the endboss dead animation once.
+  *
+  * @returns {void}
+  */
+  playDeadAnimation() {
+    if (this.currentImage >= this.endbossDeadImages.length) {
+      const lastDeadImage = this.endbossDeadImages[this.endbossDeadImages.length - 1];
+      this.img = this.imageCache[lastDeadImage];
+      return;
+    }
+
+    this.img = this.imageCache[this.endbossDeadImages[this.currentImage]];
+    this.animationCounter++;
+
+    if (this.animationCounter >= this.animationDelay) {
+      this.animationCounter = 0;
+      this.currentImage++;
+    }
   }
 }
