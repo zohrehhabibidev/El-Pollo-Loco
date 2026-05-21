@@ -131,6 +131,12 @@
   background: linear-gradient(180deg, #36aab9, #4a84db);
 }
 
+.game-btn.impressum {
+  display: none;
+  background: linear-gradient(180deg, #f2b84b, #b9651f);
+  text-decoration: none;
+}
+
 .game-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 7px 0 rgba(0, 0, 0, 0.35);
@@ -351,6 +357,7 @@
 ========================= */
 
 @media (hover: none) and (orientation: portrait) {
+
   html,
   body {
     overflow: hidden;
@@ -393,7 +400,6 @@
   #game-layout {
     pointer-events: none;
   }
-
 }
 
 /* =========================
@@ -443,17 +449,22 @@
 
   #start-buttons {
     bottom: 10px;
-    gap: 10px;
+    gap: 8px;
   }
 
   .game-btn {
-    width: 110px;
-    height: 36px;
-    gap: 5px;
-    font-size: 12px;
+    width: 118px;
+    height: 38px;
+    gap: 4px;
+    font-size: 11px;
     letter-spacing: 0;
     border-radius: 9px;
     box-shadow: 0 3px 0 rgba(0, 0, 0, 0.35);
+    white-space: nowrap;
+  }
+
+  .game-btn.impressum {
+    display: inline-flex;
   }
 
   .game-btn .icon {
