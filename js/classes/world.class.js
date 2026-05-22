@@ -35,7 +35,7 @@ class World {
     this.COIN_HITBOX_HORIZONTAL_INSET = 35;
     this.COIN_HITBOX_TOP_OFFSET = 10;
     this.COIN_HITBOX_BOTTOM_OFFSET = 90;
-    this.COIN_STATUS_PERCENT_PER_COIN = 20;
+    this.COIN_STATUS_PERCENT_PER_COIN = 10;
 
     this.maxBottleCount = level.maxBottleCount;
     this.worldEnd = level.worldEnd;

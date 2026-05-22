@@ -33,6 +33,10 @@ function createLevel1() {
       new Coin(1180, 155),
       new Coin(1460, 185),
       new Coin(1700, 130),
+      new Coin(2000, 180),
+      new Coin(2250, 130),
+      new Coin(2500, 190),
+      new Coin(2750, 145),
     ],
     [
       new BackgroundObject("assets/img/background/layers/air.png", -720, 0),
