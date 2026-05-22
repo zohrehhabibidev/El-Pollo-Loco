@@ -294,6 +294,14 @@ class World {
    */
   updateCharacterAnimation() {
     if (this.character.isHurt) {
+      if (this.keyboard.RIGHT && this.character.x < this.worldEnd) {
+        this.character.moveRight();
+        this.character.otherDirection = false;
+      } else if (this.keyboard.LEFT && this.character.x > 0) {
+        this.character.moveLeft();
+        this.character.otherDirection = true;
+      }
+
       this.character.playHurtAnimation();
     } else if (this.character.isAboveGround()) {
       this.moveCharacterInAir();
