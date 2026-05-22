@@ -35,6 +35,7 @@ class World {
     this.COIN_HITBOX_HORIZONTAL_INSET = 35;
     this.COIN_HITBOX_TOP_OFFSET = 10;
     this.COIN_HITBOX_BOTTOM_OFFSET = 90;
+    this.COIN_COLLECTION_INSET = 15;
     this.COIN_STATUS_PERCENT_PER_COIN = 10;
 
     this.maxBottleCount = level.maxBottleCount;
@@ -627,15 +628,17 @@ class World {
   }
 
   /**
-   * Gets the center position of a coin.
+   * Gets the inset bounds of a coin for collection.
    *
    * @param {Coin} coin - The coin to check.
-   * @returns {{x: number, y: number}} The coin center position.
+   * @returns {{left: number, right: number, top: number, bottom: number}} The coin collection bounds.
    */
-  getCoinCenter(coin) {
+  getCoinCollectionBounds(coin) {
     return {
-      x: coin.x + coin.width / 2,
-      y: coin.y + coin.height / 2,
+      left: coin.x + this.COIN_COLLECTION_INSET,
+      right: coin.x + coin.width - this.COIN_COLLECTION_INSET,
+      top: coin.y + this.COIN_COLLECTION_INSET,
+      bottom: coin.y + coin.height - this.COIN_COLLECTION_INSET,
     };
   }
 
@@ -643,17 +646,17 @@ class World {
    * Checks if the character collects a coin with the upper body while jumping.
    *
    * @param {Coin} coin - The coin to check.
-   * @returns {boolean} True when the coin center touches the character's upper body while airborne.
+   * @returns {boolean} True when the coin bounds touch the character's upper body while airborne.
    */
   isCollectingCoin(coin) {
     const characterBounds = this.getCharacterCoinBounds();
-    const coinCenter = this.getCoinCenter(coin);
+    const coinBounds = this.getCoinCollectionBounds(coin);
 
     return this.character.isAboveGround() &&
-      coinCenter.x > characterBounds.left &&
-      coinCenter.x < characterBounds.right &&
-      coinCenter.y > characterBounds.top &&
-      coinCenter.y < characterBounds.bottom;
+      characterBounds.right > coinBounds.left &&
+      characterBounds.left < coinBounds.right &&
+      characterBounds.bottom > coinBounds.top &&
+      characterBounds.top < coinBounds.bottom;
   }
 
   /**
