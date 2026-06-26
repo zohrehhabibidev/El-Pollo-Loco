@@ -1,75 +1,93 @@
 # El Pollo Loco
 
-El Pollo Loco is a browser-based jump-and-run game built with HTML, CSS, JavaScript, and Canvas.
+El Pollo Loco is a browser-based jump-and-run game built with HTML, CSS, JavaScript, and the Canvas API.
 
-The player controls Pepe, collects coins and salsa bottles, fights normal and small chickens, and defeats the endboss at the end of the extended level.
+The player controls Pepe through a desert level, collects coins and salsa bottles, fights different types of chickens, and defeats the endboss.
+
+## Live Demo
+
+https://YOUR-EL-POLLO-LOCO-SUBDOMAIN
 
 ## How to Start
 
 Open `index.html` in a browser.
 
-Recommended: use a local development server, for example the Live Server extension in VS Code.
+For local development, it is recommended to use a local development server, such as the Live Server extension in Visual Studio Code.
 
-The game does not start automatically. Click the Start button on the landing screen to begin.
+The game does not start automatically. Click the **Start** button on the landing screen to begin.
 
 ## How to Play
 
-Move through the desert level, collect bottles and coins, defeat chickens, and use collected bottles to damage the endboss.
+Move through the desert, collect coins and salsa bottles, defeat enemies, and use the collected bottles to attack the endboss.
 
 The game ends when:
 
 - Pepe loses all health.
 - The endboss is defeated.
 
-After losing or winning, the player can restart the game or return to the menu without reloading the page.
+After winning or losing, the player can restart the game or return to the main menu without reloading the page.
 
 ## Controls
 
-- `Arrow Left`: Run left
-- `Arrow Right`: Run right
+### Desktop
+
+- `Arrow Left`: Move left
+- `Arrow Right`: Move right
 - `Space`: Jump
 - `D`: Throw a bottle
-- Mobile landscape buttons: Move, jump, and throw bottles
+
+### Mobile
+
+In landscape mode, touch buttons are available for:
+
+- Moving left and right
+- Jumping
+- Throwing bottles
 
 ## Features
 
-- Landing / start screen
-- Guide / help dialog
-- Playable character with movement, jump, hurt, idle, long idle / sleep, and death states
-- Extended level before the endboss
+- Landing and start screen
+- Guide and help dialog
+- Playable character with movement and jump animations
+- Hurt, idle, long-idle, sleep, and death states
+- Extended desert level
 - Health status bar
-- Collectible coins with coin status bar
-- Collectible bottles with bottle status bar
+- Collectible coins
+- Coin status bar
+- Collectible salsa bottles
+- Bottle status bar
 - Throwable bottles
-- Bottle throw arc with left and right direction
-- Bottle splash animation after hits
-- Cleanup for missed thrown bottles
-- Normal chickens and small chickens
-- Enemies can be defeated by bottles
-- Enemies can be defeated by jumping on them from above
-- Endboss with health bar
-- Endboss takes damage from bottles
-- Win and lose screens
-- Restart and menu navigation without page reload
+- Bottle throwing in both directions
+- Bottle splash animation after a hit
+- Automatic cleanup of missed bottles
+- Normal chickens
+- Small chickens
+- Enemies can be defeated with bottles
+- Enemies can be defeated by jumping on them
+- Endboss with a health bar
+- Win and game-over screens
+- Restart without reloading the page
+- Return-to-menu functionality
 - Background music and sound effects
-- Mute button with saved mute state using localStorage
-- Fullscreen button
-- Impressum page with responsive layout
-- Desktop Impressum access through the footer
-- Mobile start-screen Impressum access in landscape mode
-- Mobile touch controls in landscape mode
-- Portrait warning for mobile devices
-- Landscape-only mobile gameplay
+- Mute button
+- Saved mute state using `localStorage`
+- Fullscreen mode
+- Responsive Impressum page
+- Desktop Impressum link in the footer
+- Mobile Impressum link on the start screen
+- Mobile touch controls
+- Portrait-orientation warning
+- Landscape mobile gameplay
 
 ## Mobile Support
 
-Mobile touch controls are available in landscape mode.
+The game supports mobile touch controls in landscape orientation.
 
-In portrait mode, a rotate-device warning is shown so the player knows to turn the device before playing.
+When the game is opened in portrait mode, a rotate-device message asks the player to turn the device.
 
 The mobile landscape layout includes touch buttons for movement, jumping, and throwing bottles.
 
-On desktop, the Impressum is linked in the footer. In mobile landscape mode, the Impressum is available from the start screen.
+The Impressum can be opened from the desktop footer or from the mobile start screen.
 
 ## Technologies Used
 
@@ -77,57 +95,91 @@ On desktop, the Impressum is linked in the footer. In mobile landscape mode, the
 - CSS
 - JavaScript
 - Canvas API
-- localStorage
+- Object-oriented programming
+- `localStorage`
 
 ## Project Structure
 
-- `index.html` - Main page
-- `css/` - Stylesheets
-- `js/` - JavaScript files
-- `js/classes/` - Game object classes
-- `js/levels/` - Level factory files
-- `js/utils/` - Utility files for audio and fullscreen
-- `js/screens/` - Screen and UI control scripts
-- `assets/img/` - Images and sprites
-- `assets/audio/` - Music and sound effects
-- `assets/fonts/` - Local fonts
-- `impressum.html` - Impressum / legal information
+index.html Main application page
+impressum.html Legal information
 
-## Architecture / Code Structure
+css/
+Stylesheets for the game and responsive layout
 
-The game uses plain JavaScript loaded with script tags. No ES modules are used.
+js/
+Main JavaScript files
 
-Game object classes are stored in `js/classes/`. Level setup is kept outside of `World` by using a `Level` class and a `createLevel1()` factory, which creates a fresh level for each new game session.
+js/classes/
+Game object classes
 
-Utility code for audio and fullscreen is stored in `js/utils/`, and start-screen / mobile-control UI logic is stored in `js/screens/`.
+js/levels/
+Level configuration and level factory files
+
+js/utils/
+Audio and fullscreen utilities
+
+js/screens/
+Start screen and mobile control logic
+
+assets/img/
+Images, backgrounds, and character sprites
+
+assets/audio/
+Background music and sound effects
+
+assets/fonts/
+Local fonts
+
+## Architecture
+
+The project uses plain JavaScript loaded through script tags. It does not use JavaScript modules or an external framework.
+
+The game follows an object-oriented structure. Game objects such as the character, enemies, collectibles, status bars, and endboss are organized into separate classes inside `js/classes/`.
+
+Level creation is separated from the `World` class. The `Level` class and the `createLevel1()` factory create a fresh level for every new game session.
+
+Audio and fullscreen functionality are stored inside `js/utils/`.
+
+Start-screen behavior and mobile-control logic are stored inside `js/screens/`.
+
+This structure separates the different responsibilities and makes the project easier to understand and maintain.
 
 ## Credits
 
 This project uses external audio, image, and font assets for educational purposes.
 
+### Audio
+
 Background music:
+
 https://pixabay.com/music/video-games-game-gaming-video-game-music-471936/
 
 Win sound:
+
 https://pixabay.com/users/doge_goober57-41887056/
 
-Game over sound:
+Game-over sound:
+
 https://pixabay.com/users/audley_fergine-32337609/
 
-Game graphics / sprites:
-El Pollo Loco learning project assets provided as part of the course material.
+### Graphics
 
-Font:
-Zabars font included locally in `assets/fonts/`.
+Game graphics and sprites were provided as part of the El Pollo Loco course project.
+
+### Font
+
+The Zabars font is included locally in:
+
+assets/fonts/
 
 ## Legal
 
-This project includes a responsive Impressum page:
+The project includes a responsive Impressum page:
 
-`impressum.html`
+impressum.html
 
 It can be opened from the desktop footer and from the mobile landscape start screen.
 
 ## Status
 
-This project was built as part of a frontend student project.
+This project was built as part of a frontend development course.
