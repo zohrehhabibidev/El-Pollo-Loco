@@ -47,33 +47,16 @@ class World {
     this.endbossBottleDamage = 20;
     this.endbossKnockbackDistance = 80;
 
-    this.bottleCollectSound = new Audio("assets/audio/collectibles/bottleCollectSound.wav");
-    this.coinCollectSound = new Audio("assets/audio/collectibles/collectSound.wav");
-    this.bottleBreakSound = new Audio("assets/audio/throwable/bottleBreak.mp3");
-    this.characterJumpSound = new Audio("assets/audio/character/characterJump.wav");
-    this.characterDamageSound = new Audio("assets/audio/character/characterDamage.mp3");
     this.renderer = new WorldRenderer(this);
-  }
+    this.soundManager = new SoundManager();
+    this.characterController = new CharacterController(this);
+    this.builder = new WorldBuilder(this);
 
-  /**
-   * Creates the player character.
-   *
-   * @returns {void}
-   */
-  createCharacter() {
-    this.character = new Character();
-  }
-
-  /**
-   * Creates the health, bottle, coin, and endboss status bars.
-   *
-   * @returns {void}
-   */
-  createStatusBars() {
-    this.statusBar = new StatusBar();
-    this.bottleStatusBar = new BottleStatusBar();
-    this.coinStatusBar = new CoinStatusBar();
-    this.endbossStatusBar = new EndbossStatusBar();
+    this.bottleCollectSound = this.soundManager.bottleCollectSound;
+    this.coinCollectSound = this.soundManager.coinCollectSound;
+    this.bottleBreakSound = this.soundManager.bottleBreakSound;
+    this.characterJumpSound = this.soundManager.characterJumpSound;
+    this.characterDamageSound = this.soundManager.characterDamageSound;
   }
 
   /**
@@ -82,8 +65,7 @@ class World {
    * @returns {void}
    */
   createWorld() {
-    this.createCharacter();
-    this.createStatusBars();
+    this.builder.createWorld();
   }
 
   /**
@@ -93,9 +75,7 @@ class World {
    * @returns {void}
    */
   playSound(sound) {
-    sound.currentTime = 0;
-    sound.muted = isMuted;
-    sound.play();
+    this.soundManager.playSound(sound);
   }
 
   /**
@@ -122,91 +102,7 @@ class World {
    * @returns {void}
    */
   updateCharacterActivity() {
-    if (this.isPlayerActive()) {
-      this.character.resetInactivityTimer();
-    }
-  }
-
-  /**
-   * Moves the character to the right and plays walking animation.
-   *
-   * @returns {void}
-   */
-  moveCharacterRight() {
-    this.character.moveRight();
-    this.character.otherDirection = false;
-    this.character.playWalkingAnimation();
-  }
-
-  /**
-   * Moves the character to the left and plays walking animation.
-   *
-   * @returns {void}
-   */
-  moveCharacterLeft() {
-    if (this.character.x > 0) {
-      this.character.moveLeft();
-    }
-
-    this.character.otherDirection = true;
-    this.character.playWalkingAnimation();
-  }
-
-  /**
-   * Moves the character horizontally while jumping.
-   *
-   * @returns {void}
-   */
-  moveCharacterInAir() {
-    if (this.keyboard.RIGHT && this.character.x < this.worldEnd) {
-      this.character.moveRight();
-      this.character.otherDirection = false;
-    } else if (this.keyboard.LEFT && this.character.x > 0) {
-      this.character.moveLeft();
-      this.character.otherDirection = true;
-    }
-  }
-
-  /**
-   * Updates character animation and horizontal movement.
-   *
-   * @returns {void}
-   */
-  updateCharacterAnimation() {
-    if (this.character.isHurt) {
-      if (this.keyboard.RIGHT && this.character.x < this.worldEnd) {
-        this.character.moveRight();
-        this.character.otherDirection = false;
-      } else if (this.keyboard.LEFT && this.character.x > 0) {
-        this.character.moveLeft();
-        this.character.otherDirection = true;
-      }
-
-      this.character.playHurtAnimation();
-    } else if (this.character.isAboveGround()) {
-      this.moveCharacterInAir();
-      this.character.playJumpAnimation();
-    } else if (this.keyboard.RIGHT && this.character.x < this.worldEnd) {
-      this.moveCharacterRight();
-    } else if (this.keyboard.LEFT) {
-      this.moveCharacterLeft();
-    } else if (this.character.isLongIdle()) {
-      this.character.showLongIdleImage();
-    } else {
-      this.character.showIdleImage();
-    }
-  }
-
-  /**
-   * Handles character jump input and jump sound.
-   *
-   * @returns {void}
-   */
-  handleCharacterJump() {
-    if (this.keyboard.SPACE && !this.character.isAboveGround()) {
-      this.playSound(this.characterJumpSound);
-      this.character.jump();
-    }
+    this.characterController.updateCharacterActivity();
   }
 
   /**
@@ -215,9 +111,7 @@ class World {
    * @returns {void}
    */
   updateCharacter() {
-    this.updateCharacterAnimation();
-    this.handleCharacterJump();
-    this.character.updateGravity();
+    this.characterController.updateCharacter();
   }
 
   /**
@@ -244,18 +138,6 @@ class World {
         bg.update();
       }
     });
-  }
-
-  /**
-   * Checks if the player is pressing an action key.
-   *
-   * @returns {boolean} True if the player is currently active.
-   */
-  isPlayerActive() {
-    return this.keyboard.RIGHT ||
-      this.keyboard.LEFT ||
-      this.keyboard.SPACE ||
-      this.keyboard.D;
   }
 
   /**
