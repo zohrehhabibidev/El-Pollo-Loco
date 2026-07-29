@@ -43,7 +43,7 @@ class Endboss extends MovableObject {
       bottom: 20,
       left: 45,
     };
-    this.speed = 4;
+    this.speed = 4.5;
     this.activationX = 2420;
     this.health = 100;
     this.isDead = false;
