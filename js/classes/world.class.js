@@ -32,10 +32,6 @@ class World {
     this.bottleCount = 0;
     this.coinCount = 0;
 
-    this.COIN_HITBOX_HORIZONTAL_INSET = 35;
-    this.COIN_HITBOX_TOP_OFFSET = 10;
-    this.COIN_HITBOX_BOTTOM_OFFSET = 90;
-    this.COIN_COLLECTION_INSET = 15;
     this.COIN_STATUS_PERCENT_PER_COIN = 10;
 
     this.maxBottleCount = level.maxBottleCount;
@@ -513,49 +509,13 @@ class World {
   }
 
   /**
-   * Gets the character bounds for coin collection.
-   *
-   * @returns {{left: number, right: number, top: number, bottom: number}} The character collection bounds.
-   */
-  getCharacterCoinBounds() {
-    return {
-      left: this.character.x + this.COIN_HITBOX_HORIZONTAL_INSET,
-      right: this.character.x + this.character.width - this.COIN_HITBOX_HORIZONTAL_INSET,
-      top: this.character.y + this.COIN_HITBOX_TOP_OFFSET,
-      bottom: this.character.y + this.COIN_HITBOX_BOTTOM_OFFSET,
-    };
-  }
-
-  /**
-   * Gets the inset bounds of a coin for collection.
+   * Checks if the character touches a coin, on the ground or while airborne.
    *
    * @param {Coin} coin - The coin to check.
-   * @returns {{left: number, right: number, top: number, bottom: number}} The coin collection bounds.
-   */
-  getCoinCollectionBounds(coin) {
-    return {
-      left: coin.x + this.COIN_COLLECTION_INSET,
-      right: coin.x + coin.width - this.COIN_COLLECTION_INSET,
-      top: coin.y + this.COIN_COLLECTION_INSET,
-      bottom: coin.y + coin.height - this.COIN_COLLECTION_INSET,
-    };
-  }
-
-  /**
-   * Checks if the character collects a coin with the upper body while jumping.
-   *
-   * @param {Coin} coin - The coin to check.
-   * @returns {boolean} True when the coin bounds touch the character's upper body while airborne.
+   * @returns {boolean} True when the character's collision box overlaps the coin's.
    */
   isCollectingCoin(coin) {
-    const characterBounds = this.getCharacterCoinBounds();
-    const coinBounds = this.getCoinCollectionBounds(coin);
-
-    return this.character.isAboveGround() &&
-      characterBounds.right > coinBounds.left &&
-      characterBounds.left < coinBounds.right &&
-      characterBounds.bottom > coinBounds.top &&
-      characterBounds.top < coinBounds.bottom;
+    return this.character.isColliding(coin);
   }
 
   /**
