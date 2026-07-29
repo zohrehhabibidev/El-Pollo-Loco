@@ -33,7 +33,7 @@ class Endboss extends MovableObject {
     this.loadImages(this.endbossDeadImages);
     this.img = this.imageCache[this.endbossWalkImages[0]];
 
-    this.x = 3170;
+    this.x = 5330;
     this.y = 135;
     this.width = 260;
     this.height = 330;
@@ -44,7 +44,7 @@ class Endboss extends MovableObject {
       left: 45,
     };
     this.speed = 4.5;
-    this.activationX = 2420;
+    this.activationX = 4580;
     this.health = 100;
     this.isDead = false;
     this.isHurt = false;
