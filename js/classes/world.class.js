@@ -47,7 +47,7 @@ class World {
     this.bottleOutOfBoundsRightMargin = 400;
     this.bottleOutOfBoundsBottomMargin = 200;
     this.cameraXOffset = 100;
-    this.chickenStompTolerance = 40;
+    this.chickenStompZoneRatio = 0.3;
     this.endbossBottleDamage = 20;
 
     this.bottleCollectSound = new Audio("assets/audio/collectibles/bottleCollectSound.wav");
@@ -285,16 +285,24 @@ class World {
   /**
    * Checks if the character lands on top of a chicken.
    *
+   * Only the upper portion of the chicken (chickenStompZoneRatio) counts as a
+   * valid stomp zone, scaled to the chicken's own collision box height. This
+   * keeps the check from matching normal ground-level contact, which would
+   * otherwise be misread as a stomp and let the character bounce off the
+   * chicken instead of taking damage.
+   *
    * @param {Chicken} chicken - The chicken to check.
    * @returns {boolean} True if the character hits the chicken from above while falling.
    */
   isJumpingOnChicken(chicken) {
     const characterBox = this.character.getCollisionBox();
     const chickenBox = chicken.getCollisionBox();
+    const stompZoneBottom = chickenBox.top +
+      (chickenBox.bottom - chickenBox.top) * this.chickenStompZoneRatio;
 
     return this.character.isColliding(chicken) &&
       this.character.speedY < 0 &&
-      characterBox.bottom <= chickenBox.top + this.chickenStompTolerance;
+      characterBox.bottom <= stompZoneBottom;
   }
 
   /**
