@@ -45,6 +45,7 @@ class World {
     this.cameraXOffset = 100;
     this.chickenStompZoneRatio = 0.3;
     this.endbossBottleDamage = 20;
+    this.endbossKnockbackDistance = 80;
 
     this.bottleCollectSound = new Audio("assets/audio/collectibles/bottleCollectSound.wav");
     this.coinCollectSound = new Audio("assets/audio/collectibles/collectSound.wav");
@@ -354,6 +355,22 @@ class World {
   }
 
   /**
+   * Pushes the character away from the endboss so its large hitbox can't
+   * keep re-triggering damage while the character's post-hit invulnerability
+   * is still active, giving the player a real window to run away.
+   *
+   * @returns {void}
+   */
+  knockCharacterAwayFromEndboss() {
+    const direction = this.character.x < this.endboss.x ? -1 : 1;
+    this.character.x += direction * this.endbossKnockbackDistance;
+
+    if (this.character.x < 0) {
+      this.character.x = 0;
+    }
+  }
+
+  /**
    * Checks and handles collision between the character and the endboss.
    *
    * @returns {void}
@@ -365,6 +382,7 @@ class World {
 
       if (this.character.health < oldHealth) {
         this.playSound(this.characterDamageSound);
+        this.knockCharacterAwayFromEndboss();
       }
 
       this.statusBar.setPercentage(this.character.health);
